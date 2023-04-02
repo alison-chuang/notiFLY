@@ -11,6 +11,9 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Altas database connection 
+import db from './model/database.js'
+
 // API routes
 import campaignRouter from './routes/campaign.js'
 app.use('/api/' + API_VERSION, campaignRouter);
