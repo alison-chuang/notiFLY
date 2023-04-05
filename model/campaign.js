@@ -4,7 +4,7 @@ const schema = mongoose.Schema;
 const campaignSchema = new schema({
     name: {
         type: String,
-        required: flase,
+        required: false,
     },
     status: {
         type: String,
@@ -16,12 +16,20 @@ const campaignSchema = new schema({
         default: Date.now,
         required: true,
     },
-    launchDate: {
+    sendDate: {
         type: Date,
         required: false,
     },
-    taGroupId: {
-        type: Array, // change to group ID when segment is set
+    companyId: {
+        type: Number,
+        required: true,
+    },
+    segmentId: {
+        type: String, // change to group ID when segment is set
+        required: true,
+    },
+    membersId: {
+        type: String, // change to group ID when segment is set
         required: true,
     },
     subject: {
@@ -41,6 +49,14 @@ const campaignSchema = new schema({
         required: false,
     },
 });
-const model = mongoose.model("campaign", campaignSchema);
+const Campaign = mongoose.model("campaigns", campaignSchema);
 
-export default model;
+const updateCampaign = async (campaign) => {
+    try {
+        Campaign.findOneAndUpdate({ _id: campaign }, { $set: { status: "processing" } }, { new: true });
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+export { Campaign };
