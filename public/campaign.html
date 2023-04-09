@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Create Campaign</title>
+        <!-- <link rel="stylesheet" href="./campaign.css" /> -->
+        <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet" />
+    </head>
+    <body>
+        <form id="campaign-form">
+            <!-- method="POST" enctype="multipart/form-data" > -->
+            <h2>create campaign</h2>
+            <label for="campaign-name">Campaign Name:</label>
+            <input type="text" id="campaign-name" name="campaign-name" /><br />
+
+            <label for="segment">Segment:</label>
+            <select id="segment" name="segment"></select>
+            <br />
+
+            <label for="notification-channel">Notification Channel:</label>
+            <select id="notification-channel" name="notification-channel">
+                <option value="edm">eDM</option>
+                <option value="web-push">Web Push</option></select
+            ><br />
+
+            <style>
+                .ql-container,
+                .ql-editor {
+                    height: auto; /* auto-growth */
+                }
+
+                *[quill__html] {
+                    display: none;
+
+                    width: 100%;
+                    margin: 0;
+                    background: rgb(29, 29, 29);
+                    box-sizing: border-box;
+                    color: rgb(204, 204, 204);
+                    outline: none;
+                    padding: 12px 15px;
+                    line-height: 24px;
+                    font-family: Consolas, Menlo, Monaco, "Courier New", monospace;
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    border: none;
+                }
+
+                *[quill__html*="-active-"] {
+                    display: initial;
+                }
+            </style>
+
+            <div class="email-editor">
+                <div class="text input">
+                    <p>Edit content</p>
+                    <!-- Create the toolbar container -->
+                    <div id="editor"></div>
+                    <div id="toolbar_1" quill__toolbar>
+                        <span class="ql-formats">
+                            <button class="ql-bold">Bold</button>
+                            <button class="ql-italic">Italic</button>
+                            <button class="ql-link">Link</button>
+                            <button class="ql-list" value="bullet">Ul</button>
+                        </span>
+                        <span class="ql-formats">
+                            <!-- <button class="ql-clean">Clean</button> -->
+                            <button class="ql-html">HTML</button>
+                        </span>
+                    </div>
+                    <div id="editor_1" quill__editor>
+                        <p>Edit your communication message here</p>
+                        <p>Upload and drag images to enrich your eDM</p>
+                    </div>
+                </div>
+
+                <div class="image input"></div>
+            </div>
+
+            <label for="send-time">Delivery Type</label><br />
+            <input type="radio" id="one-time" name="send-type" value="one-time" />
+            <!-- onchange="showSendTimeOptions()" -->
+            <label for="one-time">One-Time</label><br />
+            <input type="radio" id="regular" name="send-type" value="regular" />
+            <!-- onchange="showSendTimeOptions()" -->
+            <label for="regular">Regular</label><br />
+
+            <!-- style="display: none" -->
+            <div id="send-time-options">
+                <div id="one-time-options">
+                    <label for="send-date">Send Date:</label>
+                    <input type="date" id="send-date" name="send-date" />
+                    <label for="send-time">Send Time:</label>
+                    <input type="time" id="send-time" name="send-time" />
+                </div>
+                <div id="regular-options">
+                    <input
+                        type="radio"
+                        id="weekly"
+                        name="send-frequency"
+                        value="weekly"
+                        <!--
+                        onchange="showWeeklyOptions()"
+                        --
+                    />
+
+                    <label for="weekly">Weekly</label><br />
+                    <input
+                        type="radio"
+                        id="monthly"
+                        name="send-frequency"
+                        value="monthly"
+                        <!--
+                        onchange="showMonthlyOptions()"
+                        --
+                    />
+
+                    <label for="monthly">Monthly</label><br />
+                    <div id="weekly-options">
+                        <!-- <div id="weekly-options" style="display: none"> -->
+                        <label for="weekly-day">Send on every:</label>
+                        <select id="weekly-day" name="weekly-day">
+                            <option value="monday">Monday</option>
+                            <option value="tuesday">Tuesday</option>
+                            <option value="wednesday">Wednesday</option>
+                            <option value="thursday">Thursday</option>
+                            <option value="friday">Friday</option>
+                            <option value="saturday">Saturday</option>
+                            <option value="sunday">Sunday</option>
+                        </select>
+                        <label for="weekly-time">At what time:</label>
+                        <input type="time" id="weekly-time" name="weekly-time" min="00:00" max="23:59" step="60" />
+                    </div>
+                    <div id="monthly-options">
+                        <!-- <div id="monthly-options" style="display: none"> -->
+                        <label for="monthly-date">Send on which date:</label>
+                        <input type="number" id="monthly-date" name="monthly-date" min="1" max="31" />
+                        <label for="monthly-time">Send Time:</label>
+                        <input type="time" id="monthly-time" name="monthly-time" />
+                    </div>
+                </div>
+            </div>
+            <button type="submit" id="save-btn">Submit</button>
+        </form>
+
+        <form id="imageForm">
+            <input id="imageInput" type="file" accept="image/*" />
+            <button type="submit">Upload Image</button>
+        </form>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="./script/campaign.js"></script>
+    </body>
+</html>
