@@ -2,13 +2,7 @@ import mongoose from "mongoose";
 const schema = mongoose.Schema;
 
 const segmentSchema = new schema({
-    segmentId: {
-        type: Number,
-    },
     name: {
-        type: String,
-    },
-    company: {
         type: String,
     },
     query: {
@@ -18,4 +12,10 @@ const segmentSchema = new schema({
 
 const Segment = mongoose.model("segment", segmentSchema);
 
-export { Segment };
+// get segments in DB to render frontend page
+const selectSegmentNames = async () => {
+    const segments = await Segment.find({}, { name: 1 });
+    return segments;
+};
+
+export { Segment, selectSegmentNames };

@@ -25,6 +25,7 @@ const memberSchema = new Schema({
                 type: Date,
                 required: true,
             },
+            // more filter
         },
     ],
 });
