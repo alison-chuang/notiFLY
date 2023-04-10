@@ -124,7 +124,8 @@ const main = async () => {
             let msgStatuses = [];
             let emailKeys = [];
             while (i * BATCH_SIZE < totalCount) {
-                let emails = parsedEmail.slice(i, i + BATCH_SIZE);
+                let emails = JSON.stringify(parsedEmail.slice(i, i + BATCH_SIZE));
+                console.log("emails", emails);
                 let [bucket, emailKey] = await sendToS3(emails, campaignName, i);
 
                 const msg = {

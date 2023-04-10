@@ -108,7 +108,7 @@ const Campaign = mongoose.model("campaigns", campaignSchema);
 
 const updateCounts = async (id, succeed, fail) => {
     const filter = { _id: id };
-    const update = [{ $inc: { suceed_count: succeed, fail_count: fail } }];
+    const update = { $inc: { suceed_count: succeed, fail_count: fail } };
     const doc = await Campaign.findOneAndUpdate(filter, update, {
         new: true,
     });
