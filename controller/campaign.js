@@ -33,7 +33,7 @@ const postCampaigns = async (req, res) => {
             is_recursive: isRecursive,
         },
         message_variant: {
-            source: "alison_mjchuang@gmail.com", // hard code for now
+            source: "alison.mjchuang@gmail.com", // hard code for now
             subject: subject,
             html: htmlContent,
         },
