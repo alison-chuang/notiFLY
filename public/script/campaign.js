@@ -1,5 +1,5 @@
 $.get({
-    url: `${window.location.protocol}/api/1.0/segments`,
+    url: `/api/1.0/segments`,
     success: function (body) {
         // 透過迴圈產生選項；iter 的是 index 不是 obj
         $.each(body.data, function (idx) {
@@ -103,7 +103,7 @@ $(document).ready(function () {
         data += "&htmlContent=" + encodeURIComponent(htmlContent);
 
         $.post({
-            url: "http://localhost:3000/api/1.0/campaigns",
+            url: "/api/1.0/campaigns",
             data: data,
             processData: false,
             success: function (formData) {
