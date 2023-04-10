@@ -9,7 +9,7 @@ const MIN = 1000 * 60;
 const DAY = 1440 * MIN;
 const getList = async () => {
     let now = new Date();
-    let prev = now - 1 * DAY;
+    let prev = now - 15 * MIN;
     console.log("prev:", new Date(prev), "now:", new Date(now));
     try {
         const list = await Campaign.aggregate([
@@ -69,15 +69,7 @@ const getList = async () => {
             },
         ]);
         console.log("length of list:", list.length);
-        console.log(list[0].members);
-        list.map((doc) => {
-            doc.emails = doc.members.map((member) => member.email);
-            delete doc.members;
-            return doc;
-        });
-        console.log("list:", list);
-        // console.log("query:", list[0].segment.query);
-        // console.log("emails:", list[0].info.emails);
+        // console.log("list:", list);
         return list;
     } catch (e) {
         console.error(e);
@@ -112,7 +104,7 @@ const main = async () => {
     // send bucketName, objKey, message to SQS
     try {
         for (let record of records) {
-            const jsonInfo = JSON.stringify(record.info.emails);
+            const jsonInfo = JSON.stringify(record.emails);
             const campaignName = record.name;
             const parsedEmail = JSON.parse(jsonInfo);
             const totalCount = parsedEmail.length;
@@ -162,7 +154,7 @@ const main = async () => {
     }
 };
 
-getList();
+main();
 
 // 每分鐘去資料庫 取出 match 當下時間的 campaign document + member info
 // cron.schedule(`* * * * *`, async () => {
