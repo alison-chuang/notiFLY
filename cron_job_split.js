@@ -45,14 +45,13 @@ const getList = async () => {
                     let: {
                         gte: "$segment.query.created_at.gte",
                         lt: "$segment.query.created_at.lt",
-                        andConds: "$segment.query.and",
                     },
                     pipeline: [
                         {
                             // TODO 應會有更多 filter 條件，目前只有會員 created date
                             $match: {
                                 $expr: {
-                                    $and: ["$$andConds"],
+                                    $and: [{ $gte: ["$created_at", "$$gte"] }, { $lt: ["$created_at", "$$lt"] }],
                                 },
                             },
                         },
