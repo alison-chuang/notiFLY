@@ -69,7 +69,11 @@ const getList = async () => {
             },
         ]);
         console.log("length of list:", list.length);
-        // console.log("list:", list);
+        list.map((doc) => {
+            doc.emails = doc.members.map((member) => member.email);
+            delete doc.members;
+            return doc;
+        });
         return list;
     } catch (e) {
         console.error(e);
@@ -116,7 +120,6 @@ const main = async () => {
             let emailKeys = [];
             while (i * BATCH_SIZE < totalCount) {
                 let emails = JSON.stringify(parsedEmail.slice(i, i + BATCH_SIZE));
-                console.log("emails", emails);
                 let [bucket, emailKey] = await sendToS3(emails, campaignName, i);
 
                 const msg = {
@@ -130,7 +133,6 @@ const main = async () => {
                 record.bucket = bucket;
 
                 const msgStatus = await q.sendMessage(msg);
-                console.log({ msgStatus });
                 msgStatuses.push(msgStatus);
                 i += 1;
                 emailKeys.push(emailKey);
