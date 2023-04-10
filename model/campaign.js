@@ -63,7 +63,7 @@ const campaignSchema = new schema({
     status: {
         type: String,
         required: true,
-        default: "saved", // saved, launched, processing( 先不要 sent, failed
+        default: "launched", // saved, launched, processing( 先不要 sent, failed
     },
     createdDate: {
         type: Date,
@@ -72,6 +72,10 @@ const campaignSchema = new schema({
     },
     sendDate: {
         type: Date,
+        required: true,
+    },
+    local_sendDate: {
+        type: String,
         required: true,
     },
     recursive: {

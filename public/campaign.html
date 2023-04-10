@@ -10,20 +10,20 @@
         <form id="campaign-form">
             <!-- method="POST" enctype="multipart/form-data" > -->
             <h2>create campaign</h2>
-            <label for="campaign-name">Campaign Name:</label>
-            <input type="text" id="campaign-name" name="campaign-name" /><br />
+            <label for="name">Campaign Name:</label>
+            <input type="text" id="name" name="name" /><br />
 
             <label for="segment">Segment:</label>
-            <select id="segment" name="segment"></select>
+            <select id="segment" name="segmentId"></select>
             <br />
 
-            <label for="notification-channel">Notification Channel:</label>
-            <select id="notification-channel" name="notification-channel">
+            <label for="channel">Notification Channel:</label>
+            <select id="channel" name="channel">
                 <option value="edm">eDM</option>
                 <option value="web-push">Web Push</option></select
             ><br />
-            <label for="email-subject">Email Subject:</label>
-            <input type="text" id="email-subject" name="email-subject" /><br />
+            <label for="subject">Email Subject:</label>
+            <input type="text" id="subject" name="subject" /><br />
 
             <style>
                 .ql-container,
@@ -128,20 +128,18 @@
             </div>
 
             <label for="send-time">Delivery Type</label><br />
-            <input type="radio" id="one-time" name="send-type" value="one-time" />
+            <input type="radio" id="one-time" name="type" value="one-time" />
             <!-- onchange="showSendTimeOptions()" -->
             <label for="one-time">One-Time</label><br />
-            <input type="radio" id="regular" name="send-type" value="regular" />
+            <input type="radio" id="regular" name="type" value="regular" />
             <!-- onchange="showSendTimeOptions()" -->
             <label for="regular">Regular</label><br />
 
             <!-- style="display: none" -->
             <div id="send-time-options">
                 <div id="one-time-options">
-                    <label for="send-date">Send Date:</label>
-                    <input type="date" id="send-date" name="send-date" />
-                    <label for="send-time">Send Time:</label>
-                    <input type="time" id="send-time" name="send-time" />
+                    <label for="send-date">Send Time:</label>
+                    <input type="datetime-local" id="send-date" name="sendDate" />
                 </div>
                 <div id="regular-options">
                     <input

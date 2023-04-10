@@ -42,15 +42,17 @@ const getList = async () => {
             {
                 $lookup: {
                     from: "members",
-                    localField: "company",
-                    foreignField: "company",
+                    let: {
+                        gte: "$segment.query.created_at.gte",
+                        lt: "$segment.query.created_at.lt",
+                        andConds: "$segment.query.and",
+                    },
                     pipeline: [
                         {
                             // TODO 應會有更多 filter 條件，目前只有會員 created date
                             $match: {
-                                "list.created_at": {
-                                    $gte: "$segment.query.created_at.$gte",
-                                    // $lte: "$segment.query.created_at.$lte", // 加了就找不到了
+                                $expr: {
+                                    $and: ["$$andConds"],
                                 },
                             },
                         },
@@ -58,25 +60,22 @@ const getList = async () => {
                         {
                             $project: {
                                 _id: 0,
-                                emails: {
-                                    $map: {
-                                        input: "$list",
-                                        as: "item",
-                                        in: "$$item.email",
-                                    },
-                                },
+                                email: 1,
                             },
                         },
                     ],
-                    as: "info",
+                    as: "members",
                 },
             },
-
-            // unwind the members array, 可以把key拿掉
-            { $unwind: "$info" },
         ]);
         console.log("length of list:", list.length);
-        // console.log("list:", list);
+        console.log(list[0].members);
+        list.map((doc) => {
+            doc.emails = doc.members.map((member) => member.email);
+            delete doc.members;
+            return doc;
+        });
+        console.log("list:", list);
         // console.log("query:", list[0].segment.query);
         // console.log("emails:", list[0].info.emails);
         return list;
@@ -163,7 +162,7 @@ const main = async () => {
     }
 };
 
-main();
+getList();
 
 // 每分鐘去資料庫 取出 match 當下時間的 campaign document + member info
 // cron.schedule(`* * * * *`, async () => {

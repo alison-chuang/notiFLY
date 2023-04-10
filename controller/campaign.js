@@ -13,9 +13,33 @@ const getS3Url = async (req, res) => {
 // save campaign info to db
 const postCampaigns = async (req, res) => {
     console.log("req.body", req.body);
+    // TODO 後端要做資料驗證 xss attack
+    // TODO 時區問題（收local, 但 mongodb UTC 0 , 但cron_job拿也是 UTC 0 )
+    const { name, segmentId, channel, subject, type, sendDate, htmlContent } = req.body;
+    let isRecursive;
+    if (type == "one-time") {
+        isRecursive = true;
+    } else {
+        isRecursive = false;
+    }
 
-    const campaign = new Campaign(req.body);
-    // TODO 後端要做資料驗證
+    const data = {
+        name,
+        sendDate,
+        local_sendDate: sendDate.toLocaleString(),
+        segmentId,
+        channel,
+        recursive: {
+            is_recursive: isRecursive,
+        },
+        message_variant: {
+            source: "alison_mjchuang@gmail.com", // hard code for now
+            subject: subject,
+            html: htmlContent,
+        },
+    };
+
+    const campaign = new Campaign(data);
     try {
         const newCampaign = await campaign.save();
         console.log("saved campaign to database");
