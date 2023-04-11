@@ -12,4 +12,74 @@ const wrapAsync = (fn) => {
     };
 };
 
-export { wrapAsync, randomBytes };
+// schema rule for client to push member data
+const newMemberSchema = {
+    type: "object",
+    properties: {
+        name: {
+            type: "string",
+        },
+        email: {
+            type: "string",
+            format: "email",
+        },
+        cellphone: {
+            type: "string",
+        },
+        gender: {
+            type: "string",
+            enum: ["f", "m", "n"],
+        },
+        birthday_year: {
+            type: "string",
+            pattern: "^[0-9]{4}$",
+        },
+        birthday_month: {
+            type: "string",
+            pattern: "^[0-9]{1,2}$",
+        },
+        birthday_date: {
+            type: "string",
+            pattern: "^[0-9]{1,2}$",
+        },
+        city: {
+            type: "string",
+        },
+        location: {
+            type: "array",
+            items: {
+                type: "number",
+            },
+            minItems: 2,
+            maxItems: 2,
+        },
+        order: {
+            type: "array",
+            items: {
+                type: "object",
+                properties: {
+                    date: {
+                        type: "string",
+                        format: "date-time",
+                    },
+                    amount: {
+                        type: "number",
+                        minimum: 0,
+                    },
+                    products: {
+                        type: "array",
+                        items: {
+                            type: "string",
+                        },
+                        minItems: 0,
+                    },
+                },
+                required: ["date", "amount", "products"],
+            },
+        },
+    },
+    required: ["email"],
+    additionalProperties: false,
+};
+
+export { wrapAsync, randomBytes, newMemberSchema };
