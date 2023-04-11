@@ -1,5 +1,5 @@
 import Ajv from "ajv";
-import { Member } from "../model/member.js";
+import { Member, newAttribute, newOrder, deleteOrder, checkMemberId } from "../model/member.js";
 import { newMemberSchema } from "../util/util.js";
 
 // save campaign info to db
@@ -44,6 +44,65 @@ const postMember = async (req, res) => {
 // upadate
 const updateMember = async (req, res) => {
     console.log("client update member data:", req.body);
+
+    const [id] = req.body;
+    const [body] = req;
+
+    // check member in db
+    const isMember = await checkMemberId(id);
+    if (!isMember) {
+        res.status(400).json({ data: "bad request" });
+    }
+
+    // $set: object
+    try {
+        const updated = await newAttribute(id, body);
+        console.log("updated doc:", updated);
+        res.status(200).json({ data: "DB updated" });
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ data: "fail to update" });
+    }
 };
 
-export { postMember, updateMember };
+const updateOrder = async (req, res) => {
+    console.log("client update member data:", req.body);
+    const { id, order } = req.body;
+
+    // check member in db
+    const isMember = await checkMemberId(id);
+    if (!isMember) {
+        res.status(400).json({ data: "bad request" });
+    }
+
+    // $push : new order
+    try {
+        const updated = await newOrder(id, order);
+        res.status(200).json({ data: "DB updated" });
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ data: "fail to update" });
+    }
+};
+
+const deleteOrder = async (req, res) => {
+    console.log("client update member data:", req.body);
+    const { id, orders } = req.body;
+
+    // check member in db
+    const isMember = await checkMemberId(id);
+    if (!isMember) {
+        res.status(400).json({ data: "bad request" });
+    }
+
+    // $: delete order
+    try {
+        const updated = await deleteOrder(id, body);
+        res.status(200).json({ data: "DB updated" });
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ data: "fail to delete" });
+    }
+};
+
+export { postMember, updateMember, updateOrder, deleteOrder };

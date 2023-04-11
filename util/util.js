@@ -16,6 +16,9 @@ const wrapAsync = (fn) => {
 const newMemberSchema = {
     type: "object",
     properties: {
+        client_member_id: {
+            type: "string",
+        },
         name: {
             type: "string",
         },
@@ -71,14 +74,14 @@ const newMemberSchema = {
                         items: {
                             type: "string",
                         },
-                        minItems: 0,
+                        minItems: 1,
                     },
                 },
                 required: ["date", "amount", "products"],
             },
         },
     },
-    required: ["email"],
+    required: ["email", "client_member_id"],
     additionalProperties: false,
 };
 
