@@ -24,7 +24,7 @@ const newMemberSchema = {
         },
         email: {
             type: "string",
-            format: "email",
+            // format: "email",
         },
         cellphone: {
             type: "string",
@@ -34,16 +34,16 @@ const newMemberSchema = {
             enum: ["f", "m", "n"],
         },
         birthday_year: {
-            type: "string",
-            pattern: "^[0-9]{4}$",
+            type: "number",
+            pattern: "^(19|20)\\d{2}$",
         },
         birthday_month: {
-            type: "string",
-            pattern: "^[0-9]{1,2}$",
+            type: "number",
+            pattern: "^(0?[1-9]|1[0-2])$",
         },
         birthday_date: {
-            type: "string",
-            pattern: "^[0-9]{1,2}$",
+            type: "number",
+            pattern: "^([1-9]|0[1-9]|[12][0-9]|3[01])$",
         },
         city: {
             type: "string",
@@ -56,14 +56,14 @@ const newMemberSchema = {
             minItems: 2,
             maxItems: 2,
         },
-        order: {
+        orders: {
             type: "array",
             items: {
                 type: "object",
                 properties: {
                     date: {
                         type: "string",
-                        format: "date-time",
+                        // format: "date-time",
                     },
                     amount: {
                         type: "number",
