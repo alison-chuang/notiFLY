@@ -1,0 +1,48 @@
+#builder-container {
+    width: 55%;
+    margin: auto;
+    margin-top: 1%;
+}
+
+.btn {
+    background-color: white;
+    color: var(--bs-btn-bg);
+}
+
+.btn-class {
+    float: right;
+    margin-top: 2%;
+    bottom: 0;
+}
+
+.btn.disabled {
+    border-style: dashed;
+    background-color: white;
+    color: var(--bs-btn-bg);
+}
+
+.btn-warning:hover,
+.btn-warning:active {
+    color: white;
+}
+
+.form-control {
+    border-color: #aaaaaa;
+}
+
+#member-count {
+    margin: auto;
+    margin-top: 2%;
+    font-size: 20px;
+    display: inline-block;
+    vertical-align: bottom;
+}
+
+#member-count p {
+    display: inline;
+    margin: 0;
+}
+
+#name {
+    width: 30%;
+}
