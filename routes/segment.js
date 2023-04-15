@@ -8,8 +8,7 @@ router.use(express.urlencoded({ extended: true }));
 router.route("/segments").post(wrapAsync(postSegment));
 router.route("/segments/names").get(wrapAsync(getSegment));
 router.route("/segments/cities").get(wrapAsync(getCity));
-router.route("/segment").get(wrapAsync(getAllSegment));
-// TODO why /segments 他會通還只拿名字
+router.route("/segments").get(wrapAsync(getAllSegment));
 router.route("/segments/count").post(wrapAsync(countMember));
 
 export default router;
