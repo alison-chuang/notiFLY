@@ -33,20 +33,12 @@ const recursiveSchema = schema({
         type: Boolean,
         required: true,
     },
-    is_weekly: {
-        type: Boolean,
-        required: false,
-    },
-    is_monthly: {
-        type: Boolean,
+    type: {
+        type: String, // m(monthly), w(weekly)
         required: false,
     },
     day: {
-        type: String, // 星期幾
-        required: false,
-    },
-    date: {
-        type: String, // 每月幾號
+        type: String, // 星期幾 0~7 & 每月幾號 1~31
         required: false,
     },
     time: {
@@ -63,7 +55,7 @@ const campaignSchema = new schema({
     status: {
         type: String,
         required: true,
-        default: "launched", // saved, launched, processing( 先不要 sent, failed
+        default: "launched", // saved, launched, processing(送到SQS後), processed（lambda有做過）
     },
     createdDate: {
         type: Date,
@@ -75,6 +67,10 @@ const campaignSchema = new schema({
         required: true,
     },
     local_sendDate: {
+        type: String,
+        required: true,
+    },
+    owner_name: {
         type: String,
         required: true,
     },
@@ -97,7 +93,7 @@ const campaignSchema = new schema({
         required: true,
         default: 0,
     },
-    suceed_count: {
+    succeed_count: {
         type: Number,
         required: true,
         default: 0,
