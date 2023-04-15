@@ -20,7 +20,11 @@ import "./model/database.js";
 
 // API routes
 import campaignRouter from "./routes/campaign.js";
+import memberRouter from "./routes/member.js";
+import segmentRouter from "./routes/segment.js";
 app.use("/api/" + API_VERSION, campaignRouter);
+app.use("/api/" + API_VERSION, memberRouter);
+app.use("/api/" + API_VERSION, segmentRouter);
 
 // Page not found
 app.use((req, res, next) => {

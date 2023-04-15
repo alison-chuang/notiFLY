@@ -134,4 +134,21 @@ const checkMemberId = async (id) => {
     }
 };
 
-export { Member, newAttribute, newOrder, delOrder, checkMemberId };
+// get city in DB
+const selectCity = async () => {
+    const cities = await Member.find({}, { city: 1, _id: 0 });
+    return cities;
+};
+
+// TODO:get member count based on segment filter
+const matchMember = async (query) => {
+    const counts = await Member.countDocuments(query);
+    return counts;
+};
+/*
+query: {
+    '$and': [ {  birthday_month: 12 } ]
+  }
+*/
+
+export { Member, newAttribute, newOrder, delOrder, checkMemberId, selectCity, matchMember };
