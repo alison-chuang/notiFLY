@@ -1,7 +1,6 @@
 $.get({
-    url: `/api/1.0/segments`,
+    url: `/api/1.0/segments/names`,
     success: function (body) {
-        // 透過迴圈產生選項；iter 的是 index 不是 obj
         $.each(body.data, function (idx) {
             const seg = body.data[idx];
             const option = $("<option></option>").attr("value", seg._id).text(seg.name);
