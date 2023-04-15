@@ -70,15 +70,9 @@ const lambdaUpdateDb = async (req, res) => {
     }
 };
 
-// get segments in DB to render page
-const getSegmentNames = async (req, res) => {
-    const segments = await selectSegmentNames();
-    res.json({ data: segments });
-};
-
 // get image in s3 to render page
 const getS3Images = async (req, res) => {
     const s3Images = await selectS3Images();
     res.json({ data: s3Images });
 };
-export { getS3Url, postCampaigns, lambdaUpdateDb, getSegmentNames, getS3Images };
+export { getS3Url, postCampaigns, lambdaUpdateDb, getS3Images };
