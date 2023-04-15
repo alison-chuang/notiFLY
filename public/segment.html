@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>Create Campaign</title>
+        <title>notiFLY/Segment</title>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-extendext/1.0.0/jquery-extendext.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/dot/1.1.3/doT.js"></script>
@@ -29,19 +29,86 @@
             integrity="sha256-yXPeqF3YuO/fb6DhXnB8k/nb66kH6pKij7eAHWL5UTc="
             crossorigin="anonymous"
         />
-        <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
-        <link rel="stylesheet" href="./segment.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+        <!-- 引用 Bootstrap-datepicker CSS 和 JavaScript -->
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+        />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+        <link rel="stylesheet" href="./css/header.css" />
+        <link rel="stylesheet" href="./css/footer.css" />
+        <link rel="stylesheet" href="./css/segment.css" />
     </head>
     <body>
-        <div id="builder-container">
-            <div id="builder-import_export"></div>
-
-            <div class="btn-group">
-                <button class="btn btn-warning reset" data-target="import_export">Reset</button>
+        <div id="viewport">
+            <div id="sidebar">
+                <header>
+                    <a href="#">NotiFLY</a>
+                </header>
+                <ul class="nav">
+                    <li>
+                        <a href="#"> <i class="zmdi zmdi-view-dashboard"></i> View Segment </a>
+                    </li>
+                    <li>
+                        <a href="#"> <i class="zmdi zmdi-link"></i> Create Segment </a>
+                    </li>
+                    <li>
+                        <a href="#"> <i class="zmdi zmdi-widgets"></i> View Campaign </a>
+                    </li>
+                    <li>
+                        <a href="#"> <i class="zmdi zmdi-calendar"></i> Create Campaign </a>
+                    </li>
+                </ul>
             </div>
-            <div class="btn-group">
-                <button class="btn btn-secondary parse-mongo" data-target="import_export">Save</button>
+
+            <div id="root">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>
+                                <a href="#"><i class="zmdi zmdi-notifications text-danger"></i> </a>
+                            </li>
+                            <li><a href="#">Get Help</a></li>
+                        </ul>
+                    </div>
+                </nav>
+
+                <div id="builder-container">
+                    <h2 id="container-topic">Segment</h2>
+                    <label for="name">Name</label>
+                    <input class="form-control" type="text" id="name" name="name" />
+                    <div id="builder-import_export"></div>
+                    <div id="member-count">
+                        <!-- <p>Estimated matched member :</p>   後端要回復符合條件的人數-->
+                    </div>
+                    <div class="btn-class">
+                        <!-- <div class="btn-group">
+                            <button class="btn btn-xs btn-danger" data-target="import_export">Reset</button>
+                        </div> -->
+                        <div class="btn-group">
+                            <button class="btn btn-secondary parse-mongo-check" data-target="import_export">
+                                Matched Count
+                            </button>
+                        </div>
+                        <div class="btn-group">
+                            <button class="btn btn-primary save" data-target="import_export">Save</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer">
+                    <div class="footer__container">
+                        <div class="footer__links">
+                            <div class="footer__link">關於 NotiFLY</div>
+                            <div class="footer__link">服務條款</div>
+                            <div class="footer__link">隱私政策</div>
+                            <div class="footer__link">聯絡我們</div>
+                            <div class="footer__link">FAQ</div>
+                        </div>
+                        <div class="footer__copyright">© 2023. All rights reserved.</div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>
