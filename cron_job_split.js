@@ -10,7 +10,7 @@ const MIN = 1000 * 60;
 const DAY = 1440 * MIN;
 const getList = async () => {
     let now = new Date();
-    let prev = now - 120 * MIN;
+    let prev = now - DAY;
     console.log("prev:", new Date(prev), "now:", new Date(now));
     try {
         const list = await Campaign.aggregate([
