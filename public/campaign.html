@@ -3,201 +3,210 @@
     <head>
         <meta charset="UTF-8" />
         <title>Create Campaign</title>
-        <!-- <link rel="stylesheet" href="./campaign.css" /> -->
-        <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.7/quill.snow.css" />
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="./css/header.css" />
+        <link rel="stylesheet" href="./css/footer.css" />
+        <link rel="stylesheet" href="./css/campaign.css" />
     </head>
     <body>
-        <form id="campaign-form">
-            <!-- method="POST" enctype="multipart/form-data" > -->
-            <h2>create campaign</h2>
-            <label for="name">Campaign Name:</label>
-            <input type="text" id="name" name="name" /><br />
-
-            <label for="segment">Segment:</label>
-            <select id="segment" name="segmentId"></select>
-            <br />
-
-            <label for="channel">Notification Channel:</label>
-            <select id="channel" name="channel">
-                <option value="edm">eDM</option>
-                <option value="web-push">Web Push</option></select
-            ><br />
-            <label for="subject">Email Subject:</label>
-            <input type="text" id="subject" name="subject" /><br />
-
-            <style>
-                .ql-container,
-                .ql-editor {
-                    height: auto; /* auto-growth */
-                }
-
-                *[quill__html] {
-                    display: none;
-
-                    width: 100%;
-                    margin: 0;
-                    background: rgb(29, 29, 29);
-                    box-sizing: border-box;
-                    color: rgb(204, 204, 204);
-                    outline: none;
-                    padding: 12px 15px;
-                    line-height: 24px;
-                    font-family: Consolas, Menlo, Monaco, "Courier New", monospace;
-                    position: absolute;
-                    top: 0;
-                    bottom: 0;
-                    border: none;
-                }
-
-                *[quill__html*="-active-"] {
-                    display: initial;
-                }
-            </style>
-
-            <div class="email-editor">
-                <div class="text input">
-                    <p>Edit content</p>
-                    <!-- Create the toolbar container -->
-                    <div id="editor"></div>
-                    <div id="toolbar_1" quill__toolbar>
-                        <span class="ql-formats">
-                            <button class="ql-bold">Bold</button>
-                            <button class="ql-italic">Italic</button>
-                            <button class="ql-link">Link</button>
-                            <button class="ql-list" value="bullet">Ul</button>
-                        </span>
-                        <span class="ql-formats">
-                            <!-- <button class="ql-clean">Clean</button> -->
-                            <button class="ql-html">HTML</button>
-                        </span>
+        <div id="viewport">
+            <div id="sidebar">
+                <header>
+                    <a href="#">NotiFLY</a>
+                </header>
+                <ul class="nav">
+                    <li>
+                        <a href="#"> <i class="zmdi zmdi-view-dashboard"></i> View Segment </a>
+                    </li>
+                    <li>
+                        <a href="#"> <i class="zmdi zmdi-link"></i> Create Segment </a>
+                    </li>
+                    <li>
+                        <a href="#"> <i class="zmdi zmdi-widgets"></i> View Campaign </a>
+                    </li>
+                    <li>
+                        <a href="#"> <i class="zmdi zmdi-calendar"></i> Create Campaign </a>
+                    </li>
+                </ul>
+            </div>
+            <div id="root">
+                <nav class="navbar navbar-default">
+                    <div class="container-fluid">
+                        <ul class="nav navbar-nav navbar-right">
+                            <p><a href="#">Get Help</a></p>
+                        </ul>
                     </div>
-                    <div id="editor_1" quill__editor>
-                        <h1 style="color: #e5645e; font-size: 24px; margin: 20px 0">New Collection is ON!</h1>
-                        <p style="font-size: 16px; line-height: 1.5">Dear member,</p>
-                        <p style="font-size: 16px; line-height: 1.5">
-                            We are pleased to inform you that a new collection has been added to our platform:
-                        </p>
-                        <h2 style="color: #e5645e; font-size: 20px; margin: 20px 0 10px 0">
-                            30th Anniversary Crayon Shin-chan Collection
-                        </h2>
-                        <p style="font-size: 16px; line-height: 1.5">
-                            Whether you're a long-time fan or new to the series, the Crayon Shin Chan 30th Anniversary
-                            Collection is a must-have to delight your day. Don't miss out on this exclusive release and
-                            get your hands on the collection today!
-                        </p>
-                        <div style="text-align: center">
-                            <img
-                                src="https://notifly-campaign-image.s3.ap-northeast-1.amazonaws.com/d3884bed94d8f5da"
-                                alt="product Image"
-                                style="width: 100%; max-width: 400px; height: auto; margin: 20px 0"
-                            />
-                            <a
-                                href="https://www.caco.com.tw/mkgdispgroup/dispunit/141610/1"
-                                style="
-                                    display: inline-block;
-                                    margin: 20px 0;
-                                    padding: 10px 20px;
-                                    background-color: #e5645e;
-                                    color: #fff;
-                                    text-decoration: none;
-                                    border-radius: 5px;
-                                "
-                                >Shop Now</a
-                            >
+                </nav>
+                <div class="container">
+                    <div class="main-form">
+                        <form id="campaign-form">
+                            <h2>Campaign</h2>
+                            <label for="name">Campaign Name:</label>
+                            <input type="text" id="name" name="name" />
+
+                            <div class="channel-type">
+                                <label for="channel">Notification Channel:</label>
+                                <select class="channel" id="channel" name="channel">
+                                    <option value="">choose one channel</option>
+                                    <option value="edm">eDM</option>
+                                    <option value="web-push">Web Push</option>
+                                </select>
+                            </div>
+
+                            <label for="segment">Segment:</label>
+                            <select class="segment" id="segment" name="segmentId"></select>
+
+                            <div class="send-time-type">
+                                <label for="send-date">Send Time:</label>
+                                <input type="datetime-local" id="send-date" name="sendDate" />
+
+                                <label for="send-type">Delivery Type</label>
+                                <input type="radio" id="one-time" name="type" value="one-time" />
+                                <label for="one-time">one-time delivery</label>
+                                <input type="radio" id="daily" name="type" value="regular" />
+                                <label for="daily">daily</label>
+                                <input type="radio" id="weekly" name="type" value="regular" />
+                                <label for="weekly">weekly</label>
+                                <input type="radio" id="monthly" name="type" value="regular" />
+                                <label for="monthly">monthly</label>
+                                <input type="radio" id="yearly" name="type" value="regular" />
+                                <label for="yearly">yearly</label>
+                            </div>
+
+                            <!-- Web push -->
+                            <div class="webpush-editor">
+                                <label for="webtitle">Web-push Title:</label>
+                                <input type="text" id="webtitle" name="webtitle" />
+                                <label for="webcopy">Web-push Copy:</label>
+                                <input type="text" id="webcopy" name="webcopy" />
+                                <label for="weblanding">Web-push Landing Page:</label>
+                                <input type="text" id="weblanding" name="webcopy" />
+                                <label for="webimage">Web-push Image Url:</label>
+                                <input type="text" id="webcopy" name="webcopy" />
+                            </div>
+
+                            <!-- Email -->
+                            <div class="email-editor">
+                                <label for="subject">Email Subject:</label>
+                                <input type="text" id="subject" name="subject" />
+                                <!-- Email 內文開始 -->
+                                <div class="text input">
+                                    <!-- Create the toolbar container -->
+                                    <div id="editor"></div>
+                                    <div id="toolbar_1" quill__toolbar>
+                                        <span class="ql-formats">
+                                            <button class="ql-bold">Bold</button>
+                                            <button class="ql-italic">Italic</button>
+                                            <button class="ql-link">Link</button>
+                                            <button class="ql-list" value="bullet">Ul</button>
+                                        </span>
+                                        <span class="ql-formats">
+                                            <button class="ql-html">HTML</button>
+                                        </span>
+                                    </div>
+                                    <div id="editor_1" quill__editor>
+                                        <h1 style="color: #e5645e; font-size: 24px; margin: 20px 0">
+                                            New Collection is ON!
+                                        </h1>
+                                        <p style="font-size: 16px; line-height: 1.5">Dear member,</p>
+                                        <p style="font-size: 16px; line-height: 1.5">
+                                            We are pleased to inform you that a new collection has been added to our
+                                            platform:
+                                        </p>
+                                        <h2 style="color: #e5645e; font-size: 20px; margin: 20px 0 10px 0">
+                                            30th Anniversary Crayon Shin-chan Collection
+                                        </h2>
+                                        <p style="font-size: 16px; line-height: 1.5">
+                                            Whether you're a long-time fan or new to the series, the Crayon Shin Chan 30th
+                                            Anniversary Collection is a must-have to delight your day. Don't miss out on
+                                            this exclusive release and get your hands on the collection today!
+                                        </p>
+                                        <div style="text-align: center">
+                                            <img
+                                                src="https://notifly-campaign-image.s3.ap-northeast-1.amazonaws.com/d3884bed94d8f5da"
+                                                alt="product Image"
+                                                style="width: 100%; max-width: 400px; height: auto; margin: 20px 0"
+                                            />
+                                            <a
+                                                href="https://www.caco.com.tw/mkgdispgroup/dispunit/141610/1"
+                                                style="
+                                                    display: inline-block;
+                                                    margin: 20px 0;
+                                                    padding: 10px 20px;
+                                                    background-color: #e5645e;
+                                                    color: #fff;
+                                                    text-decoration: none;
+                                                    border-radius: 5px;
+                                                "
+                                                >Shop Now</a
+                                            >
+                                        </div>
+                                        <p style="font-size: 16px; line-height: 1.5; margin: 20px 0">
+                                            Thank you for choosing Stylish.
+                                        </p>
+                                        <p style="font-size: 16px; line-height: 1.5">Best regards,</p>
+                                        <p style="font-size: 16px; line-height: 1.5">The Stylish Team</p>
+                                        <p
+                                            style="
+                                                background-color: #f2f2f2;
+                                                padding: 20px;
+                                                text-align: center;
+                                                font-size: 14px;
+                                                color: #666;
+                                            "
+                                        >
+                                            You are receiving this email because you signed up for notifications from
+                                            Stylish. If you wish to unsubscribe, please click
+                                            <a href="#" style="color: #e5645e; text-decoration: none">here</a>.
+                                        </p>
+                                    </div>
+                            </div>
+                        <button type="submit" id="save-btn">Submit</button>
+                        </form>
+                    </div>
+
+                    <div class="image-form">
+                        <form id="imageForm">
+                            <input id="imageInput" type="file" accept="image/*" />
+                            <button type="submit">Upload Image</button>
+                        </form>
+                    </div>
+                    
+                    <div class="gallery">Gallery
+                        <!-- The grid: four columns -->
+                        <div class="row">
+                            <div class="column">
+                            <img src="https://notifly-campaign-image.s3.ap-northeast-1.amazonaws.com/193e3a1e973f5eab" onclick="expand(this);">
+                            </div>
+                            <div class="column">
+                            <img src="https://notifly-campaign-image.s3.ap-northeast-1.amazonaws.com/193e3a1e973f5eab" onclick="expand(this);">
+                            </div>
+                            <div class="column">
+                            <img src="https://notifly-campaign-image.s3.ap-northeast-1.amazonaws.com/193e3a1e973f5eab" onclick="expand(this);">
+                            </div>
+                            <div class="column">
+                            <img src="https://notifly-campaign-image.s3.ap-northeast-1.amazonaws.com/193e3a1e973f5eab" onclick="expand(this);">
+                            </div>
                         </div>
-                        <p style="font-size: 16px; line-height: 1.5; margin: 20px 0">Thank you for choosing Stylish.</p>
-                        <p style="font-size: 16px; line-height: 1.5">Best regards,</p>
-                        <p style="font-size: 16px; line-height: 1.5">The Stylish Team</p>
-                        <p
-                            style="
-                                background-color: #f2f2f2;
-                                padding: 20px;
-                                text-align: center;
-                                font-size: 14px;
-                                color: #666;
-                            "
-                        >
-                            You are receiving this email because you signed up for notifications from Stylish. If you
-                            wish to unsubscribe, please click
-                            <a href="#" style="color: #e5645e; text-decoration: none">here</a>.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="image input"></div>
-            </div>
-
-            <label for="send-time">Delivery Type</label><br />
-            <input type="radio" id="one-time" name="type" value="one-time" />
-            <!-- onchange="showSendTimeOptions()" -->
-            <label for="one-time">One-Time</label><br />
-            <input type="radio" id="regular" name="type" value="regular" />
-            <!-- onchange="showSendTimeOptions()" -->
-            <label for="regular">Regular</label><br />
-
-            <!-- style="display: none" -->
-            <div id="send-time-options">
-                <div id="one-time-options">
-                    <label for="send-date">Send Time:</label>
-                    <input type="datetime-local" id="send-date" name="sendDate" />
-                </div>
-                <div id="regular-options">
-                    <input
-                        type="radio"
-                        id="weekly"
-                        name="send-frequency"
-                        value="weekly"
-                        <!--
-                        onchange="showWeeklyOptions()"
-                        --
-                    />
-
-                    <label for="weekly">Weekly</label><br />
-                    <input
-                        type="radio"
-                        id="monthly"
-                        name="send-frequency"
-                        value="monthly"
-                        <!--
-                        onchange="showMonthlyOptions()"
-                        --
-                    />
-
-                    <label for="monthly">Monthly</label><br />
-                    <div id="weekly-options">
-                        <!-- <div id="weekly-options" style="display: none"> -->
-                        <label for="weekly-day">Send on every:</label>
-                        <select id="weekly-day" name="weekly-day">
-                            <option value="monday">Monday</option>
-                            <option value="tuesday">Tuesday</option>
-                            <option value="wednesday">Wednesday</option>
-                            <option value="thursday">Thursday</option>
-                            <option value="friday">Friday</option>
-                            <option value="saturday">Saturday</option>
-                            <option value="sunday">Sunday</option>
-                        </select>
-                        <label for="weekly-time">At what time:</label>
-                        <input type="time" id="weekly-time" name="weekly-time" min="00:00" max="23:59" step="60" />
-                    </div>
-                    <div id="monthly-options">
-                        <!-- <div id="monthly-options" style="display: none"> -->
-                        <label for="monthly-date">Send on which date:</label>
-                        <input type="number" id="monthly-date" name="monthly-date" min="1" max="31" />
-                        <label for="monthly-time">Send Time:</label>
-                        <input type="time" id="monthly-time" name="monthly-time" />
+                        
+                        <!-- The expanding image container -->
+                        <div class="gallery-container">
+                            <!-- Close the image -->
+                            <span onclick="this.parentElement.style.display='none'" class="closebtn">&times;</span>
+                        
+                            <!-- Expanded image -->
+                            <img id="expandedImg" style="width:100%">
+                        
+                        </div>
                     </div>
                 </div>
             </div>
-            <button type="submit" id="save-btn">Submit</button>
-        </form>
-
-        <form id="imageForm">
-            <input id="imageInput" type="file" accept="image/*" />
-            <button type="submit">Upload Image</button>
-        </form>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
         <script src="./script/campaign.js"></script>
     </body>
 </html>
