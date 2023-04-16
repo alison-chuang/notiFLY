@@ -61,12 +61,12 @@ let filters = [
         label: "Signed up at",
         type: "date",
         validation: {
-            format: "YYYY/MM/DD",
+            format: "YYYY-MM-DD",
         },
         plugin: "datepicker",
         plugin_config: {
             // TODO: 可以再調整
-            format: "yyyy/mm/dd",
+            format: "yyyy-mm-dd",
             todayBtn: "linked",
             todayHighlight: true,
             autoclose: true,

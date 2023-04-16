@@ -68,7 +68,6 @@ const updateMember = async (req, res) => {
 };
 
 const updateOrder = async (req, res) => {
-    // console.log("client update member data:", req.body);
     const { id, order } = req.body;
 
     // check member in db
@@ -90,6 +89,10 @@ const updateOrder = async (req, res) => {
 const deleteOrder = async (req, res) => {
     console.log("client update member data:", req.body);
     const { id, order } = req.body;
+
+    if (!id || !order.order_id) {
+        return res.status(400).json({ data: "bad request" });
+    }
 
     // check member in db
     const isMember = await checkMemberId(id);

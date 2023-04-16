@@ -3,6 +3,9 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const orderSchema = new Schema({
+    order_id: {
+        type: String,
+    },
     date: {
         type: Date,
     },
@@ -76,9 +79,13 @@ const memberSchema = new Schema({
         type: Number,
         default: 0,
     },
+    products: {
+        type: [String],
+        default: [],
+    },
 });
 
-// 定義中間件
+// mongoose middleware
 memberSchema.pre("save", function (next) {
     this.total_purchase_count = this.orders.length;
     this.total_spending = this.orders.reduce((total, order) => total + order.amount, 0);
@@ -110,6 +117,8 @@ const newOrder = async (id, order) => {
             { _id: id },
             {
                 $push: { orders: order },
+                // $addToSet: { products: { $each: order.products } },
+                $inc: { total_spending: order.amount, total_purchase_count: 1 },
             },
             {
                 new: true,
@@ -127,7 +136,8 @@ const delOrder = async (id, order) => {
     try {
         const filter = { _id: id };
         const update = {
-            $pull: { orders: order },
+            $pull: { orders: { order_id: order.order_id } },
+            $inc: { total_spending: -order.amount, total_purchase_count: -1 },
         };
         const doc = await Member.findOneAndUpdate(filter, update, {
             new: true,
