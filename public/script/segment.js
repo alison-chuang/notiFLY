@@ -85,7 +85,7 @@ let filters = [
         //TODO: 怎麼處理日期
     },
     {
-        id: "total_purchase_spending",
+        id: "total_spending",
         label: "Total spending",
         type: "integer",
         operators: [
@@ -100,7 +100,7 @@ let filters = [
         ],
     },
     {
-        id: "total_purchase_times",
+        id: "total_purchase_count",
         label: "Total purchase times",
         type: "integer",
         operators: [

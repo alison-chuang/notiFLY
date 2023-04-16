@@ -46,3 +46,12 @@
 #name {
     width: 30%;
 }
+
+.table-name {
+    text-decoration: none;
+    color: black;
+}
+
+.no-underline.link-black:hover {
+    color: rgb(85, 130, 235);
+}

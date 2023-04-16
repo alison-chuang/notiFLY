@@ -68,7 +68,7 @@ const memberSchema = new Schema({
         type: [orderSchema],
         default: [],
     },
-    total_purchase_times: {
+    total_purchase_count: {
         type: Number,
         default: 0,
     },
@@ -80,7 +80,7 @@ const memberSchema = new Schema({
 
 // 定義中間件
 memberSchema.pre("save", function (next) {
-    this.total_order = this.orders.length;
+    this.total_purchase_count = this.orders.length;
     this.total_spending = this.orders.reduce((total, order) => total + order.amount, 0);
     next();
 });
