@@ -68,6 +68,21 @@ const memberSchema = new Schema({
         type: [orderSchema],
         default: [],
     },
+    total_purchase_times: {
+        type: Number,
+        default: 0,
+    },
+    total_spending: {
+        type: Number,
+        default: 0,
+    },
+});
+
+// 定義中間件
+memberSchema.pre("save", function (next) {
+    this.total_order = this.orders.length;
+    this.total_spending = this.orders.reduce((total, order) => total + order.amount, 0);
+    next();
 });
 
 const Member = mongoose.model("members", memberSchema);

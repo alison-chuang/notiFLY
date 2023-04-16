@@ -1,14 +1,24 @@
 import express from "express";
 const router = express.Router();
 import { wrapAsync } from "../util/util.js";
-import { postSegment, getSegment, getCity, getAllSegment, countMember } from "../controller/segment.js";
+import {
+    postSegment,
+    getSegment,
+    getCity,
+    getAllSegment,
+    getSegmentById,
+    countMember,
+    updateSegmentDetail,
+} from "../controller/segment.js";
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 router.route("/segments").post(wrapAsync(postSegment));
+router.route("/segments").put(wrapAsync(updateSegmentDetail));
 router.route("/segments/names").get(wrapAsync(getSegment));
 router.route("/segments/cities").get(wrapAsync(getCity));
 router.route("/segments").get(wrapAsync(getAllSegment));
 router.route("/segments/count").post(wrapAsync(countMember));
+router.route("/segments/:id").get(wrapAsync(getSegmentById));
 
 export default router;

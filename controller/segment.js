@@ -1,12 +1,13 @@
-import { Segment, selectSegmentNames, updateSegment, selectAllSegment } from "../model/segment.js";
+import { Segment, selectSegmentNames, updateSegment, selectAllSegment, selectById } from "../model/segment.js";
 import { selectCity, matchMember } from "../model/member.js";
 
 // save segment to DB
 const postSegment = async (req, res) => {
     const { body } = req;
-    const { name, query } = body;
+    let { name, query, rules } = body;
     console.log("name", name);
     console.log("query", query);
+    console.log("rules", rules);
     //資料驗證
 
     // const owner?
@@ -46,11 +47,14 @@ const getCity = async (req, res) => {
     }
 };
 
-// TODO update segment (放在編輯頁的 save button)
-const updateAllSegment = async (req, res) => {
-    const newQuery = req.body.query;
+// update segment (放在編輯頁的 save button)
+const updateSegmentDetail = async (req, res) => {
+    const { id, query, name, rules } = req.body;
+    if (!id || !query || !name || !rules) {
+        return res.status(400).json({ data: "bad request" });
+    }
     try {
-        const updated = await updateSegment(newQuery);
+        const updated = await updateSegment(id, query, name, rules);
         return res.status(200).json({ data: "updated" });
     } catch (e) {
         console.error(e);
@@ -69,6 +73,28 @@ const getAllSegment = async (req, res) => {
     }
 };
 
+// get segment by _id
+const getSegmentById = async (req, res) => {
+    // TODO error handling
+    try {
+        const { id } = req.params;
+        if (!id) {
+            return res.status(400).json({ data: "bad request" });
+        }
+
+        const detail = await selectById(id);
+        // console.log("detail", detail);
+
+        if (!detail) {
+            return res.status(400).json({ data: "no matched segment with request id " });
+        }
+        return res.status(200).json({ data: detail });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ data: e });
+    }
+};
+
 // TODO:get member count based on segment filter
 const countMember = async (req, res) => {
     const { query } = req.body;
@@ -81,4 +107,12 @@ const countMember = async (req, res) => {
     }
 };
 
-export { postSegment, getSegmentName as getSegment, getCity, getAllSegment, countMember };
+export {
+    postSegment,
+    getSegmentName as getSegment,
+    getCity,
+    getAllSegment,
+    getSegmentById,
+    countMember,
+    updateSegmentDetail,
+};

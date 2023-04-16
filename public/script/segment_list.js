@@ -13,7 +13,7 @@ $(document).ready(function () {
         destroy: true,
         info: true,
         autoWidth: false,
-        ordering: false,
+        ordering: true,
         scrollX: "500px",
         scrollY: "500px",
         scrollCollapse: true,
@@ -24,15 +24,27 @@ $(document).ready(function () {
             type: "GET",
         },
         columns: [
-            { data: "name" },
+            {
+                data: "name",
+            },
             {
                 data: "created_at",
+                title: "Last Updated",
                 render: function (data) {
                     var localTime = moment.utc(data).utcOffset("+08:00");
-                    return localTime.format("YYYY-MM-DD");
+                    return localTime.format("YYYY-MM-DD HH:mm:ss");
                 },
             },
             { data: "owner" },
+            {
+                data: null,
+                title: "Action",
+                render: function (data, type, row) {
+                    return `<a href="/segment_detail.html?id=${row._id}">
+                                <button type="button" class="btn btn-secondary btn-sm">Update</button>
+                            </a>`;
+                },
+            },
         ],
     });
 });

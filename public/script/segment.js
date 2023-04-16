@@ -135,7 +135,6 @@ async function getCityOptions() {
     try {
         const data = await $.get("/api/1.0/segments/cities");
         const cities = data.data;
-        console.log("cities: ", cities);
         filters.push({
             id: "city",
             label: "City",
@@ -153,7 +152,7 @@ async function getCityOptions() {
     }
 }
 
-async function renderQueryBuilder() {
+export async function renderQueryBuilder() {
     try {
         await getCityOptions();
         $("#builder-import_export").queryBuilder({
@@ -183,12 +182,14 @@ $(".set-mongo").on("click", function () {
 
 $(".save").on("click", function () {
     let result = $("#builder-import_export").queryBuilder("getMongo");
+    let rules = $("#builder-import_export").queryBuilder("getRules");
     const segmentName = $("#name").val();
-
+    // TODO 多存 rules
     if (!$.isEmptyObject(result)) {
         const data = {
             name: segmentName,
             query: JSON.parse(JSON.stringify(result, null, 2)),
+            rules: rules,
         };
         console.log(data);
         $.post({
@@ -207,6 +208,8 @@ $(".save").on("click", function () {
 });
 
 $(".parse-mongo-check").on("click", function () {
+    let test = $("#builder-import_export").queryBuilder("getRules");
+    console.log("TEST", test);
     let result = $("#builder-import_export").queryBuilder("getMongo");
     if (!$.isEmptyObject(result)) {
         const data = {

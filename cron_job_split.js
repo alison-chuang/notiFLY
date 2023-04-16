@@ -1,6 +1,7 @@
 import cron from "node-cron";
 import "./model/database.js";
 import { Campaign } from "./model/campaign.js";
+import { Member } from "./model/member.js";
 import { Segment } from "./model/segment.js";
 import { sendToS3 } from "./util/upload.js";
 import * as q from "./util/queue.js";
@@ -9,7 +10,7 @@ const MIN = 1000 * 60;
 const DAY = 1440 * MIN;
 const getList = async () => {
     let now = new Date();
-    let prev = now - 15 * MIN;
+    let prev = now - 120 * MIN;
     console.log("prev:", new Date(prev), "now:", new Date(now));
     try {
         const list = await Campaign.aggregate([
@@ -38,42 +39,50 @@ const getList = async () => {
                 },
             },
             { $unwind: "$segment" },
-            // @campaigns to lookup members collection
-            {
-                $lookup: {
-                    from: "members",
-                    let: {
-                        gte: "$segment.query.created_at.gte",
-                        lt: "$segment.query.created_at.lt",
-                    },
-                    pipeline: [
-                        {
-                            // TODO 應會有更多 filter 條件，目前只有會員 created date
-                            $match: {
-                                $expr: {
-                                    $and: [{ $gte: ["$created_at", "$$gte"] }, { $lt: ["$created_at", "$$lt"] }],
-                                },
-                            },
-                        },
-                        // pick up column
-                        {
-                            $project: {
-                                _id: 0,
-                                email: 1,
-                            },
-                        },
-                    ],
-                    as: "members",
-                },
-            },
+            // // @campaigns to lookup members collection
+            // {
+            //     $lookup: {
+            //         from: "members",
+            //         let: {
+            //             gte: "$segment.query.created_at.gte",
+            //             lt: "$segment.query.created_at.lt",
+            //         },
+            //         pipeline: [
+            //             {
+            //                 // TODO 應會有更多 filter 條件，目前只有會員 created date
+            //                 $match: {
+            //                     $expr: {
+            //                         $and: [{ $gte: ["$created_at", "$$gte"] }, { $lt: ["$created_at", "$$lt"] }],
+            //                     },
+            //                 },
+            //             },
+            //             // pick up column
+            //             {
+            //                 $project: {
+            //                     _id: 0,
+            //                     email: 1,
+            //                 },
+            //             },
+            //         ],
+            //         as: "members",
+            //     },
+            // },
         ]);
         console.log("length of list:", list.length);
-        list.map((doc) => {
-            doc.emails = doc.members.map((member) => member.email);
-            delete doc.members;
-            return doc;
+        // list.map((doc) => {
+        //     doc.emails = doc.members.map((member) => member.email);
+        //     delete doc.members;
+        //     return doc;
+        // });
+        const segmented = list.map(async (item) => {
+            const query = item.segment.query;
+            console.log(query);
+            const emails = await Member.find(query, { _id: 0, email: 1 });
+            item.emails = emails.map((item) => item.email);
+            console.log(emails);
+            return item;
         });
-        return list;
+        return segmented;
     } catch (e) {
         console.error(e);
     }
@@ -155,7 +164,8 @@ const main = async () => {
     }
 };
 
-main();
+// main();
+getList();
 
 // 每分鐘去資料庫 取出 match 當下時間的 campaign document + member info
 // cron.schedule(`* * * * *`, async () => {
