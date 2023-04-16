@@ -35,15 +35,18 @@ const newMemberSchema = {
         },
         birthday_year: {
             type: "number",
-            pattern: "^(19|20)\\d{2}$",
+            minimum: 1900,
+            maximum: 2099,
         },
         birthday_month: {
             type: "number",
-            pattern: "^(0?[1-9]|1[0-2])$",
+            minimum: 1,
+            maximum: 12,
         },
         birthday_date: {
             type: "number",
-            pattern: "^([1-9]|0[1-9]|[12][0-9]|3[01])$",
+            minimum: 1,
+            maximum: 31,
         },
         city: {
             type: "string",
