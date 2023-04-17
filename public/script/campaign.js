@@ -3,11 +3,13 @@ $(document).ready(function () {
     $(".segment").select2();
 });
 
-// show page based on channel
+// trigger-based element
 $(document).ready(function () {
     $(".webpush-editor, .email-editor").hide();
+    $(".end-time-type").hide();
 });
 
+// show page based on channel
 $("#channel").on("change", function () {
     let cellValue = $(this).val();
 
@@ -21,6 +23,15 @@ $("#channel").on("change", function () {
         $(".webpush-editor").hide();
         $(".email-editor").hide();
     }
+});
+
+// show end date if not one-time delivery
+$("#daily, #weekly, #monthly, #yearly").on("click", function () {
+    $(".end-time-type").show();
+});
+$("#one-time").on("click", function () {
+    $(".end-time-type").hide();
+    $("#end-date").val("");
 });
 
 // render segments
