@@ -56,15 +56,15 @@ async function generateImageURL() {
     }
 }
 
-// get s3 image links to render frontend page
+// get 12 s3 images links to render frontend gallery
 async function selectS3Images() {
     const imageBucket = IMAGE_BUCKET_NAME;
-    const command = new ListObjectsV2Command({ Bucket: imageBucket });
+    const command = new ListObjectsV2Command({ Bucket: imageBucket, MaxKeys: 12 });
     const response = await s3Client.send(command);
-    // console.log(response);
+    const host = `https://${imageBucket}.s3.${REGION}.amazonaws.com/`;
+
     let urls = [];
     for (let content of response.Contents) {
-        const host = `https://${imageBucket}.s3.${REGION}.amazonaws.com/`;
         let url = `${host}${content.Key}`;
         urls.push(url);
     }

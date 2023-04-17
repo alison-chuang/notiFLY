@@ -7,9 +7,9 @@ router.use(express.urlencoded({ extended: true }));
 
 router.route("/campaigns").post(wrapAsync(postCampaigns));
 
-router.route("/images").get(wrapAsync(getS3Images));
+router.route("/campaigns/images").get(wrapAsync(getS3Images));
 
-router.route("/s3Url").get(wrapAsync(getS3Url));
+router.route("/campaigns/s3Url").get(wrapAsync(getS3Url));
 
 router.route("/lambdaUpdateDb").post(wrapAsync(lambdaUpdateDb));
 

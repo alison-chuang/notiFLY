@@ -1,3 +1,29 @@
+$(document).ready(function () {
+    $(".channel").select2();
+    $(".segment").select2();
+});
+
+// show page based on channel
+$(document).ready(function () {
+    $(".webpush-editor, .email-editor").hide();
+});
+
+$("#channel").on("change", function () {
+    let cellValue = $(this).val();
+
+    if (cellValue === "edm") {
+        $(".email-editor").show();
+        $(".webpush-editor").hide();
+    } else if (cellValue === "web-push") {
+        $(".webpush-editor").show();
+        $(".email-editor").hide();
+    } else {
+        $(".webpush-editor").hide();
+        $(".email-editor").hide();
+    }
+});
+
+// render segments
 $.get({
     url: `/api/1.0/segments/names`,
     success: function (body) {
@@ -60,6 +86,7 @@ let htmlContent;
 // image handler
 const imageForm = document.querySelector("#imageForm");
 const imageInput = document.querySelector("#imageInput");
+const gallery = document.querySelector(".gallery");
 
 imageForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -68,7 +95,7 @@ imageForm.addEventListener("submit", async (event) => {
     // get presigned url from backend server
     let url;
     try {
-        const response = await axios("/api/1.0/s3Url");
+        const response = await axios("/api/1.0/campaigns/s3Url");
         url = response.data.url;
         console.log("get presigned url", url);
     } catch (e) {
@@ -90,8 +117,33 @@ imageForm.addEventListener("submit", async (event) => {
 
     const img = document.createElement("img");
     img.src = imageUrl;
-    document.body.appendChild(img);
+
+    gallery.appendChild(img);
 });
+
+// render gallery images
+//TODO:call backend => backend fetch s3 picture & response
+$.get({
+    url: `/api/1.0/campaigns/images`,
+    success: function (body) {
+        $.each(body.data, function (idx) {
+            const url = body.data[idx];
+            const column = `<div class="gallery-images">
+            <img src=${url} onclick="expand(this)">
+            </div>`;
+            $(".gallery .image-container").append(column);
+        });
+    },
+});
+
+// gallery effect
+function expand(imgs) {
+    const expandImg = $("#expandedImg");
+    // Use the same src in the expanded image as the image being clicked on from the grid
+    expandImg.attr("src", $(imgs).attr("src"));
+    // Show the container element (hidden with CSS)
+    expandImg.parent().css("display", "block");
+}
 
 // post requst to my server to store from data
 $(document).ready(function () {
