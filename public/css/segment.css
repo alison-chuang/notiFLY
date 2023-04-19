@@ -1,7 +1,11 @@
 #builder-container {
-    width: 55%;
+    width: 70%;
     margin: auto;
     margin-top: 1%;
+}
+
+.form-inline {
+    display: block;
 }
 
 .btn {

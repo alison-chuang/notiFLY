@@ -114,21 +114,21 @@ let filters = [
             "not_between",
         ],
     },
-    {
-        id: "products",
-        label: "Products",
-        type: "string",
-        operators: [
-            "equal",
-            "not_equal",
-            "contains",
-            "not_contains",
-            "begins_with",
-            "not_begins_with",
-            "ends_with",
-            "not_ends_with",
-        ],
-    },
+    // {
+    //     id: "products",
+    //     label: "Products",
+    //     type: "string",
+    //     operators: [
+    //         "equal",
+    //         "not_equal",
+    //         "contains",
+    //         "not_contains",
+    //         "begins_with",
+    //         "not_begins_with",
+    //         "ends_with",
+    //         "not_ends_with",
+    //     ],
+    // },
 ];
 
 async function getCityOptions() {
@@ -199,9 +199,11 @@ $(".save").on("click", function () {
             processData: false,
             success: function (data) {
                 console.log("SUCCESS : ", data);
+                alert("created");
             },
             error: function (e) {
                 console.error("ERROR : ", e);
+                alert("error");
             },
         });
     }

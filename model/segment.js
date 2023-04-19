@@ -18,9 +18,17 @@ const segmentSchema = new Schema({
     },
     created_at: {
         type: Date,
-        required: true,
         default: Date.now,
     },
+    updated_at: {
+        type: Date,
+        default: Date.now,
+    },
+});
+
+segmentSchema.pre("save", function (next) {
+    this.updated_at = new Date();
+    next();
 });
 
 const Segment = mongoose.model("segment", segmentSchema);

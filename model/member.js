@@ -64,7 +64,10 @@ const memberSchema = new Schema({
     },
     created_at: {
         type: Date,
-        required: true,
+        default: Date.now,
+    },
+    updated_at: {
+        type: Date,
         default: Date.now,
     },
     orders: {
@@ -89,6 +92,11 @@ const memberSchema = new Schema({
 memberSchema.pre("save", function (next) {
     this.total_purchase_count = this.orders.length;
     this.total_spending = this.orders.reduce((total, order) => total + order.amount, 0);
+    next();
+});
+
+memberSchema.pre("save", function (next) {
+    this.updated_at = new Date();
     next();
 });
 
