@@ -1,6 +1,11 @@
 // for s3 file name
 import crypto from "crypto";
 import { promisify } from "util";
+import multer from "multer";
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const randomBytes = promisify(crypto.randomBytes);
 
 // for error handler
@@ -11,6 +16,31 @@ const wrapAsync = (fn) => {
         fn(req, res, next).catch(next);
     };
 };
+
+// multer for uplaod csv member file
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => {
+            let assetsPath = path.join(__dirname, `../member_csv/`);
+            cb(null, assetsPath);
+        },
+        filename: (req, file, cb) => {
+            const customFileName = crypto.randomBytes(18).toString("hex").substr(0, 8);
+            const fileExtension = file.mimetype.split("/")[1]; // get file extension from original file name
+            cb(null, customFileName + "." + fileExtension);
+        },
+    }),
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype.includes("csv")) {
+            cb(null, true);
+        } else {
+            cb("Please upload only csv file.", false);
+        }
+    },
+    limits: {
+        fileSize: 1024 * 1024 * 5, // 5MB limit
+    },
+});
 
 // schema rule for client to push member data
 const newMemberSchema = {
@@ -88,4 +118,4 @@ const newMemberSchema = {
     additionalProperties: false,
 };
 
-export { wrapAsync, randomBytes, newMemberSchema };
+export { wrapAsync, randomBytes, newMemberSchema, upload };
