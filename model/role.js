@@ -5,7 +5,7 @@ const permissionSchema = new Schema({
     access: {
         type: String, // campaigns, members, segments, users
     },
-    get: { type: Boolean },
+    getRead: { type: Boolean, alias: "get" },
     post: { type: Boolean },
     put: { type: Boolean },
     delete: { type: Boolean },
