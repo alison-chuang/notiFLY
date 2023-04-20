@@ -16,12 +16,6 @@ const postCampaigns = async (req, res) => {
     // TODO 後端要做資料驗證 xss attack
     // TODO 時區問題（收local, 但 mongodb UTC 0 , 但cron_job拿也是 UTC 0 )
     const { name, segmentId, channel, subject, type, sendDate, htmlContent } = req.body;
-    let isRecursive;
-    if (type == "one-time") {
-        isRecursive = true;
-    } else {
-        isRecursive = false;
-    }
 
     const data = {
         name,

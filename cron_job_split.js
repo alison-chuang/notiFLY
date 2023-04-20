@@ -16,7 +16,7 @@ const getList = async () => {
         const list = await Campaign.aggregate([
             {
                 $match: {
-                    sendDate: { $gte: new Date(prev), $lt: new Date(now) },
+                    send_time: { $gte: new Date(prev), $lt: new Date(now) },
                     status: { $eq: "launched" },
                 },
             },
@@ -164,8 +164,8 @@ const main = async () => {
     }
 };
 
-// main();
-getList();
+main();
+// getList();
 
 // 每分鐘去資料庫 取出 match 當下時間的 campaign document + member info
 // cron.schedule(`* * * * *`, async () => {

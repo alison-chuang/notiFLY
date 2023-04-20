@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-const schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-const messageSchema = new schema({
+const messageSchema = new Schema({
     source: {
         type: String,
         required: true,
@@ -28,65 +28,29 @@ const messageSchema = new schema({
     },
 });
 
-const recursiveSchema = schema({
-    is_recursive: {
-        type: Boolean,
-        required: true,
-    },
-    type: {
-        type: String, // m(monthly), w(weekly)
-        required: false,
-    },
-    day: {
-        type: String, // 星期幾 0~7 & 每月幾號 1~31
-        required: false,
-    },
-    time: {
-        type: String,
-        required: false, // hh:mm
-    },
-});
+// const recursiveSchema = schema({
+//     is_recursive: {
+//         type: Boolean,
+//         required: true,
+//     },
+//     type: {
+//         type: String, // m(monthly), w(weekly)
+//         required: false,
+//     },
+//     day: {
+//         type: String, // 星期幾 0~7 & 每月幾號 1~31
+//         required: false,
+//     },
+//     time: {
+//         type: String,
+//         required: false, // hh:mm
+//     },
+// });
 
-const campaignSchema = new schema({
-    name: {
-        type: String,
-        required: false,
-    },
-    status: {
-        type: String,
-        required: true,
-        default: "launched", // saved, launched, processing(送到SQS後), processed（lambda有做過）
-    },
-    createdDate: {
-        type: Date,
-        default: Date.now,
-        required: true,
-    },
-    sendDate: {
+const jobSchema = new Schema({
+    send_time: {
         type: Date,
         required: true,
-    },
-    local_sendDate: {
-        type: String,
-        required: true,
-    },
-    owner_name: {
-        type: String,
-        required: true,
-    },
-    recursive: {
-        type: [recursiveSchema],
-    },
-    segmentId: {
-        type: schema.Types.ObjectId,
-        required: true,
-    },
-    channel: {
-        type: String, // edm, sms ...(for upload to correct queue)
-        required: true,
-    },
-    message_variant: {
-        type: [messageSchema],
     },
     total_count: {
         type: Number,
@@ -103,7 +67,76 @@ const campaignSchema = new schema({
         required: true,
         default: 0,
     },
+    status: {
+        type: String, //launched, processing(送到SQS後), processed（lambda有做過）
+        default: "launched",
+        required: true,
+    },
 });
+
+const campaignSchema = new Schema({
+    name: {
+        type: String,
+        required: false,
+    },
+    owner_name: {
+        type: String,
+        required: true,
+    },
+    status: {
+        type: String,
+        required: true,
+        default: "launched",
+        // campaign status要改
+        // saved, launched, processing(送到SQS後), processed（lambda有做過）
+    },
+    created_at: {
+        type: Date,
+        default: Date.now,
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now,
+    },
+    send_time: {
+        type: Date,
+    },
+    next_send_time: {
+        type: Date,
+    },
+    type: {
+        type: String, // one-time, daily, monthly, weekly, yearly
+        required: true,
+    },
+    interval: {
+        type: Number,
+    },
+    end_time: {
+        type: Date,
+    },
+    jobs: {
+        type: [jobSchema],
+        default: [],
+    },
+    segment_id: {
+        type: Schema.Types.ObjectId,
+        required: true,
+    },
+    channel: {
+        type: String, // edm, sms ...(for upload to correct queue)
+        required: true,
+    },
+    message_variant: {
+        type: [messageSchema],
+    },
+});
+
+// middleware
+campaignSchema.pre("save", (next) => {
+    this.updated_at = new Date();
+    next();
+});
+
 const Campaign = mongoose.model("campaigns", campaignSchema);
 
 const updateCounts = async (id, succeed, fail) => {
