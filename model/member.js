@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const orderSchema = new Schema({
     order_id: {
         type: String,
+        unique: true,
     },
     date: {
         type: Date,
@@ -55,12 +56,6 @@ const memberSchema = new Schema({
     city: {
         type: String,
         required: false,
-    },
-    location: {
-        type: Array,
-        items: {
-            type: Number,
-        },
     },
     created_at: {
         type: Date,

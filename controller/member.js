@@ -1,9 +1,11 @@
 import Ajv from "ajv";
 import { Member, newAttribute, newOrder, delOrder, checkMemberId } from "../model/member.js";
 import { newMemberSchema } from "../util/util.js";
+import csv from "csvtojson";
 
-// save campaign info to db
+// save member info to db
 const postMember = async (req, res) => {
+    console.log(req.originalUrl, req.method);
     console.log("client push new members:", req.body);
     const { body } = req;
     const { email, cellphone } = req.body;
@@ -110,4 +112,55 @@ const deleteOrder = async (req, res) => {
     }
 };
 
-export { postMember, updateMember, updateOrder, deleteOrder };
+// multer 上傳 csv 檔案 => save to db
+const uploadMemberCsv = async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: "Please select CSV file to upload!" });
+    }
+    try {
+        // convert csvfile to jsonArray
+        const jsonObj = await csv().fromFile(req.file.path);
+        console.log(jsonObj);
+
+        const data = await Member.insertMany(jsonObj, { ordered: false, rawResult: false });
+        // console.log("insertMany result", data);
+        return res.status(200).json({ data: data.length });
+    } catch (err) {
+        console.error("err", err);
+        // console.error("errObj", err.writeErrors);
+        // const e = err.writeErrors.map((e) => e.err);
+
+        return res.status(500).json({
+            data: {
+                total: Object.keys(err.result.insertedIds).length,
+                inserted: err.result.insertedCount,
+                errors: err.writeErrors, // array
+            },
+        });
+    }
+};
+
+const uploadOrderCsv = async (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: "Please select CSV file to upload!" });
+    }
+
+    const jsonObj = await csv().fromFile(req.file.path);
+    console.log(jsonObj);
+    try {
+        const data = await Member.updateMany(jsonObj, { ordered: false, rawResult: false });
+
+        return res.status(200).json({ data: data.length });
+    } catch (err) {
+        console.error("err", err);
+        return res.status(500).json({
+            data: {
+                total: Object.keys(err.result.insertedIds).length,
+                inserted: err.result.insertedCount,
+                errors: err.writeErrors, // array
+            },
+        });
+    }
+};
+
+export { postMember, updateMember, updateOrder, deleteOrder, uploadMemberCsv, uploadOrderCsv };
