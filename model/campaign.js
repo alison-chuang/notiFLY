@@ -154,15 +154,16 @@ const updateCounts = async (id, job_id, succeed, fail) => {
     const update = {
         $set: {
             status: RUNNING,
-            "jobs.$.succeed_count": succeed,
-            "jobs.$.fail_count": fail,
             "jobs.$.status": PROCESSED,
         },
+        $inc: {
+            "jobs.$.succeed_count": succeed,
+            "jobs.$.fail_count": fail,
+        },
     };
-    const options = {
+    const doc = await Campaign.findOneAndUpdate(filter, update, {
         new: true,
-    };
-    const doc = await Campaign.findOneAndUpdate(filter, update, options);
+    });
     console.log("updated doc:", doc);
     return doc;
 };
