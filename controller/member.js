@@ -113,6 +113,7 @@ const deleteOrder = async (req, res) => {
 };
 
 // multer 上傳 csv 檔案 => save to db
+// member
 const uploadMemberCsv = async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: "Please select CSV file to upload!" });
@@ -140,26 +141,69 @@ const uploadMemberCsv = async (req, res) => {
     }
 };
 
+//order
 const uploadOrderCsv = async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: "Please select CSV file to upload!" });
     }
 
     const jsonObj = await csv().fromFile(req.file.path);
-    console.log(jsonObj);
-    try {
-        const data = await Member.updateMany(jsonObj, { ordered: false, rawResult: false });
+    // console.log(jsonObj);
 
-        return res.status(200).json({ data: data.length });
-    } catch (err) {
-        console.error("err", err);
-        return res.status(500).json({
-            data: {
-                total: Object.keys(err.result.insertedIds).length,
-                inserted: err.result.insertedCount,
-                errors: err.writeErrors, // array
-            },
+    // group by client_member_id
+    const groupedData = jsonObj.reduce((acc, cur) => {
+        if (!acc[cur.client_member_id]) {
+            acc[cur.client_member_id] = { orders: [], total_spending: 0, total_purchase_count: 0 };
+        }
+        acc[cur.client_member_id].orders.push({
+            order_id: cur.order_id,
+            date: cur.date,
+            amount: cur.amount,
+            products: cur.products.split(","),
         });
+        acc[cur.client_member_id].total_spending += cur.amount;
+        acc[cur.client_member_id].total_purchase_count += 1;
+        return acc;
+    }, {});
+    console.log({ groupedData });
+
+    // Find client_member_id that don't exist
+    const memberIds = Object.keys(groupedData);
+    const existingMembers = await Member.find({ client_member_id: { $in: memberIds } });
+    const existingMemberIds = existingMembers.map((member) => member.client_member_id);
+    const nonExistingMemberIds = memberIds.filter((id) => !existingMemberIds.includes(id));
+
+    // Check if there are non-existing members
+    if (nonExistingMemberIds.length > 0) {
+        return res.status(400).json({
+            error: `The following member ids do not exist: ${nonExistingMemberIds.join(", ")}`,
+            not_exist: nonExistingMemberIds,
+        });
+    }
+
+    // bulkWrite to DB
+    const writeOperations = Object.entries(groupedData).map(
+        ([client_member_id, { orders, total_spending, total_purchase_count }]) => {
+            return {
+                updateOne: {
+                    filter: { client_member_id },
+                    update: {
+                        $push: { orders: { $each: orders } },
+                        $inc: { total_spending, total_purchase_count },
+                    },
+                    upsert: false,
+                },
+            };
+        }
+    );
+
+    try {
+        const result = await Member.bulkWrite(writeOperations);
+        console.log("result", result);
+        res.json({ message: result });
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: e });
     }
 };
 
