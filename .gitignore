@@ -14,3 +14,6 @@ temporary/
 # image
 public/uploads/*
 !public/uploads/.gitkeep
+
+# upload member in csv
+member_csv
