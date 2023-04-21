@@ -173,7 +173,7 @@ const saveNewPassword = async (req, res) => {
     }
 };
 
-// update user role
+// update user role (先不做)
 
 // delete user (直接資料庫刪掉)
 const deleteUser = async (req, res) => {
@@ -186,5 +186,9 @@ const deleteUser = async (req, res) => {
         return res.status(500).json({ data: "delete user failed" });
     }
 };
+
+// render profile
+
+// render all user for user_list page
 
 export { postUser, signIn, resetPassword, verifyLink, saveNewPassword, deleteUser };

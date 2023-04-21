@@ -13,4 +13,9 @@ router.route("/users/password").post(jwtauth, wrapAsync(resetPassword));
 router.route("/users/password/link/:id/:token").post(wrapAsync(saveNewPassword));
 router.route("/users").delete(jwtauth, isAuthorized, wrapAsync(deleteUser));
 
+// user list
+router.route("/users").get(jwtauth, wrapAsync());
+// header render 現在登入的人的資訊
+router.route("/users/profile").get(jwtauth, wrapAsync());
+
 export default router;
