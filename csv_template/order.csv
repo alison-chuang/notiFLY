@@ -1,0 +1,7 @@
+client_member_id,order_id,date,amount,products,
+"client_001","order_001","2023-04-20",100,"product_001,product_002,product_003",
+"45","order_002","2023-04-19",200,"product_004,product_005"
+"48","order_003","2023-04-18",300,"product_001,product_003,product_005"
+"49","order_004","2023-04-17",300,"product_001,product_003,product_005"
+"50","order_005","2023-04-16",300,"product_001,product_003,product_005"
+"41","order_006","2023-04-15",300,"product_001,product_003,product_005"
