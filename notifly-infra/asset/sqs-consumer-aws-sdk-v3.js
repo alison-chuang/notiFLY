@@ -49,14 +49,15 @@ export async function handler(event) {
         }
     }
     console.timeEnd("sending edm respectively");
-    const idWithoutSuffix = body["_id"].split("_")[0];
-    const updated = await goUpdateDb(idWithoutSuffix, succeedCount, failCount);
+    const idWithoutSuffix = body._id.split("_")[0];
+    const updated = await goUpdateDb(idWithoutSuffix, body.job_id, succeedCount, failCount);
     return;
 }
 
-async function goUpdateDb(id, succeedCount, failCount) {
+async function goUpdateDb(id, job_id, succeedCount, failCount) {
     const body = {
         _id: id,
+        job_id: job_id,
         succeedCount,
         failCount,
     };
