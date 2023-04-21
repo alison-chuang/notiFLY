@@ -150,7 +150,7 @@ const findLastestJobIndex = (jobs, filterKey, filterValue) => {
 };
 
 const updateCounts = async (id, job_id, succeed, fail) => {
-    const filter = { _id: id };
+    const filter = { _id: id, "jobs._id": job_id };
     const update = {
         $set: {
             status: RUNNING,
