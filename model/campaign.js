@@ -153,14 +153,13 @@ const updateCounts = async (id, job_id, succeed, fail) => {
     const filter = { _id: id };
     const update = {
         $set: {
-            "jobs.$[idx].succeed_count": succeed,
-            "jobs.$[idx].fail_count": fail,
-            "jobs.$[idx].status": PROCESSED,
             status: RUNNING,
+            "jobs.$.succeed_count": succeed,
+            "jobs.$.fail_count": fail,
+            "jobs.$.status": PROCESSED,
         },
     };
     const options = {
-        arrayFilters: [{ "idx._id": job_id }],
         new: true,
     };
     const doc = await Campaign.findOneAndUpdate(filter, update, options);
