@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { PROCESSED, RUNNING } from "../statusConstant.js";
 const Schema = mongoose.Schema;
 
 const messageSchema = new Schema({
@@ -86,9 +87,8 @@ const campaignSchema = new Schema({
     status: {
         type: String,
         required: true,
-        default: "launched",
-        // campaign status要改
-        // saved, launched, processing(送到SQS後), processed（lambda有做過）
+        default: "running",
+        // running, finished, stopped
     },
     created_at: {
         type: Date,
@@ -139,12 +139,31 @@ campaignSchema.pre("save", (next) => {
 
 const Campaign = mongoose.model("campaigns", campaignSchema);
 
-const updateCounts = async (id, succeed, fail) => {
+const findLastestJobIndex = (jobs, filterKey, filterValue) => {
+    const jobLen = jobs.length;
+    // 從後面找
+    for (let i = jobLen - 1; i >= 0; i--) {
+        if (jobs[i][filterKey] == filterValue) {
+            return i;
+        }
+    }
+};
+
+const updateCounts = async (id, job_id, succeed, fail) => {
     const filter = { _id: id };
-    const update = { $inc: { suceed_count: succeed, fail_count: fail } };
-    const doc = await Campaign.findOneAndUpdate(filter, update, {
+    const update = {
+        $set: {
+            "jobs.$[idx].succeed_count": succeed,
+            "jobs.$[idx].fail_count": fail,
+            "jobs.$[idx].status": PROCESSED,
+            status: RUNNING,
+        },
+    };
+    const options = {
+        arrayFilters: [{ "idx._id": job_id }],
         new: true,
-    });
+    };
+    const doc = await Campaign.findOneAndUpdate(filter, update, options);
     console.log("updated doc:", doc);
     return doc;
 };

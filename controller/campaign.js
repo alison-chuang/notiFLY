@@ -48,14 +48,15 @@ const postCampaigns = async (req, res) => {
 const lambdaUpdateDb = async (req, res) => {
     // 驗證請求來自 lambda
     console.log("lambda打來的request body", req.body);
-    const { _id, succeedCount, failCount } = req.body;
+    const { _id, job_id, succeedCount, failCount } = req.body;
     const isFromLambda = await checkRequest(_id);
     if (!isFromLambda) {
         res.status(400).json({ data: "bad request" });
     }
     // update sent_suceed, sent_fail fields
     try {
-        const updated = await updateCounts(_id, Number(succeedCount), Number(failCount));
+        console.log(`update from lambda: id -> ${_id}, job_id -> ${job_id}`);
+        const updated = await updateCounts(_id, job_id, Number(succeedCount), Number(failCount));
         console.log("updated doc:", updated);
         res.status(200).json({ data: "DB updated" });
     } catch (e) {
