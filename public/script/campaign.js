@@ -26,12 +26,22 @@ $("#channel").on("change", function () {
 });
 
 // show end date if not one-time delivery
-$("#daily, #weekly, #monthly, #yearly").on("click", function () {
+$("#periodic-delivery").on("click", function () {
     $(".end-time-type").show();
 });
-$("#one-time").on("click", function () {
+$("#one-time-delivery").on("click", function () {
     $(".end-time-type").hide();
     $("#end-date").val("");
+});
+
+// 調整定期推播的表單填寫方式
+$('input[name="type"]').change(function () {
+    if (this.value === "periodic-delivery") {
+        $("#repeat-options").show();
+    } else {
+        $("#repeat-options").hide();
+        $("#interval").val("");
+    }
 });
 
 // render segments
@@ -111,6 +121,7 @@ imageForm.addEventListener("submit", async (event) => {
         console.log("get presigned url", url);
     } catch (e) {
         console.log(e);
+        return;
     }
 
     // post the image direclty to the s3 bucket
@@ -156,10 +167,51 @@ function expand(imgs) {
     expandImg.parent().css("display", "block");
 }
 
-// post requst to my server to store from data
+// post requst to server to store form data
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: false,
+    showClass: {
+        popup: "",
+        backdrop: "",
+    },
+    hideClass: {
+        popup: "",
+        backdrop: "",
+    },
+});
+
 $(document).ready(function () {
     $("#save-btn").click(function (event) {
         event.preventDefault();
+
+        // 驗證 periodic-delivery 和 interval 的值是否為數字且最小為 1
+        let $periodicDelivery = $("#periodic-delivery");
+        let $interval = $("#interval");
+        if ($periodicDelivery.prop("checked") && ($interval.val() < 1 || isNaN($interval.val()))) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Interval must be a number greater than or equal to 1.",
+            });
+            return;
+        }
+
+        // 驗證 endtime 的值是否為 0
+        let $endtime = $("#endtime");
+        if (!$endtime.val()) {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "End time is required for periodic-delivery campaign.",
+            });
+            return;
+        }
+
         $("#save-btn").prop("disabled", true);
         let data = $("#campaign-form").serialize();
         data += "&htmlContent=" + encodeURIComponent(htmlContent);
@@ -170,10 +222,27 @@ $(document).ready(function () {
             processData: false,
             success: function (formData) {
                 console.log("SUCCESS : ", formData);
+
+                Toast.fire({
+                    icon: "success",
+                    title: `Success!`,
+                    text: `Campaign ${formData.name} created`,
+                });
+
                 $("#save-btn").prop("disabled", false);
             },
             error: function (e) {
                 console.log("ERROR : ", e);
+
+                Swal.fire({
+                    icon: "error",
+                    title: `Error!`,
+                    text: `Campaign not created ${e.resonseJSON}`,
+                    // showConfirmButton: true,
+                    confirmButtonColor: "#F27475",
+                    allowOutsideClick: false,
+                });
+
                 $("#save-btn").prop("disabled", false);
             },
         });
