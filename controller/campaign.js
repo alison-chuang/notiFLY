@@ -15,21 +15,57 @@ const postCampaigns = async (req, res) => {
     console.log("req.body", req.body);
     // TODO 後端要做資料驗證 xss attack
     // TODO 時區問題（收local, 但 mongodb UTC 0 , 但cron_job拿也是 UTC 0 )
-    const { name, segmentId, channel, subject, type, sendDate, htmlContent } = req.body;
+
+    //  FIXMEhard-code for now，但到時候要從 req.payload拿
+    const owner = "testuser";
+
+    let {
+        name,
+        channel,
+        segmentId,
+        sendTime,
+        type,
+        interval,
+        endTime,
+        title,
+        copy,
+        subject,
+        htmlContent,
+        image,
+        landing,
+    } = req.body;
+
+    /* 如果是 one-time delivery, set interval=0 & endTime=sendTime
+    如果是 periodic delivery, 沒有 interval endTime 要報錯 */
+    if (type === "one-time-delivery") {
+        interval = Number(0);
+        endTime = sendTime;
+    }
+
+    if (type === "periodic-delivery") {
+        if (!interval || !endTime) {
+            return res.status(400).json({ data: "interval & endtime is required for periodic-delivery " });
+        }
+    }
 
     const data = {
         name,
-        sendDate,
-        local_sendDate: sendDate.toLocaleString(),
-        segmentId,
+        owner_name: owner,
+        send_time: sendTime,
+        local_sendTime: sendTime.toLocaleString(),
+        segment_id: segmentId,
         channel,
-        recursive: {
-            is_recursive: isRecursive,
-        },
+        type,
+        interval,
+        end_time: endTime,
         message_variant: {
-            source: "alison.mjchuang@gmail.com", // hard code for now
+            source: "alison.mjchuang@gmail.com", // FIXMEhard code for now
             subject: subject,
             html: htmlContent,
+            title,
+            copy,
+            image,
+            landing,
         },
     };
 

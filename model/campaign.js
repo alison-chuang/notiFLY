@@ -15,6 +15,10 @@ const messageSchema = new Schema({
         type: String,
         required: false,
     },
+    title: {
+        type: String,
+        required: false,
+    },
     copy: {
         type: String,
         required: false,
@@ -110,6 +114,7 @@ const campaignSchema = new Schema({
     },
     interval: {
         type: Number,
+        default: 0,
     },
     end_time: {
         type: Date,
@@ -132,7 +137,7 @@ const campaignSchema = new Schema({
 });
 
 // middleware
-campaignSchema.pre("save", (next) => {
+campaignSchema.pre("save", function (next) {
     this.updated_at = new Date();
     next();
 });

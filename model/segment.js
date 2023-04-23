@@ -35,7 +35,7 @@ const Segment = mongoose.model("segment", segmentSchema);
 
 // get segments in DB to render create campaign page
 const selectSegmentNames = async () => {
-    const segments = await Segment.find({}, { name: 1, _id: 0 });
+    const segments = await Segment.find({}, { name: 1 });
     return segments;
 };
 

@@ -13,6 +13,7 @@
 
         <!-- Template -->
         <link rel="stylesheet" href="./css/campaign.css" />
+        <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet" />
         <link rel="stylesheet" href="./css/graindashboard.css" />
     </head>
 
@@ -279,13 +280,46 @@
                                                 class="form-control"
                                                 type="datetime-local"
                                                 id="send-date"
-                                                name="sendDate"
+                                                name="sendTime"
                                             />
                                         </div>
 
                                         <div class="mb-3">
                                             <label for="send-type">Delivery Type</label>
-                                            <div class="form-check">
+                                            <label for="one-time-delivery">
+                                                <input
+                                                    type="radio"
+                                                    id="one-time-delivery"
+                                                    name="type"
+                                                    value="one-time-delivery"
+                                                    checked
+                                                />
+                                                One-time Delivery
+                                            </label>
+                                            <label for="periodic-delivery">
+                                                <input
+                                                    type="radio"
+                                                    id="periodic-delivery"
+                                                    name="type"
+                                                    value="periodic-delivery"
+                                                />
+                                                Periodic Delivery
+                                            </label>
+
+                                            <div id="repeat-options" style="display: none">
+                                                <label for="interval">
+                                                    Repeat Frequency (in days)
+                                                    <input
+                                                        type="number"
+                                                        id="interval"
+                                                        name="interval"
+                                                        min="1"
+                                                        step="1"
+                                                    />
+                                                </label>
+                                            </div>
+
+                                            <!-- <div class="form-check">
                                                 <input
                                                     class="form-check-input"
                                                     type="radio"
@@ -334,28 +368,28 @@
                                                     value="yearly"
                                                 />
                                                 <label class="form-check-label" for="yearly">yearly</label>
-                                            </div>
+                                            </div> -->
                                             <div class="end-time-type mb-3">
                                                 <label for="end-date">End Time</label>
                                                 <input
                                                     class="form-control"
                                                     type="datetime-local"
                                                     id="end-date"
-                                                    name="endDate"
+                                                    name="endTime"
                                                 />
                                             </div>
                                         </div>
 
                                         <!-- Web push -->
                                         <div class="webpush-editor">
-                                            <label for="webtitle">Web-push Title:</label>
-                                            <input type="text" id="webtitle" name="webtitle" />
-                                            <label for="webcopy">Web-push Copy:</label>
-                                            <input type="text" id="webcopy" name="webcopy" />
-                                            <label for="weblanding">Web-push Landing Page:</label>
-                                            <input type="text" id="weblanding" name="webcopy" />
-                                            <label for="webimage">Web-push Image Url:</label>
-                                            <input type="text" id="webcopy" name="webcopy" />
+                                            <label for="title">Web-push Title:</label>
+                                            <input type="text" id="title" name="title" />
+                                            <label for="copy">Web-push Copy:</label>
+                                            <input type="text" id="copy" name="copy" />
+                                            <label for="landing">Web-push Landing Page:</label>
+                                            <input type="text" id="landing" name="landing" />
+                                            <label for="image">Web-push Image Url:</label>
+                                            <input type="text" id="image" name="image" />
                                         </div>
 
                                         <!-- Email -->
@@ -514,6 +548,7 @@
             <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
             <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script src="./script/campaign.js"></script>
         </main>
     </body>
