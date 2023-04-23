@@ -96,9 +96,9 @@ const checkPermissions = async (id, resource, method) => {
     }
 };
 
-const delUser = async (email) => {
+const delUser = async (id) => {
     try {
-        const user = await User.deleteOne({ email: email });
+        const user = await User.deleteOne({ _id: id });
         return user;
     } catch (e) {
         console.error(`Error retrieving user: ${e.message}`);
@@ -106,4 +106,14 @@ const delUser = async (email) => {
     }
 };
 
-export { User, getUser, insertUser, checkPermissions, delUser };
+const selecAlltUser = async () => {
+    try {
+        const users = await User.find({});
+        return users;
+    } catch (e) {
+        console.error(`Error retrieving user: ${e.message}`);
+        return null;
+    }
+};
+
+export { User, getUser, insertUser, checkPermissions, delUser, selecAlltUser };

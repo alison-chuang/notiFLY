@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import dotenv from "dotenv";
 dotenv.config();
-import { User, getUser, insertUser, delUser } from "../model/user.js";
+import { User, getUser, insertUser, delUser, selecAlltUser } from "../model/user.js";
 import { Token } from "../model/token.js";
 import { signJwt } from "../util/auth.js";
 import { sendResetEmail } from "../util/email.js";
@@ -14,8 +14,6 @@ const __dirname = path.dirname(__filename);
 
 // create new user (類sign-up)
 const postUser = async (req, res) => {
-    console.log(req.body);
-
     const { email, password, name } = req.body;
     if (!email || !password || !name) {
         return res.status(400).json({ data: "Email, password and name are required." });
@@ -29,7 +27,7 @@ const postUser = async (req, res) => {
     try {
         const userData = await getUser(email);
         if (userData) {
-            return res.status(403).json({ data: "Email already exists." });
+            return res.status(400).json({ data: "Email already exists." });
         }
 
         const hash = await bcrypt.hash(password, 10);
@@ -139,7 +137,7 @@ const verifyLink = async (req, res) => {
     if (!checkToken) {
         return res.status(400).json({ data: "Invalid link" });
     }
-    return res.status(200).sendFile(path.join(__dirname, "..", "public", "reset_password.html"));
+    return res.status(200).sendFile(path.join(__dirname, "..", "secure", "reset_password.html"));
 };
 
 //.post("/users/password/link/:id/:token"
@@ -178,17 +176,26 @@ const saveNewPassword = async (req, res) => {
 // delete user (直接資料庫刪掉)
 const deleteUser = async (req, res) => {
     try {
-        const { email } = req.body;
-        await delUser(email);
-        return res.status(200).json({ data: "user deleted" });
+        const id = req.query.userId;
+        const result = await delUser(id);
+        return res.status(200).json({ data: result });
     } catch (e) {
         console.log(e);
-        return res.status(500).json({ data: "delete user failed" });
+        return res.status(500).json({ data: e.message });
     }
 };
 
 // render profile
 
 // render all user for user_list page
+const getAllUser = async (req, res) => {
+    try {
+        const allUsers = await selecAlltUser();
+        return res.status(200).json({ data: allUsers });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({ data: "get user failed" });
+    }
+};
 
-export { postUser, signIn, resetPassword, verifyLink, saveNewPassword, deleteUser };
+export { postUser, signIn, resetPassword, verifyLink, saveNewPassword, deleteUser, getAllUser };
