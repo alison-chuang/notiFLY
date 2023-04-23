@@ -1,0 +1,174 @@
+/* input[type="file"] {
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+}
+
+input[type="file"]:hover {
+    border-color: #aaa;
+}
+
+input[type="file"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 153, 252, 0.5);
+}
+
+.drag-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    width: 300px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    font-family: sans-serif;
+    cursor: pointer;
+    position: relative;
+}
+
+.drag-area .icon {
+    font-size: 50px;
+    color: #ccc;
+    margin-bottom: 10px;
+}
+
+.drag-area img {
+    max-width: 30%;
+    height: auto;
+    display: block;
+    margin: 50px auto 30px;
+}
+
+.drag-area header {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    text-align: center;
+}
+
+.drag-area span {
+    font-size: 14px;
+    color: #aaa;
+    margin: 10px 0;
+}
+
+.drag-area input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.drag-area button {
+    margin: 10px 0;
+}
+
+button#memberUpload {
+    margin-top: 10px;
+    align-self: center;
+}
+
+form {
+    width: 80%; /* adjust the width as needed 
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input[type="file"],
+button[type="submit"] {
+    margin-top: 10px;
+} */
+
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+}
+
+.drag-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    width: 300px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    font-family: sans-serif;
+    cursor: pointer;
+    position: relative;
+}
+
+.drag-area .icon {
+    font-size: 50px;
+    color: #ccc;
+    margin-bottom: 10px;
+}
+
+.drag-area img {
+    max-width: 30%;
+    height: auto;
+    display: block;
+    margin: 10 auto;
+}
+
+.drag-area header {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    text-align: center;
+}
+
+.drag-area span {
+    font-size: 14px;
+    color: #aaa;
+    margin: 10px 0;
+}
+
+.drag-area input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.drag-area button {
+    margin: 10px 0;
+}
+
+#member-drag-area {
+    margin-right: 20px;
+}
+
+#order-drag-area {
+    margin-left: 20px;
+}
+
+#memberUpload,
+#orderUpload {
+    margin-top: 20px;
+    align-self: center;
+}

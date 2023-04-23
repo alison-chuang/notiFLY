@@ -1,5 +1,5 @@
 #builder-container {
-    width: 70%;
+    width: 80%;
     margin: auto;
     margin-top: 1%;
 }
@@ -10,7 +10,20 @@
 
 .btn {
     background-color: white;
+    border-color: var(--bs-btn-bg);
     color: var(--bs-btn-bg);
+}
+
+.btn-secondary:hover {
+    background-color: var(--bs-btn-bg);
+    border-color: var(--bs-btn-bg);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #f27475;
+    border-color: #f27475;
+    color: white;
 }
 
 .btn-class {
@@ -23,11 +36,6 @@
     border-style: dashed;
     background-color: white;
     color: var(--bs-btn-bg);
-}
-
-.btn-warning:hover,
-.btn-warning:active {
-    color: white;
 }
 
 .form-control {
