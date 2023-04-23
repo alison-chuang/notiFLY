@@ -1,0 +1,40 @@
+.btn-danger {
+    background-color: #f27475;
+    border-color: #f27475;
+}
+
+.btn-secondary {
+    background-color: #3185d7;
+    border-color: #3185d7;
+}
+
+.page-link {
+    padding: 0;
+}
+
+.first a,
+.previous a,
+.next a,
+.last a {
+    font-size: 0;
+}
+
+.first a:after {
+    font-size: 1rem;
+    content: "<<";
+}
+
+.previous a:after {
+    font-size: 1rem;
+    content: "<";
+}
+
+.next a:after {
+    font-size: 1rem;
+    content: ">";
+}
+
+.last a:after {
+    font-size: 1rem;
+    content: ">>";
+}
