@@ -26,12 +26,12 @@ const registerJobs = async () => {
     let nextTime = isAm ? addHours(getDate(now), 12) : addHours(getDate(now), 24);
     let nextTimePlus12 = addHours(nextTime, 12);
     console.log("gte:", nextTime, "lt:", nextTimePlus12);
-    cond = { $gte: nextTime, $lt: nextTimePlus12 };
+    const cond = { $gte: nextTime, $lt: nextTimePlus12 };
     try {
         const list = await Campaign.find({
             status: RUNNING,
             $and: [
-                { end_time: cond },
+                { end_time: { $gte: nextTime } },
                 {
                     $or: [
                         { next_send_time: cond },
