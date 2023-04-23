@@ -26,17 +26,23 @@ const registerJobs = async () => {
     let nextTime = isAm ? addHours(getDate(now), 12) : addHours(getDate(now), 24);
     let nextTimePlus12 = addHours(nextTime, 12);
     console.log("gte:", nextTime, "lt:", nextTimePlus12);
+    cond = { $gte: nextTime, $lt: nextTimePlus12 };
     try {
         const list = await Campaign.find({
             status: RUNNING,
-            $or: [
-                { next_send_time: { $gte: nextTime, $lt: nextTimePlus12 } },
-                { send_time: { $gte: nextTime, $lt: nextTimePlus12 } },
-                /* send_time 在這個區間，應該是第一次發送情形（）send_time = next_send_time，所以要把他更新 next_send_time並註冊到job */
-                /* next_send_time 在這個區間，表示要註冊到job
-                /* next_send_time 意義：cron_job要看
-                   send_time 意義：要留起始日期資料 
-                   jobs["send_time"] 意義：留下每次發送的紀錄*/
+            $and: [
+                { end_time: cond },
+                {
+                    $or: [
+                        { next_send_time: cond },
+                        { send_time: cond },
+                        /* send_time 在這個區間，應該是第一次發送情形（）send_time = next_send_time，所以要把他更新 next_send_time並註冊到job */
+                        /* next_send_time 在這個區間，表示要註冊到job
+                        /* next_send_time 意義：cron_job要看
+                        send_time 意義：要留起始日期資料 
+                        jobs["send_time"] 意義：留下每次發送的紀錄*/
+                    ],
+                },
             ],
         });
         console.log("length of list:", list.length);
