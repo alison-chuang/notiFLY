@@ -72,9 +72,9 @@ const registerJobs = async () => {
     }
 };
 
-registerJobs();
+// registerJobs();
 
-// cron.schedule(`0 */12 * * *`, async () => {
-//     console.log(`cron register jobs starts .`);
-//     registerJobs();
-// });
+cron.schedule(`0 */12 * * *`, async () => {
+    console.log(`cron register jobs starts .`);
+    registerJobs();
+});
