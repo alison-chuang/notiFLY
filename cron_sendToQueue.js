@@ -12,8 +12,8 @@ const DAY = 24 * HOUR;
 
 // DB 取出此時間範圍內該發送的 campaign & 對象名單
 const getList = async () => {
-    let now = new Date("2023-04-22T12:00:00.000Z"); // UTC+0 time
-    let prev = now - 12 * HOUR;
+    let now = new Date(); // UTC+0 time
+    let prev = now - 1.5 * MIN;
     console.log("prev:", new Date(prev), "now:", new Date(now));
 
     try {

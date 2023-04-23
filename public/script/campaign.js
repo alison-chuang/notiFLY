@@ -202,8 +202,8 @@ $(document).ready(function () {
         }
 
         // 驗證 endtime 的值是否為 0
-        let $endtime = $("#endtime");
-        if (!$endtime.val()) {
+        let $endtime = $("#end-date");
+        if ($periodicDelivery.prop("checked") && !$endtime.val()) {
             Swal.fire({
                 icon: "error",
                 title: "Error",

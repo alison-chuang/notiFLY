@@ -74,7 +74,7 @@ const registerJobs = async () => {
 
 // registerJobs();
 
-cron.schedule(`0 */12 * * *`, async () => {
+cron.schedule(`0 6,18 * * *`, async () => {
     console.log(`cron register jobs starts .`);
     registerJobs();
 });
