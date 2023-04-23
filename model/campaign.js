@@ -182,4 +182,20 @@ const checkRequest = async (id) => {
     }
 };
 
-export { Campaign, updateCounts, checkRequest };
+// get campaign for render campaign list
+const selectAllCampaign = async () => {
+    const campaigns = await Campaign.find({});
+    return campaigns;
+};
+
+// select campaign by id for campaign detail page
+const selectById = async (id) => {
+    try {
+        const doc = await Campaign.findOne({});
+        return doc;
+    } catch (e) {
+        return false;
+    }
+};
+
+export { Campaign, updateCounts, checkRequest, selectAllCampaign, selectById };

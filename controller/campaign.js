@@ -1,6 +1,9 @@
+import dotenv from "dotenv";
+dotenv.config();
+import { ChatGPTAPI } from "chatgpt";
 import { generateImageURL, selectS3Images } from "../util/upload.js";
 import "../model/database.js";
-import { Campaign, updateCounts, checkRequest } from "../model/campaign.js";
+import { Campaign, updateCounts, checkRequest, selectAllCampaign, selectById } from "../model/campaign.js";
 import { selectSegmentNames } from "../model/segment.js";
 
 // get presigned URL for client uploading image
@@ -106,4 +109,60 @@ const getS3Images = async (req, res) => {
     const s3Images = await selectS3Images();
     res.json({ data: s3Images });
 };
-export { getS3Url, postCampaigns, lambdaUpdateDb, getS3Images };
+
+// get campaign list
+const getAllCampaign = async (req, res) => {
+    try {
+        const allCampaigns = await selectAllCampaign();
+        return res.status(200).json({ data: allCampaigns });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ data: e });
+    }
+};
+
+// get campaign detail page
+const getCampaignById = async (req, res) => {
+    // TODO error handling
+    try {
+        const { id } = req.params;
+        if (!id) {
+            return res.status(400).json({ data: "bad request" });
+        }
+
+        const detail = await selectById(id);
+        // console.log("detail", detail);
+
+        if (!detail) {
+            return res.status(400).json({ data: "no matched segment with request id " });
+        }
+        return res.status(200).json({ data: detail });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ data: e });
+    }
+};
+
+// Open AI generate copy
+const genCopy = async (req, res) => {
+    const prompt = req.body.prompt + ".No more than 30 words in total";
+
+    const api = new ChatGPTAPI({
+        apiKey: process.env.OPEN_AI,
+        completionParams: {
+            model: "gpt-3.5-turbo",
+            temperature: 1,
+            top_p: 0.5,
+        },
+    });
+
+    try {
+        const copy = await api.sendMessage(prompt);
+        return res.status(200).json({ data: copy.text });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ data: e });
+    }
+};
+
+export { getS3Url, postCampaigns, lambdaUpdateDb, getS3Images, getAllCampaign, getCampaignById, genCopy };
