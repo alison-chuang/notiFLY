@@ -98,3 +98,13 @@
 .gallery-images img {
     width: 36px;
 }
+
+table.dataTable td.dt-control:before {
+    box-shadow: none;
+    border: 0;
+    background-color: #84bd9d;
+}
+
+table.dataTable tr.dt-hasChild td.dt-control:before {
+    background-color: #999999;
+}

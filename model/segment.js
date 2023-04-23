@@ -39,7 +39,7 @@ const selectSegmentNames = async () => {
     return segments;
 };
 
-// TODO get segment for render segment list
+// get segment for render segment list
 const selectAllSegment = async () => {
     const segments = await Segment.find({});
     return segments;

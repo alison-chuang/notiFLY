@@ -8,7 +8,7 @@
             href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"
         />
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
-        <link rel="stylesheet" href="./css/segment.css" />
+        <link rel="stylesheet" href="./css/campaign.css" />
         <link rel="stylesheet" href="./css/graindashboard.css" />
         <link rel="stylesheet" href="./css/btn.css" />
     </head>
@@ -56,72 +56,7 @@
                         <!-- End Side Nav Toggle -->
 
                         <!-- User Notifications -->
-                        <div class="dropdown ml-auto">
-                            <a
-                                id="notificationsInvoker"
-                                class="header-invoker"
-                                href="#"
-                                aria-controls="notifications"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                data-unfold-event="click"
-                                data-unfold-target="#notifications"
-                                data-unfold-type="css-animation"
-                                data-unfold-duration="300"
-                                data-unfold-animation-in="fadeIn"
-                                data-unfold-animation-out="fadeOut"
-                            >
-                                <span
-                                    class="indicator indicator-bordered indicator-top-right indicator-primary rounded-circle"
-                                ></span>
-                                <i class="gd-bell"></i>
-                            </a>
-
-                            <div
-                                id="notifications"
-                                class="dropdown-menu dropdown-menu-center py-0 mt-4 w-18_75rem w-md-22_5rem unfold-css-animation unfold-hidden"
-                                aria-labelledby="notificationsInvoker"
-                                style="animation-duration: 300ms"
-                            >
-                                <div class="card">
-                                    <div class="card-header d-flex align-items-center border-bottom py-3">
-                                        <h5 class="mb-0">Notifications</h5>
-                                        <a class="link small ml-auto" href="#">Clear All</a>
-                                    </div>
-
-                                    <div class="card-body p-0">
-                                        <div class="list-group list-group-flush">
-                                            <div class="list-group-item list-group-item-action">
-                                                <div class="d-flex align-items-center text-nowrap mb-2">
-                                                    <i class="gd-info-alt icon-text text-primary mr-2"></i>
-                                                    <h6 class="font-weight-semi-bold mb-0">New Update</h6>
-                                                    <span class="list-group-item-date text-muted ml-auto"
-                                                        >just now</span
-                                                    >
-                                                </div>
-                                                <p class="mb-0">Order <strong>#10000</strong> has been updated.</p>
-                                                <a class="list-group-item-closer text-muted" href="#"
-                                                    ><i class="gd-close"></i
-                                                ></a>
-                                            </div>
-                                            <div class="list-group-item list-group-item-action">
-                                                <div class="d-flex align-items-center text-nowrap mb-2">
-                                                    <i class="gd-info-alt icon-text text-primary mr-2"></i>
-                                                    <h6 class="font-weight-semi-bold mb-0">New Update</h6>
-                                                    <span class="list-group-item-date text-muted ml-auto"
-                                                        >just now</span
-                                                    >
-                                                </div>
-                                                <p class="mb-0">Order <strong>#10001</strong> has been updated.</p>
-                                                <a class="list-group-item-closer text-muted" href="#"
-                                                    ><i class="gd-close"></i
-                                                ></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="dropdown ml-auto"></div>
                         <!-- End User Notifications -->
                         <!-- User Avatar -->
                         <div class="dropdown mx-3 dropdown ml-2">
@@ -254,11 +189,12 @@
                             <table id="campaign-table" class="table">
                                 <thead>
                                     <tr>
+                                        <th></th>
                                         <th>Name</th>
                                         <th>Channel</th>
+                                        <th>Status</th>
                                         <th>Created</th>
                                         <th>Author</th>
-                                        <th>Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
