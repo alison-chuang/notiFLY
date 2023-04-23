@@ -45,6 +45,10 @@ const registerJobs = async () => {
                 },
             ],
         });
+        if (list.length == 0) {
+            console.log(`[${new Date().toISOString()}] There is no task for now.`);
+            return;
+        }
         console.log("length of list:", list.length);
         const updates = list.map(async (item) => {
             let filter = { _id: item._id };
