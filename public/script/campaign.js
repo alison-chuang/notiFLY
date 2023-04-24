@@ -248,3 +248,23 @@ $(document).ready(function () {
         });
     });
 });
+
+// open ai auto copy
+$(document).ready(function () {
+    $("#auto-copy-btn").on("click", function (e) {
+        e.preventDefault();
+        var copyData = $("#textareaId").val();
+        $.ajax({
+            url: "/api/1.0/campaigns/autocopy",
+            type: "POST",
+            dataType: "json",
+            data: { copyData: copyData },
+            success: function (response) {
+                $("#auto-copy-response").text(response.data);
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            },
+        });
+    });
+});

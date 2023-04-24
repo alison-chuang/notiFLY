@@ -221,33 +221,45 @@
                             <div class="mb-3 mb-md-4 d-flex justify-content-between">
                                 <div class="h3 mb-0">Import Member</div>
                             </div>
-                            <h5 class="mb-0">Effortlessly stay up-to-date with simple CSV import feature.</h5>
+                            <h5 class="mb-0">Effortlessly stay up-to-date with simple CSV import.</h5>
 
                             <div class="container">
                                 <form>
                                     <div class="drag-area" id="member-drag-area">
                                         <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
                                         <img src="./icon/upload.png" class="upload-icon" />
-                                        <header>Drag & Drop Member File</header>
-                                        <span>OR</span>
-                                        <button>Browse CSV File</button>
+                                        <header>Upload Member Here</header>
+                                        <!-- 
+                                        <label for="member-upload">Browse File</label> -->
+                                        <span>CSV only!</span>
                                         <input type="file" name="memberCsv" id="member-upload" accept=".csv" />
                                     </div>
                                     <p id="file-name"></p>
-                                    <button id="memberUpload" type="submit">submit</button>
+                                    <div class="file-example">
+                                        <a href="./example_csv/member_example.csv" download
+                                            >Click & Download Member Example File</a
+                                        >
+                                    </div>
+                                    <button class="btn btn-soft-dark" id="memberUpload" type="submit">submit</button>
                                 </form>
 
                                 <form>
                                     <div class="drag-area" id="order-drag-area">
                                         <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
                                         <img src="./icon/upload_purple.png" class="upload-icon" />
-                                        <header>Drag & Drop Order File</header>
-                                        <span>OR</span>
-                                        <button>Browse CSV File</button>
+                                        <header>Upload Order Here</header>
+                                        <span>CSV only!</span>
+                                        <!-- <span>OR</span> -->
+                                        <!-- <button type="button">Browse CSV File</button> -->
                                         <input type="file" name="orderCsv" id="order-upload" accept=".csv" />
                                     </div>
                                     <p id="file-name"></p>
-                                    <button id="orderUpload" type="submit">submit</button>
+                                    <div class="file-example">
+                                        <a href="./example_csv/order_example.csv" download
+                                            >Click & Download Order Example File</a
+                                        >
+                                    </div>
+                                    <button class="btn btn-soft-dark" id="orderUpload" type="submit">submit</button>
                                 </form>
                             </div>
                         </div>
