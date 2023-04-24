@@ -203,7 +203,8 @@ const uploadOrderCsv = async (req, res) => {
         res.json({ message: result });
     } catch (e) {
         console.error(e);
-        res.status(500).json({ error: e });
+        console.log(e.responseJSON.error);
+        res.status(500).json({ error: e.responseJSON.error });
     }
 };
 

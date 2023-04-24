@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>notiFLY | Campaign List</title>
         <meta charset="UTF-8" />
-        <title>notiFLY/Campaign Details</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="public/img/favicon.ico" />
+
+        <!-- Template -->
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css"
@@ -18,23 +25,23 @@
             <nav class="navbar flex-nowrap p-0">
                 <div class="navbar-brand-wrapper d-flex align-items-center col-auto">
                     <!-- Logo For Mobile View -->
-                    <a class="navbar-brand navbar-brand-mobile" href="/">
-                        <img class="img-fluid w-100" src="public/img/logo-mini.png" alt="Graindashboard" />
+                    <a class="navbar-brand navbar-brand-mobile" href="/document.html">
+                        <img class="img-fluid w-100" src="./icon/logo.png" alt="notiFLY" />
                     </a>
                     <!-- End Logo For Mobile View -->
 
                     <!-- Logo For Desktop View -->
-                    <a class="navbar-brand navbar-brand-desktop" href="/">
+                    <a class="navbar-brand navbar-brand-desktop" href="/document.html">
                         <img
                             class="side-nav-show-on-closed"
-                            src="public/img/logo-mini.png"
-                            alt="Graindashboard"
+                            src="./icon/logo.png"
+                            alt="notiFLY"
                             style="width: auto; height: 33px"
                         />
                         <img
                             class="side-nav-hide-on-closed"
-                            src="https://notifly-campaign-image.s3.ap-northeast-1.amazonaws.com/1949594e0d4995e1"
-                            alt="Graindashboard"
+                            src="./icon/logo.png"
+                            alt="notiFLY"
                             style="width: auto; height: 33px"
                         />
                     </a>
@@ -43,18 +50,6 @@
 
                 <div class="header-content col px-md-3">
                     <div class="d-flex align-items-center">
-                        <!-- Side Nav Toggle -->
-                        <a
-                            class="js-side-nav header-invoker d-flex mr-md-2"
-                            href="#"
-                            data-close-invoker="#sidebarClose"
-                            data-target="#sidebar"
-                            data-target-wrapper="body"
-                        >
-                            <i class="gd-align-left"></i>
-                        </a>
-                        <!-- End Side Nav Toggle -->
-
                         <!-- User Notifications -->
                         <div class="dropdown ml-auto"></div>
                         <!-- End User Notifications -->
@@ -74,9 +69,8 @@
                                 data-unfold-animation-in="fadeIn"
                                 data-unfold-animation-out="fadeOut"
                             >
-                                <!--img class="avatar rounded-circle mr-md-2" src="#" alt="John Doe"-->
-                                <span class="mr-md-2 avatar-placeholder">J</span>
-                                <span class="d-none d-md-block">John Doe</span>
+                                <span class="mr-md-2 gd-face-smile"></span>
+                                <span id="profile-name" class="d-none d-md-block">John Doe</span>
                                 <i class="gd-angle-down d-none d-md-block ml-2"></i>
                             </a>
 
@@ -86,16 +80,16 @@
                                 aria-labelledby="profileMenuInvoker"
                                 style="animation-duration: 300ms"
                             >
-                                <li class="unfold-item">
+                                <li class="reset-password unfold-item">
                                     <a class="unfold-link d-flex align-items-center text-nowrap" href="#">
                                         <span class="unfold-item-icon mr-3">
                                             <i class="gd-user"></i>
                                         </span>
-                                        My Profile
+                                        Reset Password
                                     </a>
                                 </li>
-                                <li class="unfold-item unfold-item-has-divider">
-                                    <a class="unfold-link d-flex align-items-center text-nowrap" href="#">
+                                <li class="sign-out unfold-item unfold-item-has-divider">
+                                    <a class="unfold-link d-flex align-items-center text-nowrap" href="/index.html">
                                         <span class="unfold-item-icon mr-3">
                                             <i class="gd-power-off"></i>
                                         </span>
@@ -116,34 +110,34 @@
             <aside id="sidebar" class="js-custom-scroll side-nav">
                 <ul id="sideNav" class="side-nav-menu side-nav-menu-top-level mb-0">
                     <!-- Title -->
-                    <li class="sidebar-heading h6">Campaign</li>
+                    <li class="sidebar-heading h6">Document</li>
                     <!-- End Title -->
 
                     <!-- Dashboard -->
                     <li class="side-nav-menu-item">
-                        <a class="side-nav-menu-link media align-items-center" href="/campaign.html">
+                        <a class="side-nav-menu-link media align-items-center" href="/document.html">
                             <span class="side-nav-menu-icon d-flex mr-3">
-                                <i class="gd-dashboard"></i>
+                                <i class="gd-light-bulb"></i>
                             </span>
-                            <span class="side-nav-fadeout-on-closed media-body">Create</span>
+                            <span class="side-nav-fadeout-on-closed media-body">Instruction</span>
                         </a>
                     </li>
                     <!-- End Dashboard -->
 
-                    <!-- Documentation -->
+                    <!-- Title -->
+                    <li class="sidebar-heading h6">Member</li>
+                    <!-- End Title -->
+
+                    <!-- Dashboard -->
                     <li class="side-nav-menu-item">
-                        <a
-                            class="side-nav-menu-link media align-items-center"
-                            href="/campaign_list.html"
-                            target="_blank"
-                        >
+                        <a class="side-nav-menu-link media align-items-center" href="/member.html">
                             <span class="side-nav-menu-icon d-flex mr-3">
-                                <i class="gd-file"></i>
+                                <i class="gd-cloud-up"></i>
                             </span>
-                            <span class="side-nav-fadeout-on-closed media-body">List</span>
+                            <span class="side-nav-fadeout-on-closed media-body">Import</span>
                         </a>
                     </li>
-                    <!-- End Documentation -->
+                    <!-- End Dashboard -->
 
                     <!-- Title -->
                     <li class="sidebar-heading h6">Segment</li>
@@ -153,7 +147,7 @@
                     <li class="side-nav-menu-item">
                         <a class="side-nav-menu-link media align-items-center" href="/segment.html">
                             <span class="side-nav-menu-icon d-flex mr-3">
-                                <i class="gd-dashboard"></i>
+                                <i class="gd-pencil-alt"></i>
                             </span>
                             <span class="side-nav-fadeout-on-closed media-body">Create</span>
                         </a>
@@ -162,11 +156,59 @@
 
                     <!-- Documentation -->
                     <li class="side-nav-menu-item">
-                        <a
-                            class="side-nav-menu-link media align-items-center"
-                            href="/segment_list.html"
-                            target="_blank"
-                        >
+                        <a class="side-nav-menu-link media align-items-center" href="/segment_list.html">
+                            <span class="side-nav-menu-icon d-flex mr-3">
+                                <i class="gd-file"></i>
+                            </span>
+                            <span class="side-nav-fadeout-on-closed media-body">List</span>
+                        </a>
+                    </li>
+                    <!-- End Documentation -->
+
+                    <!-- Title -->
+                    <li class="sidebar-heading h6">Campaign</li>
+                    <!-- End Title -->
+
+                    <!-- Dashboard -->
+                    <li class="side-nav-menu-item">
+                        <a class="side-nav-menu-link media align-items-center" href="/campaign.html">
+                            <span class="side-nav-menu-icon d-flex mr-3">
+                                <i class="gd-pencil-alt"></i>
+                            </span>
+                            <span class="side-nav-fadeout-on-closed media-body">Create</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard -->
+
+                    <!-- Documentation -->
+                    <li class="side-nav-menu-item">
+                        <a class="side-nav-menu-link media align-items-center" href="/campaign_list.html">
+                            <span class="side-nav-menu-icon d-flex mr-3">
+                                <i class="gd-file"></i>
+                            </span>
+                            <span class="side-nav-fadeout-on-closed media-body">List</span>
+                        </a>
+                    </li>
+                    <!-- End Documentation -->
+
+                    <!-- Title -->
+                    <li class="sidebar-heading h6">System User</li>
+                    <!-- End Title -->
+
+                    <!-- Dashboard -->
+                    <li class="side-nav-menu-item">
+                        <a class="side-nav-menu-link media align-items-center" href="/user.html">
+                            <span class="side-nav-menu-icon d-flex mr-3">
+                                <i class="gd-pencil-alt"></i>
+                            </span>
+                            <span class="side-nav-fadeout-on-closed media-body">Create</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard -->
+
+                    <!-- Documentation -->
+                    <li class="side-nav-menu-item">
+                        <a class="side-nav-menu-link media align-items-center" href="/user_list.html">
                             <span class="side-nav-menu-icon d-flex mr-3">
                                 <i class="gd-file"></i>
                             </span>
@@ -208,12 +250,6 @@
                     <div class="row justify-content-between">
                         <div class="col-lg text-center text-lg-left mb-3 mb-lg-0">
                             <ul class="list-dot list-inline mb-0">
-                                <li class="list-dot-item list-dot-item-not list-inline-item mr-lg-2">
-                                    <a class="link-dark" href="#">FAQ</a>
-                                </li>
-                                <li class="list-dot-item list-inline-item mr-lg-2">
-                                    <a class="link-dark" href="#">Support</a>
-                                </li>
                                 <li class="list-dot-item list-inline-item mr-lg-2">
                                     <a class="link-dark" href="#">Contact us</a>
                                 </li>
@@ -223,7 +259,7 @@
                         <div class="col-lg text-center mb-3 mb-lg-0">
                             <ul class="list-inline mb-0">
                                 <li class="list-inline-item mx-2">
-                                    <a class="link-muted" href="#"><i class="gd-twitter-alt"></i></a>
+                                    <a class="link-muted" href="#"><i class="gd-instagram"></i></a>
                                 </li>
                                 <li class="list-inline-item mx-2">
                                     <a class="link-muted" href="#"><i class="gd-facebook"></i></a>
@@ -243,6 +279,8 @@
             <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
             <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script src="./script/authentication.js"></script>
             <script src="./script/campaign_list.js"></script>
         </main>
     </body>

@@ -1,41 +1,31 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>notiFLY | Segment</title>
         <meta charset="UTF-8" />
-        <title>notiFLY/Segment</title>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-extendext/1.0.0/jquery-extendext.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/dot/1.1.3/doT.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="public/img/favicon.ico" />
+
         <link
             href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
             rel="stylesheet"
             integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
             crossorigin="anonymous"
         />
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-            crossorigin="anonymous"
-        ></script>
-        <!-- jQuery QueryBuilder -->
-        <script
-            src="https://cdn.jsdelivr.net/npm/jQuery-QueryBuilder/dist/js/query-builder.min.js"
-            integrity="sha256-iJrVA5OQXh/b8vS7zXmaOdAYWgd9cZK25Q9eVSOAgjk="
-            crossorigin="anonymous"
-        ></script>
         <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/jQuery-QueryBuilder/dist/css/query-builder.default.min.css"
             integrity="sha256-yXPeqF3YuO/fb6DhXnB8k/nb66kH6pKij7eAHWL5UTc="
             crossorigin="anonymous"
         />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
         <!-- 引用 Bootstrap-datepicker CSS 和 JavaScript -->
         <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
         />
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
         <link rel="stylesheet" href="./css/graindashboard.css" />
         <link rel="stylesheet" href="./css/segment.css" />
     </head>
@@ -44,23 +34,23 @@
         <header class="header bg-body">
             <nav class="navbar flex-nowrap p-0">
                 <div class="navbar-brand-wrapper d-flex align-items-center col-auto">
-                    <!-- Logo For Mobile View -->
-                    <a class="navbar-brand navbar-brand-mobile" href="/">
-                        <img class="img-fluid w-100" src="https://notifly-campaign-image.s3.ap-northeast-1.amazonaws.com/1949594e0d4995e1" alt="notiFLY" />
+                     <!-- Logo For Mobile View -->
+                    <a class="navbar-brand navbar-brand-mobile" href="/document.html">
+                        <img class="img-fluid w-100" src="./icon/logo.png" alt="notiFLY" />
                     </a>
                     <!-- End Logo For Mobile View -->
 
                     <!-- Logo For Desktop View -->
-                    <a class="navbar-brand navbar-brand-desktop" href="/">
+                    <a class="navbar-brand navbar-brand-desktop" href="/document.html">
                         <img
                             class="side-nav-show-on-closed"
-                            src="https://notifly-campaign-image.s3.ap-northeast-1.amazonaws.com/1949594e0d4995e1"
+                            src="./icon/logo.png"
                             alt="notiFLY"
                             style="width: auto; height: 33px"
                         />
                         <img
                             class="side-nav-hide-on-closed"
-                            src="https://notifly-campaign-image.s3.ap-northeast-1.amazonaws.com/1949594e0d4995e1"
+                            src="./icon/logo.png"
                             alt="notiFLY"
                             style="width: auto; height: 33px"
                         />
@@ -70,84 +60,8 @@
 
                 <div class="header-content col px-md-3">
                     <div class="d-flex align-items-center">
-                        <!-- Side Nav Toggle -->
-                        <a
-                            class="js-side-nav header-invoker d-flex mr-md-2"
-                            href="#"
-                            data-close-invoker="#sidebarClose"
-                            data-target="#sidebar"
-                            data-target-wrapper="body"
-                        >
-                            <i class="gd-align-left"></i>
-                        </a>
-                        <!-- End Side Nav Toggle -->
-
                         <!-- User Notifications -->
                         <div class="dropdown ml-auto">
-                            <a
-                                id="notificationsInvoker"
-                                class="header-invoker"
-                                href="#"
-                                aria-controls="notifications"
-                                aria-haspopup="true"
-                                aria-expanded="false"
-                                data-unfold-event="click"
-                                data-unfold-target="#notifications"
-                                data-unfold-type="css-animation"
-                                data-unfold-duration="300"
-                                data-unfold-animation-in="fadeIn"
-                                data-unfold-animation-out="fadeOut"
-                            >
-                                <span
-                                    class="indicator indicator-bordered indicator-top-right indicator-primary rounded-circle"
-                                ></span>
-                                <i class="gd-bell"></i>
-                            </a>
-
-                            <div
-                                id="notifications"
-                                class="dropdown-menu dropdown-menu-center py-0 mt-4 w-18_75rem w-md-22_5rem unfold-css-animation unfold-hidden"
-                                aria-labelledby="notificationsInvoker"
-                                style="animation-duration: 300ms"
-                            >
-                                <div class="card">
-                                    <div class="card-header d-flex align-items-center border-bottom py-3">
-                                        <h5 class="mb-0">Notifications</h5>
-                                        <a class="link small ml-auto" href="#">Clear All</a>
-                                    </div>
-
-                                    <div class="card-body p-0">
-                                        <div class="list-group list-group-flush">
-                                            <div class="list-group-item list-group-item-action">
-                                                <div class="d-flex align-items-center text-nowrap mb-2">
-                                                    <i class="gd-info-alt icon-text text-primary mr-2"></i>
-                                                    <h6 class="font-weight-semi-bold mb-0">New Update</h6>
-                                                    <span class="list-group-item-date text-muted ml-auto"
-                                                        >just now</span
-                                                    >
-                                                </div>
-                                                <p class="mb-0">Order <strong>#10000</strong> has been updated.</p>
-                                                <a class="list-group-item-closer text-muted" href="#"
-                                                    ><i class="gd-close"></i
-                                                ></a>
-                                            </div>
-                                            <div class="list-group-item list-group-item-action">
-                                                <div class="d-flex align-items-center text-nowrap mb-2">
-                                                    <i class="gd-info-alt icon-text text-primary mr-2"></i>
-                                                    <h6 class="font-weight-semi-bold mb-0">New Update</h6>
-                                                    <span class="list-group-item-date text-muted ml-auto"
-                                                        >just now</span
-                                                    >
-                                                </div>
-                                                <p class="mb-0">Order <strong>#10001</strong> has been updated.</p>
-                                                <a class="list-group-item-closer text-muted" href="#"
-                                                    ><i class="gd-close"></i
-                                                ></a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                         <!-- End User Notifications -->
                         <!-- User Avatar -->
@@ -166,15 +80,14 @@
                                 data-unfold-animation-in="fadeIn"
                                 data-unfold-animation-out="fadeOut"
                             >
-                                <!--img class="avatar rounded-circle mr-md-2" src="#" alt="John Doe"-->
-                                <span class="mr-md-2 avatar-placeholder">J</span>
-                                <span class="d-none d-md-block">John Doe</span>
+                                 <span class="mr-md-2 gd-face-smile"></span>
+                                <span id="profile-name" class="d-none d-md-block">John Doe</span>
                                 <i class="gd-angle-down d-none d-md-block ml-2"></i>
                             </a>
 
                             <ul
                                 id="profileMenu"
-                                class="unfold unfold-user unfold-light unfold-top unfold-centered position-absolute pt-2 pb-1 mt-4 unfold-css-animation unfold-hidden fadeOut"
+                                class="reset-password unfold unfold-user unfold-light unfold-top unfold-centered position-absolute pt-2 pb-1 mt-4 unfold-css-animation unfold-hidden fadeOut"
                                 aria-labelledby="profileMenuInvoker"
                                 style="animation-duration: 300ms"
                             >
@@ -183,10 +96,10 @@
                                         <span class="unfold-item-icon mr-3">
                                             <i class="gd-user"></i>
                                         </span>
-                                        My Profile
+                                        Reset Password
                                     </a>
                                 </li>
-                                <li class="unfold-item unfold-item-has-divider">
+                                <li class="sign-out unfold-item unfold-item-has-divider">
                                     <a class="unfold-link d-flex align-items-center text-nowrap" href="#">
                                         <span class="unfold-item-icon mr-3">
                                             <i class="gd-power-off"></i>
@@ -207,66 +120,114 @@
                 <!-- Sidebar Nav -->
                 <aside id="sidebar" class="js-custom-scroll side-nav">
                     <ul id="sideNav" class="side-nav-menu side-nav-menu-top-level mb-0">
-                        <!-- Title -->
-                        <li class="sidebar-heading h6">Campaign</li>
-                        <!-- End Title -->
+                    <!-- Title -->
+                    <li class="sidebar-heading h6">Document</li>
+                    <!-- End Title -->
 
-                        <!-- Dashboard -->
-                        <li class="side-nav-menu-item">
-                            <a class="side-nav-menu-link media align-items-center" href="/campaign.html">
-                                <span class="side-nav-menu-icon d-flex mr-3">
-                                    <i class="gd-dashboard"></i>
-                                </span>
-                                <span class="side-nav-fadeout-on-closed media-body">Create</span>
-                            </a>
-                        </li>
-                        <!-- End Dashboard -->
+                    <!-- Dashboard -->
+                    <li class="side-nav-menu-item">
+                        <a class="side-nav-menu-link media align-items-center" href="/document.html">
+                            <span class="side-nav-menu-icon d-flex mr-3">
+                                <i class="gd-light-bulb"></i>
+                            </span>
+                            <span class="side-nav-fadeout-on-closed media-body">Instruction</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard -->
 
-                        <!-- Documentation -->
-                        <li class="side-nav-menu-item">
-                            <a
-                                class="side-nav-menu-link media align-items-center"
-                                href="/campaign_list.html"
-                                target="_blank"
-                            >
-                                <span class="side-nav-menu-icon d-flex mr-3">
-                                    <i class="gd-file"></i>
-                                </span>
-                                <span class="side-nav-fadeout-on-closed media-body">List</span>
-                            </a>
-                        </li>
-                        <!-- End Documentation -->
+                    <!-- Title -->
+                    <li class="sidebar-heading h6">Member</li>
+                    <!-- End Title -->
 
-                        <!-- Title -->
-                        <li class="sidebar-heading h6">Segment</li>
-                        <!-- End Title -->
+                    <!-- Dashboard -->
+                    <li class="side-nav-menu-item">
+                        <a class="side-nav-menu-link media align-items-center" href="/member.html">
+                            <span class="side-nav-menu-icon d-flex mr-3">
+                                <i class="gd-cloud-up"></i>
+                            </span>
+                            <span class="side-nav-fadeout-on-closed media-body">Import</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard -->
 
-                        <!-- Dashboard -->
-                        <li class="side-nav-menu-item">
-                            <a class="side-nav-menu-link media align-items-center" href="/segment.html">
-                                <span class="side-nav-menu-icon d-flex mr-3">
-                                    <i class="gd-dashboard"></i>
-                                </span>
-                                <span class="side-nav-fadeout-on-closed media-body">Create</span>
-                            </a>
-                        </li>
-                        <!-- End Dashboard -->
+                    <!-- Title -->
+                    <li class="sidebar-heading h6">Segment</li>
+                    <!-- End Title -->
 
-                        <!-- Documentation -->
-                        <li class="side-nav-menu-item">
-                            <a
-                                class="side-nav-menu-link media align-items-center"
-                                href="/segment_list.html"
-                                target="_blank"
-                            >
-                                <span class="side-nav-menu-icon d-flex mr-3">
-                                    <i class="gd-file"></i>
-                                </span>
-                                <span class="side-nav-fadeout-on-closed media-body">List</span>
-                            </a>
-                        </li>
-                        <!-- End Documentation -->
-                    </ul>
+                    <!-- Dashboard -->
+                    <li class="side-nav-menu-item">
+                        <a class="side-nav-menu-link media align-items-center" href="/segment.html">
+                            <span class="side-nav-menu-icon d-flex mr-3">
+                                <i class="gd-pencil-alt"></i>
+                            </span>
+                            <span class="side-nav-fadeout-on-closed media-body">Create</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard -->
+
+                    <!-- Documentation -->
+                    <li class="side-nav-menu-item">
+                        <a class="side-nav-menu-link media align-items-center" href="/segment_list.html">
+                            <span class="side-nav-menu-icon d-flex mr-3">
+                                <i class="gd-file"></i>
+                            </span>
+                            <span class="side-nav-fadeout-on-closed media-body">List</span>
+                        </a>
+                    </li>
+                    <!-- End Documentation -->
+
+                    <!-- Title -->
+                    <li class="sidebar-heading h6">Campaign</li>
+                    <!-- End Title -->
+
+                    <!-- Dashboard -->
+                    <li class="side-nav-menu-item">
+                        <a class="side-nav-menu-link media align-items-center" href="/campaign.html">
+                            <span class="side-nav-menu-icon d-flex mr-3">
+                                <i class="gd-pencil-alt"></i>
+                            </span>
+                            <span class="side-nav-fadeout-on-closed media-body">Create</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard -->
+
+                    <!-- Documentation -->
+                    <li class="side-nav-menu-item">
+                        <a class="side-nav-menu-link media align-items-center" href="/campaign_list.html">
+                            <span class="side-nav-menu-icon d-flex mr-3">
+                                <i class="gd-file"></i>
+                            </span>
+                            <span class="side-nav-fadeout-on-closed media-body">List</span>
+                        </a>
+                    </li>
+                    <!-- End Documentation -->
+
+                    <!-- Title -->
+                    <li class="sidebar-heading h6">System User</li>
+                    <!-- End Title -->
+
+                    <!-- Dashboard -->
+                    <li class="side-nav-menu-item">
+                        <a class="side-nav-menu-link media align-items-center" href="/user.html">
+                            <span class="side-nav-menu-icon d-flex mr-3">
+                                <i class="gd-pencil-alt"></i>
+                            </span>
+                            <span class="side-nav-fadeout-on-closed media-body">Create</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard -->
+
+                    <!-- Documentation -->
+                    <li class="side-nav-menu-item">
+                        <a class="side-nav-menu-link media align-items-center" href="/user_list.html">
+                            <span class="side-nav-menu-icon d-flex mr-3">
+                                <i class="gd-file"></i>
+                            </span>
+                            <span class="side-nav-fadeout-on-closed media-body">List</span>
+                        </a>
+                    </li>
+                    <!-- End Documentation -->
+                </ul>
                 </aside>
                 <!-- End Sidebar Nav -->
 
@@ -305,12 +266,6 @@
                     <div class="row justify-content-between">
                         <div class="col-lg text-center text-lg-left mb-3 mb-lg-0">
                             <ul class="list-dot list-inline mb-0">
-                                <li class="list-dot-item list-dot-item-not list-inline-item mr-lg-2">
-                                    <a class="link-dark" href="#">FAQ</a>
-                                </li>
-                                <li class="list-dot-item list-inline-item mr-lg-2">
-                                    <a class="link-dark" href="#">Support</a>
-                                </li>
                                 <li class="list-dot-item list-inline-item mr-lg-2">
                                     <a class="link-dark" href="#">Contact us</a>
                                 </li>
@@ -320,7 +275,7 @@
                         <div class="col-lg text-center mb-3 mb-lg-0">
                             <ul class="list-inline mb-0">
                                 <li class="list-inline-item mx-2">
-                                    <a class="link-muted" href="#"><i class="gd-twitter-alt"></i></a>
+                                    <a class="link-muted" href="#"><i class="gd-instagram"></i></a>
                                 </li>
                                 <li class="list-inline-item mx-2">
                                     <a class="link-muted" href="#"><i class="gd-facebook"></i></a>
@@ -331,13 +286,27 @@
                             </ul>
                         </div>
 
-                        <div class="col-lg text-center text-lg-right">
-                            &copy; 2023 notiFLY. All Rights Reserved.
-                        </div>
+                        <div class="col-lg text-center text-lg-right">&copy; 2023 notiFLY. All Rights Reserved.</div>
                     </div>
                 </footer>
                 <!-- End Footer -->
-
+                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-extendext/1.0.0/jquery-extendext.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/dot/1.1.3/doT.js"></script>
+                 <script
+                    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+                    crossorigin="anonymous"
+                ></script>
+                <script
+                    src="https://cdn.jsdelivr.net/npm/jQuery-QueryBuilder/dist/js/query-builder.min.js"
+                    integrity="sha256-iJrVA5OQXh/b8vS7zXmaOdAYWgd9cZK25Q9eVSOAgjk="
+                    crossorigin="anonymous"
+                 ></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                <script src="./script/authentication.js"></script>
                 <script type="module" src="./script/segment.js"></script>
         </main>
     </body>

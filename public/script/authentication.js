@@ -24,7 +24,7 @@ $(document).ready(function () {
 $(".sign-out").on("click", function (e) {
     e.preventDefault();
     localStorage.removeItem("jwtToken");
-    window.location.href = "/";
+    window.location.href = "/index.html";
 });
 
 // reset password
@@ -61,6 +61,7 @@ $(".reset-password").on("click", function (e) {
             });
         },
         error: function (e) {
+            console.log(e);
             Toast.fire({
                 title: "Error!",
                 text: "Failed to send reset password email.",

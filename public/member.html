@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>notiFLY | Segment Detail</title>
+        <title>notiFLY | Member</title>
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -9,24 +9,8 @@
 
         <!-- Favicon -->
         <link rel="shortcut icon" href="public/img/favicon.ico" />
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
-            crossorigin="anonymous"
-        />
-        <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/jQuery-QueryBuilder/dist/css/query-builder.default.min.css"
-            integrity="sha256-yXPeqF3YuO/fb6DhXnB8k/nb66kH6pKij7eAHWL5UTc="
-            crossorigin="anonymous"
-        />
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
-        />
+        <link rel="stylesheet" href="./css/member.css" />
         <link rel="stylesheet" href="./css/graindashboard.css" />
-        <link rel="stylesheet" href="./css/segment.css" />
     </head>
     <body class="has-sidebar has-fixed-sidebar-and-header">
         <!-- Header -->
@@ -60,8 +44,7 @@
                 <div class="header-content col px-md-3">
                     <div class="d-flex align-items-center">
                         <!-- User Notifications -->
-                        <div class="dropdown ml-auto">
-                        </div>
+                        <div class="dropdown ml-auto"></div>
                         <!-- End User Notifications -->
                         <!-- User Avatar -->
                         <div class="dropdown mx-3 dropdown ml-2">
@@ -90,8 +73,8 @@
                                 aria-labelledby="profileMenuInvoker"
                                 style="animation-duration: 300ms"
                             >
-                                <li class="unfold-item">
-                                    <a class="reset-password unfold-link d-flex align-items-center text-nowrap" href="#">
+                                <li class="reset-password unfold-item">
+                                    <a class="unfold-link d-flex align-items-center text-nowrap" href="#">
                                         <span class="unfold-item-icon mr-3">
                                             <i class="gd-user"></i>
                                         </span>
@@ -99,7 +82,7 @@
                                     </a>
                                 </li>
                                 <li class="sign-out unfold-item unfold-item-has-divider">
-                                    <a class="unfold-link d-flex align-items-center text-nowrap" href="#">
+                                    <a class="unfold-link d-flex align-items-center text-nowrap" href="/index.html">
                                         <span class="unfold-item-icon mr-3">
                                             <i class="gd-power-off"></i>
                                         </span>
@@ -230,33 +213,46 @@
             </aside>
             <!-- End Sidebar Nav -->
 
-            <!--my content-->  
-            <div class="content"> 
-                <div id="viewport">
-                    <div id="root">
-                        <div id="builder-container">
-                            <h2 id="container-topic">Segment</h2>
-                            <label for="name">Name</label>
-                            <input class="form-control" type="text" id="name" name="name" />
-                            <div id="builder-import_export"></div>
-                            <div id="member-count">
-                                <!-- <p>Estimated matched member :</p>   後端要回復符合條件的人數-->
+            <!-- my content start -->
+            <div class="content">
+                <div class="py-4 px-3 px-md-4">
+                    <div class="card mb-3 mb-md-4">
+                        <div class="card-body">
+                            <div class="mb-3 mb-md-4 d-flex justify-content-between">
+                                <div class="h3 mb-0">Import Member</div>
                             </div>
-                            <div class="btn-class">
-                                <div class="btn-group">
-                                    <button class="btn btn-secondary parse-mongo-check" data-target="import_export">
-                                        Matched Count
-                                    </button>
-                                </div>
-                                <div class="btn-group">
-                                    <button class="btn btn-primary save" data-target="import_export">Save</button>
-                                </div>
+                            <h5 class="mb-0">Effortlessly stay up-to-date with simple CSV import feature.</h5>
+
+                            <div class="container">
+                                <form>
+                                    <div class="drag-area" id="member-drag-area">
+                                        <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                                        <img src="./icon/upload.png" class="upload-icon" />
+                                        <header>Drag & Drop Member File</header>
+                                        <span>OR</span>
+                                        <button>Browse CSV File</button>
+                                        <input type="file" name="memberCsv" id="member-upload" accept=".csv" />
+                                    </div>
+                                    <p id="file-name"></p>
+                                    <button id="memberUpload" type="submit">submit</button>
+                                </form>
+
+                                <form>
+                                    <div class="drag-area" id="order-drag-area">
+                                        <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                                        <img src="./icon/upload_purple.png" class="upload-icon" />
+                                        <header>Drag & Drop Order File</header>
+                                        <span>OR</span>
+                                        <button>Browse CSV File</button>
+                                        <input type="file" name="orderCsv" id="order-upload" accept=".csv" />
+                                    </div>
+                                    <p id="file-name"></p>
+                                    <button id="orderUpload" type="submit">submit</button>
+                                </form>
                             </div>
-                            <div id="builder"></div>
                         </div>
                     </div>
                 </div>
-
                 <!-- Footer -->
                 <footer class="small p-3 px-md-4 mt-auto">
                     <div class="row justify-content-between">
@@ -286,25 +282,11 @@
                     </div>
                 </footer>
                 <!-- End Footer -->
-                 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-extendext/1.0.0/jquery-extendext.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/dot/1.1.3/doT.js"></script>
-                <script
-                    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
-                    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
-                    crossorigin="anonymous"
-                ></script>
-                <script
-                    src="https://cdn.jsdelivr.net/npm/jQuery-QueryBuilder/dist/js/query-builder.min.js"
-                    integrity="sha256-iJrVA5OQXh/b8vS7zXmaOdAYWgd9cZK25Q9eVSOAgjk="
-                    crossorigin="anonymous"
-                ></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-                <script src="./script/authentication.js"></script>
-                <script type="module" src="./script/segment.js"></script>
-                <script type="module" src="./script/segment_detail.js"></script>
-    </main>
+            </div>
+        </main>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="./script/authentication.js"></script>
+        <script src="./script/member.js"></script>
     </body>
 </html>
