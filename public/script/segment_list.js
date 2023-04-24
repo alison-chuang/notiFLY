@@ -1,7 +1,7 @@
 // init table
 
 $(document).ready(function () {
-    $("#example").DataTable({
+    $("#segment-table").DataTable({
         searching: true,
         sPaginationType: "full_numbers",
         lengthMenu: [

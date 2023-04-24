@@ -93,11 +93,13 @@ button[type="submit"] {
 
 .container {
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    justify-content: space-between;
+    /* flex-direction: row;
+    align-items: center; */
 }
 
 form {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -110,7 +112,7 @@ form {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 400px;
+    height: 300px;
     width: 300px;
     border: 2px dashed #ccc;
     border-radius: 10px;
@@ -126,7 +128,7 @@ form {
 }
 
 .drag-area img {
-    max-width: 30%;
+    max-width: 20%;
     height: auto;
     display: block;
     margin: 10 auto;
