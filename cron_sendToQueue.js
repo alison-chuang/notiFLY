@@ -28,7 +28,7 @@ const getList = async () => {
             {
                 $lookup: {
                     from: "segments",
-                    localField: "segmentId",
+                    localField: "segment_id",
                     foreignField: "_id",
                     pipeline: [
                         {
@@ -69,7 +69,7 @@ const findLastestJob = (jobs, targetTime) => {
             return [i, jobs[i]];
         }
     }
-    return [Null, Null];
+    return [null, null];
 };
 
 const updateStatus = async (record, idx, totalCount, emailKeys) => {
@@ -104,7 +104,7 @@ const main = async () => {
             const parsedEmail = JSON.parse(JSON.stringify(record.emails));
             const totalCount = parsedEmail.length;
             const [lastestIdx, lastestJob] = findLastestJob(record.jobs, record.next_send_time);
-            if (!lastestIdx || !lastestJob) {
+            if (lastestIdx != null || !lastestJob) {
                 console.error(`[${new Date().toISOString()}] There is a registered campaign without jobs.`);
                 return;
             }
