@@ -104,7 +104,7 @@ const main = async () => {
             const parsedEmail = JSON.parse(JSON.stringify(record.emails));
             const totalCount = parsedEmail.length;
             const [lastestIdx, lastestJob] = findLastestJob(record.jobs, record.next_send_time);
-            if (lastestIdx != null || !lastestJob) {
+            if (lastestIdx == null || !lastestJob) {
                 console.error(`[${new Date().toISOString()}] There is a registered campaign without jobs.`);
                 return;
             }
