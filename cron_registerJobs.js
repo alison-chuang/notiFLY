@@ -10,8 +10,8 @@ const getDate = (date) => {
     return new Date(date.toISOString().split("T")[0]);
 };
 
-const addHours = (date, numOfHours) => {
-    return new Date(date.getTime() + numOfHours * HOUR);
+const addMins = (date, numOfMins) => {
+    return new Date(date.getTime() + numOfMins * MIN);
 };
 
 const addDays = (date, numOfDays) => {
@@ -20,18 +20,14 @@ const addDays = (date, numOfDays) => {
 
 const registerJobs = async () => {
     let now = new Date(); // now => object, UTC+0 time
-    console.log(now);
-    let isAm = now.getUTCHours() < 12;
-    // a.m +12 , p.m +24(一律跨到下一半天註冊工作)
-    let nextTime = isAm ? addHours(getDate(now), 12) : addHours(getDate(now), 24);
-    let nextTimePlus12 = addHours(nextTime, 12);
-    console.log("gte:", nextTime, "lt:", nextTimePlus12);
-    const cond = { $gte: nextTime, $lt: nextTimePlus12 };
+    let nowPlus20 = addMins(now, 20);
+    const cond = { $gte: now, $lt: nowPlus20 };
+    console.log("condition:", cond);
     try {
         const list = await Campaign.find({
             status: RUNNING,
             $and: [
-                { end_time: { $gte: nextTime } },
+                { end_time: { $gte: now } },
                 {
                     $or: [
                         { next_send_time: cond },
@@ -78,7 +74,7 @@ const registerJobs = async () => {
 
 // registerJobs();
 
-cron.schedule(`0 6,18 * * *`, async () => {
+cron.schedule(`0 */15 * * *`, async () => {
     console.log(`cron register jobs starts .`);
     registerJobs();
 });
