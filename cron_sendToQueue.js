@@ -3,7 +3,7 @@ import "./model/database.js";
 import { Campaign } from "./model/campaign.js";
 import { Member } from "./model/member.js";
 import { sendToS3 } from "./util/upload.js";
-import { REGISTERED, PROCESSING } from "./statusConstant.js";
+import { REGISTERED, PROCESSING, FAILED } from "./statusConstant.js";
 import * as q from "./util/queue.js";
 
 const MIN = 1000 * 60;
@@ -72,17 +72,37 @@ const findLastestJob = (jobs, targetTime) => {
     return [null, null];
 };
 
-const updateStatus = async (record, idx, totalCount, emailKeys) => {
+const addDays = (date, numOfDays) => {
+    return new Date(date.getTime() + numOfDays * DAY);
+};
+
+const updateStatus = async (record, idx, totalCount, emailKeys, status) => {
     const filter = { _id: record._id };
-    record.jobs[idx].status = PROCESSING;
+    record.jobs[idx].status = status;
     record.jobs[idx].total_count = totalCount;
     record.jobs[idx].email_keys = emailKeys;
 
     const update = [
         {
             $set: {
-                bucket: record.bucket,
                 jobs: record.jobs,
+            },
+        },
+    ];
+    const doc = await Campaign.findOneAndUpdate(filter, update, { new: true });
+    console.log("updated doc:", doc);
+};
+
+const updateNext = async (record) => {
+    const filter = { _id: record._id };
+
+    const nextSendTime = addDays(record.send_time, record.interval);
+
+    const update = [
+        {
+            $set: {
+                bucket: record.bucket,
+                next_send_time: nextSendTime,
             },
         },
     ];
@@ -140,11 +160,12 @@ const main = async () => {
             const hasAllSent = msgStatuses.every((msgStatus) => msgStatus.$metadata.httpStatusCode == 200);
 
             if (hasAllSent) {
-                updateStatus(record, lastestIdx, totalCount, emailKeys);
+                updateStatus(record, lastestIdx, totalCount, emailKeys, PROCESSING);
             } else {
                 console.log("send to SQS failed");
-                record.msgStatus = "failed";
+                updateStatus(record, lastestIdx, totalCount, emailKeys, FAILED);
             }
+            updateNext(record);
         }
     } catch (e) {
         console.error(e);

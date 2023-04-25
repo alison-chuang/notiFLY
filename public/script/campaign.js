@@ -251,20 +251,50 @@ $(document).ready(function () {
 
 // open ai auto copy
 $(document).ready(function () {
-    $("#auto-copy-btn").on("click", function (e) {
+    $("#submit-btn").on("click", function (e) {
         e.preventDefault();
-        var copyData = $("#textareaId").val();
+        const tone = $("#tone").val();
+        const language = $("#language").val();
+        const product = $("#product").val();
+        const keywords = $("#keywords").val();
+        const channel = $("#channel").val();
         $.ajax({
             url: "/api/1.0/campaigns/autocopy",
             type: "POST",
             dataType: "json",
-            data: { copyData: copyData },
+            data: {
+                tone: tone,
+                language: language,
+                product: product,
+                keywords: keywords,
+                channel: channel,
+            },
             success: function (response) {
+                console.log(response);
                 $("#auto-copy-response").text(response.data);
             },
             error: function (xhr, status, error) {
                 console.log(error);
             },
         });
+    });
+
+    $("#clipboard").on("click", async function (e) {
+        const copyText = $("#auto-copy-response").text().trim();
+        await navigator.clipboard.writeText(copyText);
+        alert(`Copied!: ${copyText}`);
+    });
+});
+
+// toggle list for copy & gallery
+$(document).ready(function () {
+    // Magic Copy Generator 按鈕點擊時顯示/隱藏對應的內容
+    $("#borderedAccordion-heading-1").click(function () {
+        $("#borderedAccordion-1").collapse("toggle");
+    });
+
+    // Image Upload & Gallery 按鈕點擊時顯示/隱藏對應的內容
+    $("#borderedAccordion-heading-2").click(function () {
+        $("#borderedAccordion-2").collapse("toggle");
     });
 });

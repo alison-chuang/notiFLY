@@ -1,6 +1,6 @@
 const jwtToken = localStorage.getItem("jwtToken");
 if (jwtToken && jwtToken !== "undefined") {
-    window.location.replace("/document.html");
+    window.location.replace("/index.html");
 }
 
 $(document).ready(function () {

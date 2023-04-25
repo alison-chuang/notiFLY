@@ -12,6 +12,36 @@ if (!jwtToken || jwtToken === "undefined") {
         window.location.replace("/signin.html");
     }, 1200);
 }
+
+// jwt expire or wrong, get req to server to validate and get user name back
+let name;
+$.ajax({
+    url: "api/1.0/users/pageview",
+    type: "GET",
+    headers: {
+        Authorization: `Bearer ${jwtToken}`,
+    },
+    success: function (response) {
+        console.log(response);
+        name = response.data.name;
+        $("#profile-name").text(name);
+    },
+    error: function (e) {
+        console.error(e.responseJSON);
+        Swal.fire({
+            icon: "error",
+            title: `Error!`,
+            text: `User Validation Failed:  ${e.responseJSON.data}`,
+            showConfirmButton: true,
+            confirmButtonColor: "#F27475",
+            allowOutsideClick: false,
+            timer: 10000,
+        });
+        window.localStorage.removeItem("jwtToken");
+        window.location.replace("/signin.html");
+    },
+});
+
 // header dropdown
 $(document).ready(function () {
     $("#profileMenuInvoker").on("click", function (e) {

@@ -71,4 +71,4 @@ async function isAuthorized(req, res, next) {
     next();
 }
 
-export { jwtauth, signJwt, isAuthorized };
+export { jwtauth, signJwt, isAuthorized, verifyJwt };

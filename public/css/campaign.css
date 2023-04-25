@@ -108,3 +108,87 @@ table.dataTable td.dt-control:before {
 table.dataTable tr.dt-hasChild td.dt-control:before {
     background-color: #999999;
 }
+
+.content::before {
+    content: "";
+    flex-grow: 1;
+}
+
+#borderedAccordion {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50%;
+    height: 100%;
+}
+
+#left-page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+}
+
+#image-container {
+    width: 100%;
+    overflow: hidden;
+}
+
+.image {
+    width: 30%;
+    margin: 1.66%;
+    float: left;
+}
+
+.image img {
+    width: 100%;
+    object-fit: contain;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.rainbow-text {
+    background: linear-gradient(to right, red, rgb(255, 221, 0), rgb(138, 201, 28), green, blue);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: white;
+}
+
+.questions-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    padding: 10px;
+}
+
+.question-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.form-control {
+    border-color: #999999;
+}
+
+.action-container,
+.image-form,
+.white-background {
+    background-color: white;
+    padding: 5%;
+}
+
+#magic-container {
+    border: 0.8px double;
+    border-image: linear-gradient(to right, red, orange, rgb(255, 247, 0), green, blue, indigo, violet) 1;
+    border-radius: 10px;
+}
+
+#magic-container > * {
+    border: 0;
+}
