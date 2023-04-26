@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import { User, getUser, insertUser, delUser, selecAlltUser } from "../model/user.js";
 import { Token } from "../model/token.js";
-import { signJwt } from "../util/auth.js";
+import { signJwt, verifyJwt } from "../util/auth.js";
 import { sendResetEmail } from "../util/email.js";
 
 import { fileURLToPath } from "url";
@@ -185,7 +185,33 @@ const deleteUser = async (req, res) => {
     }
 };
 
-// render profile
+// render profile name & every front page  should validate jwt
+async function pageJwtAuth(req, res) {
+    const authHeader = req.headers.authorization;
+    // console.log("authHeader: ", authHeader);
+    if (!authHeader) {
+        return res.status(401).json({ data: "No authorization in header " });
+    }
+
+    if (!authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ data: "No token" });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    if (!token) {
+        return res.status(401).json({ data: "No token" });
+    }
+
+    try {
+        const payload = await verifyJwt(token);
+        console.log("payload:", payload);
+        return res.status(200).json({ data: payload });
+    } catch (e) {
+        console.error(e);
+        return res.status(403).json({ data: `Wrong token or token expired. (${e})` });
+    }
+}
 
 // render all user for user_list page
 const getAllUser = async (req, res) => {
@@ -198,4 +224,4 @@ const getAllUser = async (req, res) => {
     }
 };
 
-export { postUser, signIn, resetPassword, verifyLink, saveNewPassword, deleteUser, getAllUser };
+export { postUser, signIn, resetPassword, verifyLink, saveNewPassword, deleteUser, getAllUser, pageJwtAuth };

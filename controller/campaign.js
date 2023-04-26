@@ -145,8 +145,9 @@ const getCampaignById = async (req, res) => {
 
 // Open AI generate copy
 const genCopy = async (req, res) => {
-    const prompt = req.body.prompt + ".No more than 30 words in total";
-
+    const { tone, language, channel, product, keywords } = req.body;
+    const prompt = `Using a ${tone} tone, write a ${language} ${channel} copy highlighting the ${keywords} of a ${product}.
+    No more than 20 words in total.`;
     const api = new ChatGPTAPI({
         apiKey: process.env.OPEN_AI,
         completionParams: {
