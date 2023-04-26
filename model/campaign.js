@@ -33,25 +33,6 @@ const messageSchema = new Schema({
     },
 });
 
-// const recursiveSchema = schema({
-//     is_recursive: {
-//         type: Boolean,
-//         required: true,
-//     },
-//     type: {
-//         type: String, // m(monthly), w(weekly)
-//         required: false,
-//     },
-//     day: {
-//         type: String, // 星期幾 0~7 & 每月幾號 1~31
-//         required: false,
-//     },
-//     time: {
-//         type: String,
-//         required: false, // hh:mm
-//     },
-// });
-
 const jobSchema = new Schema({
     send_time: {
         type: Date,
@@ -109,7 +90,7 @@ const campaignSchema = new Schema({
         type: Date,
     },
     type: {
-        type: String, // one-time, daily, monthly, weekly, yearly
+        type: String, // one-time, periodic
         required: true,
     },
     interval: {

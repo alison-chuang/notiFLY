@@ -51,6 +51,8 @@ const postCampaigns = async (req, res) => {
         }
     }
 
+    const sender = process.env.SENDER;
+
     const data = {
         name,
         owner_name: owner,
@@ -62,7 +64,7 @@ const postCampaigns = async (req, res) => {
         interval,
         end_time: endTime,
         message_variant: {
-            source: "alison.mjchuang@gmail.com", // FIXMEhard code for now
+            source: sender,
             subject: subject,
             html: htmlContent,
             title,

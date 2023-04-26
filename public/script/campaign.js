@@ -60,34 +60,30 @@ $.get({
 });
 
 // quill editor handler
-let htmlContent;
 (function () {
     "use strict";
 
     Quill.prototype.getHtml = function () {
-        console.log(this.container.querySelector(".ql-editor").innerHTML);
+        // console.log(this.container.querySelector(".ql-editor").innerHTML);
         return this.container.querySelector(".ql-editor").innerHTML;
     };
 
-    var quillEd_1 = new Quill("#editor_1", {
+    let quillEd_1 = new Quill("#editor_1", {
         modules: { toolbar: "#toolbar_1" },
-        placeholder: "Compose an epic...",
         theme: "snow",
     });
 
-    htmlContent = quillEd_1.root.innerHTML;
-
-    var quillEd_txtArea_1 = document.createElement("textarea");
-    var attrQuillTxtArea = document.createAttribute("quill__html");
+    let quillEd_txtArea_1 = document.createElement("textarea");
+    let attrQuillTxtArea = document.createAttribute("quill__html");
     quillEd_txtArea_1.setAttributeNode(attrQuillTxtArea);
 
-    var quillCustomDiv = quillEd_1.addContainer("ql-custom");
+    let quillCustomDiv = quillEd_1.addContainer("ql-custom");
     quillCustomDiv.appendChild(quillEd_txtArea_1);
 
-    var quillsHtmlBtns = document.querySelectorAll(".ql-html");
-    for (var i = 0; i < quillsHtmlBtns.length; i++) {
+    let quillsHtmlBtns = document.querySelectorAll(".ql-html");
+    for (let i = 0; i < quillsHtmlBtns.length; i++) {
         quillsHtmlBtns[i].addEventListener("click", function (evt) {
-            var wasActiveTxtArea_1 = quillEd_txtArea_1.getAttribute("quill__html").indexOf("-active-") > -1;
+            let wasActiveTxtArea_1 = quillEd_txtArea_1.getAttribute("quill__html").indexOf("-active-") > -1;
 
             if (wasActiveTxtArea_1) {
                 //html editor to quill
@@ -208,6 +204,7 @@ $(document).ready(function () {
 
         $("#save-btn").prop("disabled", true);
         let data = $("#campaign-form").serialize();
+        const htmlContent = $("#editor_1").children().first().html();
         data += "&htmlContent=" + encodeURIComponent(htmlContent);
 
         $.post({
