@@ -111,6 +111,7 @@ const gallery = document.querySelector(".gallery");
 
 imageForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+    console.log("submit event triggered");
     const file = imageInput.files[0];
 
     // get presigned url from backend server
@@ -144,28 +145,21 @@ imageForm.addEventListener("submit", async (event) => {
 });
 
 // render gallery images
-//TODO:call backend => backend fetch s3 picture & response
+// call backend => backend fetch s3 picture & response
+
 $.get({
     url: `/api/1.0/campaigns/images`,
     success: function (body) {
         $.each(body.data, function (idx) {
             const url = body.data[idx];
-            const column = `<div class="gallery-images">
-            <img src=${url} onclick="expand(this)">
+            const column = ` <div class='image'>
+                <img src=${url}>
             </div>`;
-            $(".gallery .image-container").append(column);
+
+            $("#image-container").append(column);
         });
     },
 });
-
-// gallery effect
-function expand(imgs) {
-    const expandImg = $("#expandedImg");
-    // Use the same src in the expanded image as the image being clicked on from the grid
-    expandImg.attr("src", $(imgs).attr("src"));
-    // Show the container element (hidden with CSS)
-    expandImg.parent().css("display", "block");
-}
 
 // post requst to server to store form data
 
@@ -282,18 +276,20 @@ $(document).ready(function () {
     $("#clipboard").on("click", async function (e) {
         const copyText = $("#auto-copy-response").text().trim();
         await navigator.clipboard.writeText(copyText);
-        alert(`Copied!: ${copyText}`);
+        Toast.fire({
+            icon: "success",
+            title: `Success!`,
+            text: `Copied!: ${copyText}`,
+        });
     });
 });
 
 // toggle list for copy & gallery
 $(document).ready(function () {
-    // Magic Copy Generator 按鈕點擊時顯示/隱藏對應的內容
     $("#borderedAccordion-heading-1").click(function () {
         $("#borderedAccordion-1").collapse("toggle");
     });
 
-    // Image Upload & Gallery 按鈕點擊時顯示/隱藏對應的內容
     $("#borderedAccordion-heading-2").click(function () {
         $("#borderedAccordion-2").collapse("toggle");
     });
