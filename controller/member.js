@@ -1,5 +1,5 @@
 import Ajv from "ajv";
-import { Member, newAttribute, newOrder, delOrder, checkMemberId } from "../model/member.js";
+import { Member, newAttribute, delMember, newOrder, delOrder, checkMemberId } from "../model/member.js";
 import { newMemberSchema } from "../util/util.js";
 import csv from "csvtojson";
 
@@ -50,6 +50,7 @@ const updateMember = async (req, res) => {
     console.log("client update member data:", req.body);
 
     const { id } = req.body;
+    ``;
     const { body } = req;
 
     // check member in db
@@ -66,6 +67,28 @@ const updateMember = async (req, res) => {
     } catch (e) {
         console.error(e);
         return res.status(500).json({ data: "fail to update" });
+    }
+};
+const deleteMember = async (req, res) => {
+    const { id } = req.body;
+
+    if (!id) {
+        return res.status(400).json({ data: "bad request" });
+    }
+
+    // check member in db
+    const isMember = await checkMemberId(id);
+    if (!isMember) {
+        return res.status(400).json({ data: "bad request" });
+    }
+
+    // $: delete order
+    try {
+        await delMember(id);
+        return res.status(200).json({ data: "DB updated" });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ data: "fail to delete" });
     }
 };
 
@@ -208,4 +231,4 @@ const uploadOrderCsv = async (req, res) => {
     }
 };
 
-export { postMember, updateMember, updateOrder, deleteOrder, uploadMemberCsv, uploadOrderCsv };
+export { postMember, updateMember, updateOrder, deleteOrder, uploadMemberCsv, uploadOrderCsv, deleteMember };

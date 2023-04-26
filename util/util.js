@@ -21,7 +21,7 @@ const wrapAsync = (fn) => {
 const upload = multer({
     storage: multer.diskStorage({
         destination: (req, file, cb) => {
-            let assetsPath = path.join(__dirname, `../member_csv/`);
+            let assetsPath = path.join(__dirname, "../member_csv/");
             cb(null, assetsPath);
         },
         filename: (req, file, cb) => {

@@ -114,13 +114,25 @@ const newAttribute = async (id, attributes) => {
     }
 };
 
+const delMember = async (id) => {
+    try {
+        const filter = { _id: id };
+        const doc = await Member.findOneAndDelete(filter);
+        console.log("updated doc:", doc);
+        return doc;
+    } catch (e) {
+        return e;
+    }
+};
+
 const newOrder = async (id, order) => {
     try {
         const doc = await Member.findOneAndUpdate(
             { _id: id },
             {
-                $push: { orders: order },
-                // $addToSet: { products: { $each: order.products } },
+                $push: {
+                    orders: order,
+                },
                 $inc: { total_spending: order.amount, total_purchase_count: 1 },
             },
             {
@@ -179,4 +191,4 @@ query: {
   }
 */
 
-export { Member, newAttribute, newOrder, delOrder, checkMemberId, selectCity, matchMember };
+export { Member, newAttribute, newOrder, delOrder, checkMemberId, selectCity, matchMember, delMember };
