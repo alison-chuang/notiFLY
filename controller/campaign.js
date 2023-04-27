@@ -154,6 +154,7 @@ const genCopy = async (req, res) => {
         apiKey: process.env.OPEN_AI,
         completionParams: {
             model: "gpt-3.5-turbo",
+            max_tokens: 50,
             temperature: 1,
             top_p: 0.5,
         },
