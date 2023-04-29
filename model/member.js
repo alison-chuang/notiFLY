@@ -18,6 +18,27 @@ const orderSchema = new Schema({
     },
 });
 
+const subscriptionSchema = new Schema({
+    endpoint: {
+        type: String,
+        required: true,
+    },
+    expirationTime: {
+        type: Date,
+        default: null,
+    },
+    keys: {
+        p256dh: {
+            type: String,
+            required: true,
+        },
+        auth: {
+            type: String,
+            required: true,
+        },
+    },
+});
+
 const memberSchema = new Schema({
     client_member_id: {
         type: String,
@@ -77,9 +98,8 @@ const memberSchema = new Schema({
         type: Number,
         default: 0,
     },
-    products: {
-        type: [String],
-        default: [],
+    subscription: {
+        type: subscriptionSchema,
     },
 });
 

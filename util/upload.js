@@ -12,12 +12,12 @@ import { randomBytes } from "./util.js";
 const rawBytes = await randomBytes(4);
 
 const sendToS3 = async (jsonInfo, campaignName, extraSuffix = null) => {
-    const emailObjectKey = `${campaignName}_${new Date().toISOString()}_${rawBytes.toString("hex")}${
+    const objectKey = `${campaignName}_${new Date().toISOString()}_${rawBytes.toString("hex")}${
         extraSuffix !== null ? "_" + extraSuffix : ""
     }.json`;
     const uploadParams = {
         Bucket: SEGMENT_BUCKET_NAME,
-        Key: emailObjectKey,
+        Key: objectKey,
         Body: jsonInfo,
         ContentType: "application/json",
     };
@@ -28,7 +28,7 @@ const sendToS3 = async (jsonInfo, campaignName, extraSuffix = null) => {
         console.log("segment member info uploaded done");
         // const url = `https://${SEGMENT_BUCKET_NAME}.s3.${REGION}.amazonaws.com/${emailObjectKey}`;
         // const s3Uri = `s3://${SEGMENT_BUCKET_NAME}/${emailObjectKey}`;
-        return [SEGMENT_BUCKET_NAME, emailObjectKey];
+        return [SEGMENT_BUCKET_NAME, objectKey];
     } catch (e) {
         console.error(e);
     }
@@ -59,7 +59,12 @@ async function generateImageURL() {
 // get 12 s3 images links to render frontend gallery
 async function selectS3Images() {
     const imageBucket = IMAGE_BUCKET_NAME;
-    const command = new ListObjectsV2Command({ Bucket: imageBucket, MaxKeys: 12 });
+    const command = new ListObjectsV2Command({
+        Bucket: imageBucket,
+        SortBy: "last-modified",
+        Order: "Descending",
+        MaxKeys: 12,
+    });
     const response = await s3Client.send(command);
     const host = `https://${imageBucket}.s3.${REGION}.amazonaws.com/`;
 

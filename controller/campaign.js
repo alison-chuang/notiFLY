@@ -4,7 +4,6 @@ import { ChatGPTAPI } from "chatgpt";
 import { generateImageURL, selectS3Images } from "../util/upload.js";
 import "../model/database.js";
 import { Campaign, updateCounts, checkRequest, selectAllCampaign, selectById } from "../model/campaign.js";
-import { selectSegmentNames } from "../model/segment.js";
 
 // get presigned URL for client uploading image
 const getS3Url = async (req, res) => {
@@ -72,6 +71,7 @@ const postCampaigns = async (req, res) => {
             image,
             landing,
         },
+        next_send_time: sendTime,
     };
 
     const campaign = new Campaign(data);

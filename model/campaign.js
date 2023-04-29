@@ -73,7 +73,7 @@ const campaignSchema = new Schema({
         type: String,
         required: true,
         default: "running",
-        // running, finished, stopped
+        // running, registered, finished, stopped
     },
     created_at: {
         type: Date,

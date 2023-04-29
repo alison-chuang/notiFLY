@@ -50,7 +50,6 @@ const updateMember = async (req, res) => {
     console.log("client update member data:", req.body);
 
     const { id } = req.body;
-    ``;
     const { body } = req;
 
     // check member in db
