@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <!-- Title -->
-        <title>notiFLY | Campaign Detail</title>
+        <title>notiFLY | Campaign</title>
 
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -12,6 +12,11 @@
         <link rel="shortcut icon" href="public/img/favicon.ico" />
 
         <!-- Template -->
+        <link
+            rel="stylesheet"
+            integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0"
+            crossorigin="anonymous"
+        />
         <link rel="stylesheet" href="./css/campaign.css" />
         <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet" />
         <link rel="stylesheet" href="./css/graindashboard.css" />
@@ -87,7 +92,7 @@
                                     </a>
                                 </li>
                                 <li class="sign-out unfold-item unfold-item-has-divider">
-                                    <a class="unfold-link d-flex align-items-center text-nowrap" href="#">
+                                    <a class="unfold-link d-flex align-items-center text-nowrap" href="index.html">
                                         <span class="unfold-item-icon mr-3">
                                             <i class="gd-power-off"></i>
                                         </span>
@@ -217,254 +222,332 @@
                 </ul>
             </aside>
             <!-- End Sidebar Nav -->
-
             <div class="content">
-                <div id="viewport">
-                    <div id="root">
-                        <div class="d-flex flex-row">
-                            <div class="form-container">
-                                <div class="main-form">
-                                    <form id="campaign-form">
-                                        <h2>Campaign</h2>
-                                        <div class="mb-3">
-                                            <label class="form-label" for="name">Campaign Name</label>
-                                            <input class="form-control" type="text" id="name" name="name" />
-                                        </div>
+                <!-- <div id="viewport"> -->
+                <div id="left-page">
+                    <div class="main-form">
+                        <form id="campaign-form">
+                            <h2>Campaign</h2>
+                            <div class="white-background">
+                                <div class="mb-3">
+                                    <label class="form-label" for="name">Campaign Name</label>
+                                    <input class="form-control" type="text" id="name" name="name" />
+                                </div>
 
-                                        <div class="label channel-type mb-3">
-                                            <label for="channel">Notification Channel</label>
-                                            <select class="channel form-control" id="channel" name="channel">
-                                                <option value="">choose one channel</option>
-                                                <option value="edm">eDM</option>
-                                                <option value="web-push">Web Push</option>
-                                            </select>
-                                        </div>
-                                        <div class="label mb-3">
-                                            <label for="segment">Segment</label>
-                                            <select class="segment form-control" id="segment" name="segmentId"></select>
-                                        </div>
+                                <div class="label channel-type mb-3">
+                                    <label for="channel">Notification Channel</label>
+                                    <select class="channel form-control" id="channel" name="channel">
+                                        <option value="">choose one channel</option>
+                                        <option value="edm">eDM</option>
+                                        <option value="webpush">Web Push</option>
+                                    </select>
+                                </div>
+                                <div class="label mb-3">
+                                    <label for="segment">Segment</label>
+                                    <select class="segment form-control" id="segment" name="segmentId"></select>
+                                </div>
 
-                                        <div class="send-time-type mb-3">
-                                            <label for="send-date">Send Time</label>
+                                <div class="send-time-type mb-3">
+                                    <label for="send-date">Send Time</label>
+                                    <input class="form-control" type="datetime-local" id="send-date" name="sendTime" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="send-type">Delivery Type</label>
+                                    <label for="one-time-delivery">
+                                        <input
+                                            type="radio"
+                                            id="one-time-delivery"
+                                            name="type"
+                                            value="one-time-delivery"
+                                        />
+                                        One-time
+                                    </label>
+                                    <label for="periodic-delivery">
+                                        <input
+                                            type="radio"
+                                            name="type"
+                                            value="periodic-delivery"
+                                            id="periodic-delivery"
+                                        />
+                                        Periodic
+                                    </label>
+
+                                    <div id="repeat-options" style="display: none">
+                                        <label for="interval" class="mb-3">
+                                            Repeat Frequency (in days)
                                             <input
                                                 class="form-control"
-                                                type="datetime-local"
-                                                id="send-date"
-                                                name="sendTime"
+                                                type="number"
+                                                id="interval"
+                                                name="interval"
+                                                min="1"
+                                                step="1"
                                             />
-                                        </div>
-
-                                        <div class="mb-3">
-                                            <label for="send-type">Delivery Type</label>
-                                            <label for="one-time-delivery">
-                                                <input
-                                                    type="radio"
-                                                    id="one-time-delivery"
-                                                    name="type"
-                                                    value="one-time-delivery"
-                                                    checked
-                                                />
-                                                One-time Delivery
-                                            </label>
-                                            <label for="periodic-delivery">
-                                                <input
-                                                    type="radio"
-                                                    id="periodic-delivery"
-                                                    name="type"
-                                                    value="periodic-delivery"
-                                                />
-                                                Periodic Delivery
-                                            </label>
-
-                                            <div id="repeat-options" style="display: none">
-                                                <label for="interval">
-                                                    Repeat Frequency (in days)
-                                                    <input
-                                                        type="number"
-                                                        id="interval"
-                                                        name="interval"
-                                                        min="1"
-                                                        step="1"
-                                                    />
-                                                </label>
-                                            </div>
-
-                                            <div class="end-time-type mb-3">
-                                                <label for="end-date">End Time</label>
-                                                <input
-                                                    class="form-control"
-                                                    type="datetime-local"
-                                                    id="end-date"
-                                                    name="endTime"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <!-- Web push -->
-                                        <div class="webpush-editor">
-                                            <label for="title">Web-push Title:</label>
-                                            <input type="text" id="title" name="title" />
-                                            <label for="copy">Web-push Copy:</label>
-                                            <input type="text" id="copy" name="copy" />
-                                            <label for="landing">Web-push Landing Page:</label>
-                                            <input type="text" id="landing" name="landing" />
-                                            <label for="image">Web-push Image Url:</label>
-                                            <input type="text" id="image" name="image" />
-                                        </div>
-
-                                        <!-- Email -->
-                                        <div class="email-editor">
-                                            <label for="subject">Email Subject:</label>
-                                            <input type="text" id="subject" name="subject" />
-                                            <!-- Email 內文開始 -->
-                                            <div class="text input">
-                                                <!-- Create the toolbar container -->
-                                                <div id="editor"></div>
-                                                <div id="toolbar_1" quill__toolbar>
-                                                    <span class="ql-formats">
-                                                        <button class="ql-bold">Bold</button>
-                                                        <button class="ql-italic">Italic</button>
-                                                        <button class="ql-link">Link</button>
-                                                        <button class="ql-list" value="bullet">Ul</button>
-                                                    </span>
-                                                    <span class="ql-formats">
-                                                        <button class="ql-html">HTML</button>
-                                                    </span>
-                                                </div>
-                                                <div id="editor_1" quill__editor>
-                                                    <h1 style="color: #e5645e; font-size: 24px; margin: 20px 0">
-                                                        New Collection is ON!
-                                                    </h1>
-                                                    <p style="font-size: 16px; line-height: 1.5">Dear member,</p>
-                                                    <p style="font-size: 16px; line-height: 1.5">
-                                                        We are pleased to inform you that a new collection has been
-                                                        added to our platform:
-                                                    </p>
-                                                    <h2 style="color: #e5645e; font-size: 20px; margin: 20px 0 10px 0">
-                                                        30th Anniversary Crayon Shin-chan Collection
-                                                    </h2>
-                                                    <p style="font-size: 16px; line-height: 1.5">
-                                                        Whether you're a long-time fan or new to the series, the Crayon
-                                                        Shin Chan 30th Anniversary Collection is a must-have to delight
-                                                        your day. Don't miss out on this exclusive release and get your
-                                                        hands on the collection today!
-                                                    </p>
-                                                    <div style="text-align: center">
-                                                        <img
-                                                            src="https://notifly-campaign-image.s3.ap-northeast-1.amazonaws.com/d3884bed94d8f5da"
-                                                            alt="product Image"
-                                                            style="
-                                                                width: 100%;
-                                                                max-width: 400px;
-                                                                height: auto;
-                                                                margin: 20px 0;
-                                                            "
-                                                        />
-                                                        <a
-                                                            href="https://www.caco.com.tw/mkgdispgroup/dispunit/141610/1"
-                                                            style="
-                                                                display: inline-block;
-                                                                margin: 20px 0;
-                                                                padding: 10px 20px;
-                                                                background-color: #e5645e;
-                                                                color: #fff;
-                                                                text-decoration: none;
-                                                                border-radius: 5px;
-                                                            "
-                                                            >Shop Now</a
-                                                        >
-                                                    </div>
-                                                    <p style="font-size: 16px; line-height: 1.5; margin: 20px 0">
-                                                        Thank you for choosing Stylish.
-                                                    </p>
-                                                    <p style="font-size: 16px; line-height: 1.5">Best regards,</p>
-                                                    <p style="font-size: 16px; line-height: 1.5">The Stylish Team</p>
-                                                    <p
-                                                        style="
-                                                            background-color: #f2f2f2;
-                                                            padding: 20px;
-                                                            text-align: center;
-                                                            font-size: 14px;
-                                                            color: #666;
-                                                        "
-                                                    >
-                                                        You are receiving this email because you signed up for
-                                                        notifications from Stylish. If you wish to unsubscribe, please
-                                                        click
-                                                        <a href="#" style="color: #e5645e; text-decoration: none"
-                                                            >here</a
-                                                        >.
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button class="btn btn-primary" type="submit" id="save-btn">Submit</button>
-                                    </form>
+                                        </label>
+                                    </div>
+                                    <div class="end-time-type mb-3">
+                                        <label for="end-date">End Time</label>
+                                        <input
+                                            class="form-control"
+                                            type="datetime-local"
+                                            id="end-date"
+                                            name="endTime"
+                                        />
+                                    </div>
                                 </div>
 
-                                <div class="image-form">
-                                    <form id="imageForm">
-                                        <div class="mb-3">
-                                            <input class="form-control" id="imageInput" type="file" accept="image/*" />
+                                <!-- Web push -->
+                                <div class="webpush-editor">
+                                    <label for="title" class="form-label">Web-push Title:</label>
+                                    <input class="form-control" type="text" id="title" name="title" />
+                                    <label for="copy" class="form-label">Web-push Copy:</label>
+                                    <input class="form-control" type="text" id="copy" name="copy" />
+                                    <label for="landing" class="form-label">Web-push Landing Url:</label>
+                                    <input class="form-control" type="text" id="landing" name="landing" />
+                                    <label for="image" class="form-label">Web-push Image Url:</label>
+
+                                    <input class="form-control" type="text" id="image" name="image" />
+                                    <div class="form-label">* Click to copy image url from Gallery</div>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="email-editor">
+                                    <label for="subject">Email Subject</label>
+                                    <input class="form-control" type="text" id="subject" name="subject" />
+                                    <div></div>
+                                    <!-- Email 內文開始 -->
+                                    <div class="text input">
+                                        <!-- Create the toolbar container -->
+                                        <div id="editor" class="mt-3"></div>
+                                        <div id="toolbar_1" class="quill__toolbar">
+                                            <div class="edm-image-container">
+                                                <img src="./icon/image_upload.png" id="edm-image" />
+                                                <input id="image" type="file" name="file" accept="image/*" />
+                                            </div>
+                                            <button class="ql-bold">Bold</button>
+                                            <button class="ql-italic">Italic</button>
+                                            <button class="ql-underline"></button>
+                                            <button class="ql-list" value="bullet">Ul</button>
+                                            <button class="ql-link">Link</button>
+                                            <button class="ql-html">HTML</button>
                                         </div>
-                                        <button class="btn btn-secondary" type="submit">Upload Image</button>
-                                    </form>
+                                        <div id="editor_1" class="quill__editor">
+                                            <h1 style="color: #e5645e; font-size: 24px; margin: 20px 0">
+                                                View Email Example
+                                            </h1>
+                                            <h3 style="color: #e5645e; font-size: 24px; margin: 20px 0">
+                                                New Collection is ON!
+                                            </h3>
+                                            <p style="font-size: 16px; line-height: 1.5">Dear member,</p>
+                                            <p style="font-size: 16px; line-height: 1.5">
+                                                We are pleased to inform you that a new collection has been added to our
+                                                platform:
+                                            </p>
+                                            <h2 style="color: #e5645e; font-size: 20px; margin: 20px 0 10px 0">
+                                                30th Anniversary Crayon Shin-chan Collection
+                                            </h2>
+                                            <p style="font-size: 16px; line-height: 1.5">
+                                                Whether you're a long-time fan or new to the series, the Crayon Shin
+                                                Chan 30th Anniversary Collection is a must-have to delight your day.
+                                                Don't miss out on this exclusive release and get your hands on the
+                                                collection today!
+                                            </p>
+                                            <div style="text-align: center">
+                                                <img
+                                                    src="https://notifly-campaign-image.s3.ap-northeast-1.amazonaws.com/d3884bed94d8f5da"
+                                                    alt="product Image"
+                                                    style="width: 100%; max-width: 400px; height: auto; margin: 20px 0"
+                                                />
+                                                <a
+                                                    href="https://www.caco.com.tw/mkgdispgroup/dispunit/141610/1"
+                                                    style="
+                                                        display: inline-block;
+                                                        margin: 20px 0;
+                                                        padding: 10px 20px;
+                                                        background-color: #e5645e;
+                                                        color: #fff;
+                                                        text-decoration: none;
+                                                        border-radius: 5px;
+                                                    "
+                                                    >Shop Now</a
+                                                >
+                                            </div>
+                                            <p style="font-size: 16px; line-height: 1.5; margin: 20px 0">
+                                                Thank you for choosing Stylish.
+                                            </p>
+                                            <p style="font-size: 16px; line-height: 1.5">Best regards,</p>
+                                            <p style="font-size: 16px; line-height: 1.5">The Stylish Team</p>
+                                            <p
+                                                style="
+                                                    background-color: #f2f2f2;
+                                                    padding: 20px;
+                                                    text-align: center;
+                                                    font-size: 14px;
+                                                    color: #666;
+                                                "
+                                            >
+                                                You are receiving this email because you signed up for notifications
+                                                from Stylish. If you wish to unsubscribe, please click
+                                                <a href="#" style="color: #e5645e; text-decoration: none">here</a>.
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                            <button class="btn btn-primary mt-3" type="submit" id="update-btn">Update</button>
+                        </form>
+                    </div>
+                </div>
+                <div id="borderedAccordion">
+                    <div class="accordion accordion-bordered-y accordion-stacked">
+                        <header
+                            id="borderedAccordion-heading-1"
+                            class="accordion-header"
+                            aria-expanded="true"
+                            aria-controls="borderedAccordion-1"
+                            data-toggle="collapse"
+                            data-target="#borderedAccordion-1"
+                        >
+                            <i class="gd-marker-alt accordion-icon icon-text mr-2"></i>
+                            <h4 class="rainbow-text">Magic Copy Generator</h4>
+                            <i class="accordion-control gd-angle-down icon-text ml-auto"></i>
+                        </header>
 
-                            <div class="gallery">
-                                <h2>Gallery</h2>
-                                <!-- The expanding image container -->
-                                <div class="gallery-container">
-                                    <!-- Close the image -->
-                                    <span onclick="this.parentElement.style.display='none'" class="closebtn"
-                                        >&times;</span
-                                    >
-                                    <!-- Expanded image -->
-                                    <img id="expandedImg" style="width: 100%" />
+                        <div
+                            id="borderedAccordion-1"
+                            class="collapse show"
+                            aria-labelledby="borderedAccordion-heading-1"
+                            data-parent="#borderedAccordion"
+                        >
+                            <div class="accordion-body">
+                                <div class="action-container">
+                                    <h5>Answer a few questions, and... Magic!</h5>
+                                    <!--ChatGPT playground -->
+                                    <div class="auto-copy">
+                                        <div class="questions-container">
+                                            <div class="question-group">
+                                                <label for="tone">Select a tone</label>
+                                                <select class="form-control" name="tone" id="tone">
+                                                    <option value="professional">Professional</option>
+                                                    <option value="humorous">Humorous</option>
+                                                    <option value="lyrical">Emotional</option>
+                                                </select>
+                                            </div>
+                                            <div class="question-group">
+                                                <label for="language">Select a language</label>
+                                                <select class="form-control" name="language" id="language">
+                                                    <option value="zh-TW">Chinese</option>
+                                                    <option value="english">English</option>
+                                                    <option value="japanese">Japanese</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="question-group">
+                                                <label for="product">Enter product/campaign name</label>
+                                                <input
+                                                    class="form-control"
+                                                    type="text"
+                                                    id="product"
+                                                    name="product"
+                                                    placeholder="notiFLY service "
+                                                />
+                                            </div>
+                                            <div class="question-group">
+                                                <label for="keywords">Enter keywords </label>
+                                                <input
+                                                    class="form-control"
+                                                    type="text"
+                                                    id="keywords"
+                                                    name="keywords"
+                                                    placeholder="marketing tool, work efficiency"
+                                                />
+                                            </div>
+                                        </div>
+                                        <button id="submit-btn" class="btn btn-primary">Start Magic</button>
+
+                                        <div id="magic-container" class="input-group mt-3">
+                                            <div
+                                                id="auto-copy-response"
+                                                type="text"
+                                                class="form-control form-control-onfocus-inherit bg-transparent small text-muted m-1"
+                                            >
+                                                Copy Response
+                                            </div>
+                                            <i id="clipboard" class="gd-layers icon-text icon-text m-1"></i>
+                                            <div class="tooltip">Copy to clipboard</div>
+                                        </div>
+                                    </div>
+                                    <!--ChatGPT playground end -->
                                 </div>
-                                <div class="image-container d-flex flex-column"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="accordion accordion-bordered-y accordion-stacked">
+                        <header
+                            id="borderedAccordion-heading-2"
+                            class="accordion-header"
+                            aria-expanded="false"
+                            aria-controls="borderedAccordion-2"
+                            data-toggle="collapse"
+                            data-target="#borderedAccordion-2"
+                        >
+                            <i class="gd-image accordion-icon icon-text mr-2"></i>
+                            <h4 class="mb-0">Gallery</h4>
+                            <i class="accordion-control gd-angle-down icon-text ml-auto"></i>
+                        </header>
+
+                        <div
+                            id="borderedAccordion-2"
+                            class="collapse"
+                            aria-labelledby="borderedAccordion-heading-2"
+                            data-parent="#borderedAccordion"
+                        >
+                            <div class="accordion-body">
+                                <div class="image-form">
+                                    <h5>
+                                        Browse latest campaign images here! <br />Simply click on the desired image to
+                                        copy its URL<br />You can also upload a new image of your choice.
+                                    </h5>
+                                    <form id="imageForm" class="mt-3">
+                                        <div class="mb-3">
+                                            <input
+                                                class="form-control-file"
+                                                id="imageInput"
+                                                type="file"
+                                                accept="image/*"
+                                            />
+                                        </div>
+                                        <button class="btn btn btn-outline-dark" type="submit">Upload Image</button>
+                                    </form>
+                                </div>
+                                <div class="gallery">
+                                    <div id="image-container">
+                                        <!-- jquery render image -->
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- Footer -->
-                <footer class="small p-3 px-md-4 mt-auto">
-                    <div class="row justify-content-between">
-                        <div class="col-lg text-center text-lg-left mb-3 mb-lg-0">
-                            <ul class="list-dot list-inline mb-0">
-                                <li class="list-dot-item list-inline-item mr-lg-2">
-                                    <a class="link-dark" href="#">Contact us</a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="col-lg text-center mb-3 mb-lg-0">
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item mx-2">
-                                    <a class="link-muted" href="#"><i class="gd-instagram"></i></a>
-                                </li>
-                                <li class="list-inline-item mx-2">
-                                    <a class="link-muted" href="#"><i class="gd-facebook"></i></a>
-                                </li>
-                                <li class="list-inline-item mx-2">
-                                    <a class="link-muted" href="#"><i class="gd-github"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="col-lg text-center text-lg-right">&copy; 2023 notiFLY. All Rights Reserved.</div>
-                    </div>
-                </footer>
-                <!-- End Footer -->
+                <!-- </div> -->
             </div>
+
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script
+                src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+                crossorigin="anonymous"
+            ></script>
             <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
             <script src="./script/authentication.js"></script>
             <script src="./script/campaign.js"></script>
+            <script src="./script/campaign_detail.js"></script>
         </main>
     </body>
 </html>

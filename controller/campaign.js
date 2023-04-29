@@ -3,7 +3,16 @@ dotenv.config();
 import { ChatGPTAPI } from "chatgpt";
 import { generateImageURL, selectS3Images } from "../util/upload.js";
 import "../model/database.js";
-import { Campaign, updateCounts, checkRequest, selectAllCampaign, selectById } from "../model/campaign.js";
+import {
+    Campaign,
+    updateCounts,
+    checkRequest,
+    selectAllCampaign,
+    selectById,
+    updateCampaign,
+    changeStatus,
+} from "../model/campaign.js";
+const sender = process.env.SENDER;
 
 // get presigned URL for client uploading image
 const getS3Url = async (req, res) => {
@@ -17,10 +26,7 @@ const postCampaigns = async (req, res) => {
     console.log("req.body", req.body);
     // TODO 後端要做資料驗證 xss attack
     // TODO 時區問題（收local, 但 mongodb UTC 0 , 但cron_job拿也是 UTC 0 )
-
-    //  FIXMEhard-code for now，但到時候要從 req.payload拿
-    const owner = "testuser";
-
+    const owner = req.payload.name;
     let {
         name,
         channel,
@@ -49,8 +55,6 @@ const postCampaigns = async (req, res) => {
             return res.status(400).json({ data: "interval & endtime is required for periodic-delivery " });
         }
     }
-
-    const sender = process.env.SENDER;
 
     const data = {
         name,
@@ -128,6 +132,7 @@ const getCampaignById = async (req, res) => {
     // TODO error handling
     try {
         const { id } = req.params;
+        console.log("a", id);
         if (!id) {
             return res.status(400).json({ data: "bad request" });
         }
@@ -169,4 +174,76 @@ const genCopy = async (req, res) => {
     }
 };
 
-export { getS3Url, postCampaigns, lambdaUpdateDb, getS3Images, getAllCampaign, getCampaignById, genCopy };
+// update campaign (放在編輯頁的 save button)
+const updateCampaignDetail = async (req, res) => {
+    try {
+        let {
+            id,
+            name,
+            channel,
+            segmentId,
+            sendTime,
+            type,
+            interval,
+            endTime,
+            title,
+            copy,
+            subject,
+            htmlContent,
+            image,
+            landing,
+        } = req.body;
+
+        const owner = req.payload.name;
+        const formUpdate = {
+            name,
+            owner_name: owner,
+            send_time: sendTime,
+            segment_id: segmentId,
+            channel,
+            type,
+            interval,
+            end_time: endTime,
+            message_variant: {
+                source: sender,
+                subject: subject,
+                html: htmlContent,
+                title,
+                copy,
+                image,
+                landing,
+            },
+            next_send_time: sendTime,
+        };
+        console.log({ id });
+        const updated = await updateCampaign(id, formUpdate);
+        return res.status(200).json({ data: "updated" });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ data: e.message });
+    }
+};
+
+const updateStatus = async (req, res) => {
+    try {
+        const { id, status } = req.body;
+        console.log(req.body);
+        await changeStatus(id, status);
+        return res.status(200).json({ data: "stopped" });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ data: e });
+    }
+};
+
+export {
+    getS3Url,
+    postCampaigns,
+    lambdaUpdateDb,
+    getS3Images,
+    getAllCampaign,
+    getCampaignById,
+    genCopy,
+    updateCampaignDetail,
+    updateStatus,
+};

@@ -250,6 +250,7 @@
                                 <div class="send-time-type mb-3">
                                     <label for="send-date">Send Time</label>
                                     <input class="form-control" type="datetime-local" id="send-date" name="sendTime" />
+                                    <div id="message" style="color: #dd5f59"></div>
                                 </div>
 
                                 <div class="mb-3">
@@ -258,19 +259,19 @@
                                     <label for="one-time-delivery">
                                         <input
                                             type="radio"
-                                            id="one-time-delivery"
                                             name="type"
                                             value="one-time-delivery"
                                             checked
+                                            id="one-time-delivery"
                                         />
                                         One-time
                                     </label>
                                     <label for="periodic-delivery">
                                         <input
                                             type="radio"
-                                            id="periodic-delivery"
                                             name="type"
                                             value="periodic-delivery"
+                                            id="periodic-delivery"
                                         />
                                         Periodic
                                     </label>
@@ -308,7 +309,6 @@
                                     <label for="landing" class="form-label">Web-push Landing Url:</label>
                                     <input class="form-control" type="text" id="landing" name="landing" />
                                     <label for="image" class="form-label">Web-push Image Url:</label>
-
                                     <input class="form-control" type="text" id="image" name="image" />
                                     <div class="form-label">* Click to copy image url from Gallery</div>
                                 </div>
@@ -545,6 +545,7 @@
             ></script>
             <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script src="./script/authentication.js"></script>
             <script src="./script/campaign.js"></script>

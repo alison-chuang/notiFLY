@@ -1,3 +1,5 @@
+const token = localStorage.getItem("jwtToken");
+
 $(document).ready(function () {
     $(".channel").select2();
     $(".segment").select2();
@@ -16,9 +18,11 @@ $("#channel").on("change", function () {
     if (cellValue === "edm") {
         $(".email-editor").show();
         $(".webpush-editor").hide();
+        $(".webpush-editor").val("");
     } else if (cellValue === "webpush") {
         $(".webpush-editor").show();
         $(".email-editor").hide();
+        $(".email-editor").val("");
     } else {
         $(".webpush-editor").hide();
         $(".email-editor").hide();
@@ -27,21 +31,12 @@ $("#channel").on("change", function () {
 
 // show end date if not one-time delivery
 $("#periodic-delivery").on("click", function () {
+    $("#repeat-options").show();
     $(".end-time-type").show();
 });
 $("#one-time-delivery").on("click", function () {
+    $("#repeat-options").hide();
     $(".end-time-type").hide();
-    $("#end-date").val("");
-});
-
-// 調整定期推播的表單填寫方式
-$('input[name="type"]').change(function () {
-    if (this.value === "periodic-delivery") {
-        $("#repeat-options").show();
-    } else {
-        $("#repeat-options").hide();
-        $("#interval").val("");
-    }
 });
 
 // render segments
@@ -219,6 +214,21 @@ const Toast = Swal.mixin({
     },
 });
 
+// send_time、end_time 提示訊息
+$("#send-date").on("change", function () {
+    let now = moment(new Date()).format("YYYY-MM-DD HH:mm");
+    const inputSendTime = $(this).val();
+    const diffInMinutes = moment(inputSendTime).diff(now, "minutes");
+
+    if (diffInMinutes <= 5) {
+        $("#message").text(
+            "To ensure the message could be properly processed, set the send time to at least 5 minutes from now is strongly recommended."
+        );
+    } else {
+        $("#message").empty();
+    }
+});
+
 $(document).ready(function () {
     $("#save-btn").click(function (event) {
         event.preventDefault();
@@ -236,12 +246,17 @@ $(document).ready(function () {
         }
 
         // 驗證 endtime 的值是否為 0
+        // endtime 應大於或等於 sendtime
+        let $sendtime = $("#send-date");
         let $endtime = $("#end-date");
-        if ($periodicDelivery.prop("checked") && !$endtime.val()) {
+        if (
+            ($periodicDelivery.prop("checked") && !$endtime.val()) ||
+            moment($endtime.val()).isBefore($sendtime.val())
+        ) {
             Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: "End time is required for periodic-delivery campaign.",
+                text: "For periodic-delivery campaigns, an end time is required and the send time must be later than the end time",
             });
             return;
         }
@@ -253,11 +268,12 @@ $(document).ready(function () {
 
         $.post({
             url: "/api/1.0/campaigns",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
             data: data,
             processData: false,
             success: function (formData) {
-                console.log("SUCCESS : ", formData);
-
                 Toast.fire({
                     icon: "success",
                     title: `Success!`,
@@ -267,12 +283,10 @@ $(document).ready(function () {
                 $("#save-btn").prop("disabled", false);
             },
             error: function (e) {
-                console.log("ERROR : ", e);
-
                 Swal.fire({
                     icon: "error",
                     title: `Error!`,
-                    text: `Campaign not created ${e.resonseJSON}`,
+                    text: `Campaign not created.  ${e.responseJSON.data}`,
                     // showConfirmButton: true,
                     confirmButtonColor: "#F27475",
                     allowOutsideClick: false,

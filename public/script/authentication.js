@@ -22,7 +22,6 @@ $.ajax({
         Authorization: `Bearer ${jwtToken}`,
     },
     success: function (response) {
-        console.log(response);
         name = response.data.name;
         $("#profile-name").text(name);
     },

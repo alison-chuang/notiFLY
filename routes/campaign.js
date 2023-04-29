@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import { wrapAsync } from "../util/util.js";
+import { isAuthorized, jwtauth } from "../util/auth.js";
 import {
     postCampaigns,
     getS3Url,
@@ -9,11 +10,15 @@ import {
     getAllCampaign,
     getCampaignById,
     genCopy,
+    updateCampaignDetail,
+    updateStatus,
 } from "../controller/campaign.js";
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-router.route("/campaigns").post(wrapAsync(postCampaigns));
+router.route("/campaigns").post(jwtauth, wrapAsync(postCampaigns));
+router.route("/campaigns").put(jwtauth, wrapAsync(updateCampaignDetail));
+router.route("/campaigns/status").put(jwtauth, wrapAsync(updateStatus));
 router.route("/campaigns").get(wrapAsync(getAllCampaign));
 router.route("/campaigns/s3Url").get(wrapAsync(getS3Url));
 router.route("/campaigns/images").get(wrapAsync(getS3Images));

@@ -1,3 +1,20 @@
+const token = localStorage.getItem("jwtToken");
+const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: false,
+    showClass: {
+        popup: "",
+        backdrop: "",
+    },
+    hideClass: {
+        popup: "",
+        backdrop: "",
+    },
+});
+
 // init table
 $(document).ready(function () {
     let table = $("#campaign-table").DataTable({
@@ -59,7 +76,7 @@ $(document).ready(function () {
                 render: function (data, type, row) {
                     return `<a href="/campaign_detail.html?id=${row._id}">
                                 <button type="button" class="btn btn-secondary btn-sm">Update</button>
-                            </a>`;
+                            </a><button type="button" id=${row._id} class="btn btn-light btn-sm stop">Stop</button>`;
                 },
             },
         ],
@@ -79,6 +96,70 @@ $(document).ready(function () {
             row.child(format(row.data())).show();
             tr.addClass("shown");
         }
+    });
+
+    // stop call api
+    $("#campaign-table tbody").on("click", ".stop", function () {
+        const id = $(this).attr("id");
+        const data = {
+            id,
+            status: "stopped",
+        };
+
+        const row = $(this).closest("tr");
+        const rowData = table.row(row).data();
+        if (rowData.status === "stopped") {
+            Toast.fire({
+                icon: "info",
+                title: `Notice`,
+                text: `This campaign is already stopped.`,
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Stopped campaign might not be resumed",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, I understand!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    method: "put",
+                    url: "/api/1.0/campaigns/status",
+                    contentType: "application/json",
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    data: JSON.stringify(data),
+                    processData: false,
+                    success: function () {
+                        console.log();
+                        Toast.fire({
+                            icon: "success",
+                            title: `Success!`,
+                            text: `Campaign stopped`,
+                        });
+
+                        $("#update-btn").prop("disabled", false);
+                    },
+                    error: function (e) {
+                        Swal.fire({
+                            icon: "error",
+                            title: `Error!`,
+                            text: `Campaign is not stopped  ${e.responseJSON.data}`,
+                            confirmButtonColor: "#F27475",
+                            allowOutsideClick: false,
+                        });
+
+                        $("#update-btn").prop("disabled", false);
+                    },
+                });
+            }
+        });
     });
 });
 
@@ -115,25 +196,3 @@ function format(d) {
             ${history}
         </table>`;
 }
-
-//  '<div style="background-color: rgba(212, 224, 252, 0.5); padding: 8px;">' +
-//         '<table cellpadding="1" cellspacing="0" border="0" style="padding-left:10px;">' +
-//         "<tr>" +
-//         "<td>Next Send Time</td>" +
-//         "<td>" +
-//         formattedNextSendTime +
-//         "</td>" +
-//         "</tr>" +
-//         "<tr>" +
-//         "<td>Last Send Time</td>" +
-//         "<td>" +
-//         d.jobs +
-//         "</td>" +
-//         "</tr>" +
-//         "<tr>" +
-//         `<td>   ${sendDate} Result ( Sent successfully / Total recipients )</td>` +
-//         "<td>" +
-//         here +
-//         "</td>" +
-//         "</tr>" +
-//         "</table>"

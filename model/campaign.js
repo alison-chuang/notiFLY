@@ -172,11 +172,36 @@ const selectAllCampaign = async () => {
 // select campaign by id for campaign detail page
 const selectById = async (id) => {
     try {
-        const doc = await Campaign.findOne({});
+        const doc = await Campaign.findOne({ _id: id });
         return doc;
     } catch (e) {
         return false;
     }
 };
 
-export { Campaign, updateCounts, checkRequest, selectAllCampaign, selectById };
+// update campaign
+const updateCampaign = async (id, formUpdate) => {
+    try {
+        const filter = { _id: id };
+        const update = { $set: formUpdate };
+        const doc = await Campaign.findOneAndUpdate(filter, update, { new: true });
+        console.log("updated", doc);
+        return doc;
+    } catch (e) {
+        return false;
+    }
+};
+
+// stop campaign
+const changeStatus = async (id, status) => {
+    try {
+        const filter = { _id: id };
+        const update = { $set: { status: status } };
+        const doc = await Campaign.findOneAndUpdate(filter, update, { new: true });
+        return doc;
+    } catch (e) {
+        return false;
+    }
+};
+
+export { Campaign, updateCounts, checkRequest, selectAllCampaign, selectById, updateCampaign, changeStatus };
