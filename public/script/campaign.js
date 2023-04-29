@@ -16,7 +16,7 @@ $("#channel").on("change", function () {
     if (cellValue === "edm") {
         $(".email-editor").show();
         $(".webpush-editor").hide();
-    } else if (cellValue === "web-push") {
+    } else if (cellValue === "webpush") {
         $(".webpush-editor").show();
         $(".email-editor").hide();
     } else {
@@ -100,65 +100,109 @@ $.get({
     }
 })();
 
-// image handler
-const imageForm = document.querySelector("#imageForm");
-const imageInput = document.querySelector("#imageInput");
-const gallery = document.querySelector(".gallery");
+// gallery image upload handler
+$(document).ready(function () {
+    const imageForm = $("#imageForm");
+    const imageInput = $("#imageInput");
+    const gallery = $("#image-container");
 
-imageForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    console.log("submit event triggered");
-    const file = imageInput.files[0];
+    imageForm.on("submit", async function (event) {
+        event.preventDefault();
+        console.log("submit event triggered");
+        const file = imageInput[0].files[0];
 
-    // get presigned url from backend server
-    let url;
-    try {
-        const response = await axios("/api/1.0/campaigns/s3Url");
-        url = response.data.url;
-        console.log("get presigned url", url);
-    } catch (e) {
-        console.log(e);
-        return;
-    }
+        if (!file) {
+            Toast.fire({
+                icon: "error",
+                title: `Error!`,
+                text: `Please upload one image`,
+            });
+            return;
+        }
 
-    // post the image direclty to the s3 bucket
-    // TODO:用 axios 不會顯示失敗，但會丟 0 byte 空檔案上去
-    await fetch(url, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "multipart/form-data",
-        },
-        body: file,
+        // get presigned url from backend server
+        let url;
+        try {
+            const response = await axios("/api/1.0/campaigns/s3Url");
+            url = response.data.url;
+            console.log("get presigned url", url);
+        } catch (e) {
+            console.log(e);
+            return;
+        }
+
+        // post the image direclty to the s3 bucket
+        await fetch(url, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            body: file,
+        });
+
+        const imageUrl = url.split("?")[0];
+        console.log(imageUrl);
+
+        const imgDiv = $("<div>");
+        imgDiv.addClass("image");
+        imgDiv.html(`
+            <img src=${imageUrl}>
+            <div class="transparent-box">
+                <p class="opacity-low">Click to copy Url</p>
+            </div>
+        `);
+
+        // Add new image to the beginning of the gallery
+        $("#image-container").prepend(imgDiv);
+        Toast.fire({
+            icon: "success",
+            title: `Success!`,
+            text: `Image uploaded!`,
+        });
+        // register event
+        attachClickEvent();
     });
-
-    const imageUrl = url.split("?")[0];
-    console.log(imageUrl);
-
-    const img = document.createElement("img");
-    img.src = imageUrl;
-
-    gallery.appendChild(img);
 });
 
-// render gallery images
-// call backend => backend fetch s3 picture & response
+function attachClickEvent() {
+    // attach click event listener to images
+    $(".image").on("click", function () {
+        const copyText = $(this).find("img").attr("src");
+        navigator.clipboard.writeText(copyText);
+        Toast.fire({
+            icon: "success",
+            title: `Success!`,
+            text: `Copied to clipboard!`,
+        });
+    });
+}
 
-$.get({
-    url: `/api/1.0/campaigns/images`,
-    success: function (body) {
-        $.each(body.data, function (idx) {
-            const url = body.data[idx];
-            const column = ` <div class='image'>
+// image url clipboard
+$(document).ready(function () {
+    // render gallery images
+    // call backend => backend fetch s3 picture & response
+    $.get({
+        url: `/api/1.0/campaigns/images`,
+        success: function (body) {
+            $.each(body.data, function (idx) {
+                const url = body.data[idx];
+                const column = `
+            <div class='image'>
                 <img src=${url}>
+                <div class="transparent-box">
+                    <p class="opacity-low">Click to copy Url</p>
+                </div>
             </div>`;
 
-            $("#image-container").append(column);
-        });
-    },
+                $("#image-container").append(column);
+            });
+
+            attachClickEvent();
+        },
+    });
 });
 
 // post requst to server to store form data
-
 const Toast = Swal.mixin({
     toast: true,
     position: "top-end",
@@ -290,4 +334,49 @@ $(document).ready(function () {
     $("#borderedAccordion-heading-2").click(function () {
         $("#borderedAccordion-2").collapse("toggle");
     });
+});
+
+$(document).ready(function () {
+    $(".accordion-header").click(function () {
+        $(this).toggleClass("show hide");
+        $(this).next(".collapse").toggleClass("show hide");
+    });
+});
+
+//  Quill image
+$("#edm-image").css("position", "relative");
+async function handleImageSelection(file) {
+    // presigned URL
+    let url;
+    try {
+        const response = await axios("/api/1.0/campaigns/s3Url");
+        url = response.data.url;
+        console.log("get presigned url", url);
+    } catch (e) {
+        console.log(e);
+        return;
+    }
+
+    // upload to  S3 bucket
+    await fetch(url, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+        body: file,
+    });
+    const imageUrl = url.split("?")[0];
+    console.log(imageUrl);
+
+    const img = document.createElement("img");
+    img.src = imageUrl;
+
+    $("#editor_1 h1").after(img);
+}
+
+let fileInput = $(".edm-image-container input[type=file]");
+fileInput.on("change", async function (event) {
+    let file = event.target.files[0];
+    console.log(file);
+    await handleImageSelection(file);
 });

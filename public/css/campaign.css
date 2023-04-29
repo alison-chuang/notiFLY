@@ -130,30 +130,8 @@ table.dataTable tr.dt-hasChild td.dt-control:before {
     height: 100%;
 }
 
-#image-container {
-    width: 100%;
-    overflow: hidden;
-}
-
-.image {
-    width: 30%;
-    margin: 1.66%;
-    float: left;
-}
-
-.image img {
-    width: 100%;
-    object-fit: contain;
-}
-
-.clearfix::after {
-    content: "";
-    clear: both;
-    display: table;
-}
-
 .rainbow-text {
-    background: linear-gradient(to right, red, rgb(255, 221, 0), rgb(138, 201, 28), green, blue);
+    background: linear-gradient(to right, rgb(164, 3, 223), rgb(198, 79, 222), rgb(220, 108, 166), rgb(241, 154, 224));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     color: white;
@@ -191,4 +169,124 @@ table.dataTable tr.dt-hasChild td.dt-control:before {
 
 #magic-container > * {
     border: 0;
+}
+
+.card-body {
+    height: 100vh;
+}
+
+.edm-image-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    font-family: sans-serif;
+    position: relative;
+    height: 24px;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+}
+
+.edm-image-container img {
+    height: 24px;
+    display: block;
+}
+
+.edm-image-container input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    height: 24px;
+    aspect-ratio: 1 / 1;
+    top: 0;
+    left: 0;
+}
+
+.quill__toolbar {
+    display: flex;
+    justify-content: space-between;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+#image-container {
+    width: 100%;
+    overflow: hidden;
+}
+
+.gallery {
+    background-color: white;
+}
+
+#image-container {
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#image-container img {
+    height: auto;
+    width: 100%;
+    object-fit: cover;
+    transform: scale(1);
+    transition: transform 0.3s ease;
+}
+
+.image {
+    box-sizing: content-box;
+    margin: 5px;
+    height: 100px;
+    width: 130px;
+    overflow: hidden;
+    display: inline-block;
+    color: white;
+    position: relative;
+}
+
+.caption {
+    position: absolute;
+    bottom: 5px;
+    left: 20px;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.transparent-box {
+    height: 250px;
+    width: 350px;
+    background-color: rgba(0, 0, 0, 0);
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: background-color 0.3s ease;
+    pointer-events: none;
+}
+
+.image:hover img {
+    transform: scale(1.1);
+}
+
+.image:hover .transparent-box {
+    background-color: rgba(185, 210, 245, 0.525);
+}
+
+.image:hover .caption {
+    transform: translateY(-20px);
+    opacity: 1;
+}
+
+.image:hover {
+    cursor: pointer;
+}
+
+.caption > p:nth-child(2) {
+    font-size: 0.8em;
+}
+
+.opacity-low {
+    opacity: 0.5;
 }

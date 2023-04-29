@@ -12,6 +12,11 @@
         <link rel="shortcut icon" href="public/img/favicon.ico" />
 
         <!-- Template -->
+        <link
+            rel="stylesheet"
+            integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0"
+            crossorigin="anonymous"
+        />
         <link rel="stylesheet" href="./css/campaign.css" />
         <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet" />
         <link rel="stylesheet" href="./css/graindashboard.css" />
@@ -234,7 +239,7 @@
                                     <select class="channel form-control" id="channel" name="channel">
                                         <option value="">choose one channel</option>
                                         <option value="edm">eDM</option>
-                                        <option value="web-push">Web Push</option>
+                                        <option value="webpush">Web Push</option>
                                     </select>
                                 </div>
                                 <div class="label mb-3">
@@ -258,7 +263,7 @@
                                             value="one-time-delivery"
                                             checked
                                         />
-                                        One-time Delivery
+                                        One-time
                                     </label>
                                     <label for="periodic-delivery">
                                         <input
@@ -267,11 +272,11 @@
                                             name="type"
                                             value="periodic-delivery"
                                         />
-                                        Periodic Delivery
+                                        Periodic
                                     </label>
 
                                     <div id="repeat-options" style="display: none">
-                                        <label for="interval">
+                                        <label for="interval" class="mb-3">
                                             Repeat Frequency (in days)
                                             <input
                                                 class="form-control"
@@ -300,10 +305,12 @@
                                     <input class="form-control" type="text" id="title" name="title" />
                                     <label for="copy" class="form-label">Web-push Copy:</label>
                                     <input class="form-control" type="text" id="copy" name="copy" />
-                                    <label for="landing" class="form-label">Web-push Landing Page:</label>
+                                    <label for="landing" class="form-label">Web-push Landing Url:</label>
                                     <input class="form-control" type="text" id="landing" name="landing" />
                                     <label for="image" class="form-label">Web-push Image Url:</label>
+
                                     <input class="form-control" type="text" id="image" name="image" />
+                                    <div class="form-label">* Click to copy image url from Gallery</div>
                                 </div>
 
                                 <!-- Email -->
@@ -314,19 +321,20 @@
                                     <!-- Email 內文開始 -->
                                     <div class="text input">
                                         <!-- Create the toolbar container -->
-                                        <div id="editor"></div>
-                                        <div id="toolbar_1" quill__toolbar>
-                                            <span class="ql-formats">
-                                                <button class="ql-bold">Bold</button>
-                                                <button class="ql-italic">Italic</button>
-                                                <button class="ql-link">Link</button>
-                                                <button class="ql-list" value="bullet">Ul</button>
-                                            </span>
-                                            <span class="ql-formats">
-                                                <button class="ql-html">HTML</button>
-                                            </span>
+                                        <div id="editor" class="mt-3"></div>
+                                        <div id="toolbar_1" class="quill__toolbar">
+                                            <div class="edm-image-container">
+                                                <img src="./icon/image_upload.png" id="edm-image" />
+                                                <input id="image" type="file" name="file" accept="image/*" />
+                                            </div>
+                                            <button class="ql-bold">Bold</button>
+                                            <button class="ql-italic">Italic</button>
+                                            <button class="ql-underline"></button>
+                                            <button class="ql-list" value="bullet">Ul</button>
+                                            <button class="ql-link">Link</button>
+                                            <button class="ql-html">HTML</button>
                                         </div>
-                                        <div id="editor_1" quill__editor>
+                                        <div id="editor_1" class="quill__editor">
                                             <h1 style="color: #e5645e; font-size: 24px; margin: 20px 0">
                                                 View Email Example
                                             </h1>
@@ -481,14 +489,14 @@
                     <div class="accordion accordion-bordered-y accordion-stacked">
                         <header
                             id="borderedAccordion-heading-2"
-                            class="accordion-header collapsed"
+                            class="accordion-header"
                             aria-expanded="false"
                             aria-controls="borderedAccordion-2"
                             data-toggle="collapse"
                             data-target="#borderedAccordion-2"
                         >
                             <i class="gd-image accordion-icon icon-text mr-2"></i>
-                            <h4 class="mb-0">Image Upload & Gallery</h4>
+                            <h4 class="mb-0">Gallery</h4>
                             <i class="accordion-control gd-angle-down icon-text ml-auto"></i>
                         </header>
 
@@ -500,9 +508,18 @@
                         >
                             <div class="accordion-body">
                                 <div class="image-form">
-                                    <form id="imageForm">
+                                    <h5>
+                                        Browse latest campaign images here! <br />Simply click on the desired image to
+                                        copy its URL<br />You can also upload a new image of your choice.
+                                    </h5>
+                                    <form id="imageForm" class="mt-3">
                                         <div class="mb-3">
-                                            <input id="imageInput" type="file" name="file" accept="image/*" />
+                                            <input
+                                                class="form-control-file"
+                                                id="imageInput"
+                                                type="file"
+                                                accept="image/*"
+                                            />
                                         </div>
                                         <button class="btn btn btn-outline-dark" type="submit">Upload Image</button>
                                     </form>
@@ -517,36 +534,6 @@
                     </div>
                 </div>
                 <!-- </div> -->
-
-                <!-- Footer -->
-                <!-- <footer class="small p-3 px-md-4">
-                    <div class="row justify-content-between">
-                        <div class="col-lg text-center text-lg-left mb-3 mb-lg-0">
-                            <ul class="list-dot list-inline mb-0">
-                                <li class="list-dot-item list-inline-item mr-lg-2">
-                                    <a class="link-dark" href="#">Contact us</a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="col-lg text-center mb-3 mb-lg-0">
-                            <ul class="list-inline mb-0">
-                                <li class="list-inline-item mx-2">
-                                    <a class="link-muted" href="#"><i class="gd-instagram"></i></a>
-                                </li>
-                                <li class="list-inline-item mx-2">
-                                    <a class="link-muted" href="#"><i class="gd-facebook"></i></a>
-                                </li>
-                                <li class="list-inline-item mx-2">
-                                    <a class="link-muted" href="#"><i class="gd-github"></i></a>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div class="col-lg text-center text-lg-right">&copy; 2023 notiFLY. All Rights Reserved.</div>
-                    </div>
-                </footer> -->
-                <!-- End Footer -->
             </div>
 
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
