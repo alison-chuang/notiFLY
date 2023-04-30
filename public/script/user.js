@@ -61,47 +61,86 @@ $(document).ready(function () {
     });
 });
 
-$("#reset-btn").on("click", function (e) {
-    e.preventDefault();
+// reset password page
+$(document).ready(function () {
+    $("#reset-btn").on("click", function (e) {
+        e.preventDefault();
 
-    const path = window.location.pathname;
-    const pathArray = path.split("/");
-    const id = pathArray[pathArray.length - 2];
-    console.log(id);
-    const token = pathArray[pathArray.length - 1];
-    console.log(token);
+        // input validation
+        let passwordValue = $("#password").val();
+        let passwordConfirmValue = $("#password-confirm").val();
 
-    let data = $("#reset-form").serialize();
-
-    $.post({
-        url: `/api/1.0/users/password/link/${id}/${token}`,
-        data: data,
-        success: function (formData) {
-            console.log("SUCCESS : ", formData);
-
+        if (passwordValue === "" || passwordConfirmValue === "") {
             Toast.fire({
-                icon: "success",
-                title: `Success!`,
-                text: `Password reset succeed! Please sign in again.`,
+                icon: "warning",
+                title: `Oops`,
+                text: `Please fill out both fields`,
             });
+            return false;
+        }
 
-            $("#create-btn").prop("disabled", false);
-            // 這裡要清空 localstorage
-            window.location.href = "/signin.html";
-        },
-        error: function (e) {
-            console.log("ERROR : ", e);
-
+        if (passwordValue !== passwordConfirmValue) {
             Toast.fire({
-                icon: "error",
-                title: `Error!`,
-                text: `User ${e.responseJSON.data}`,
-                showConfirmButton: true,
-                confirmButtonColor: "#F27475",
-                allowOutsideClick: false,
+                icon: "warning",
+                title: `Oops`,
+                text: `The two passwords are inconsistent.`,
             });
+            return false;
+        }
 
-            $("#create-btn").prop("disabled", false);
-        },
+        const path = window.location.pathname;
+        const pathArray = path.split("/");
+        const id = pathArray[pathArray.length - 2];
+        console.log(id);
+        const token = pathArray[pathArray.length - 1];
+        console.log(token);
+
+        let data = $("#reset-form").serialize();
+
+        $.post({
+            url: `/api/1.0/users/password/link/${id}/${token}`,
+            data: data,
+            success: function (formData) {
+                console.log("SUCCESS : ", formData);
+
+                Toast.fire({
+                    icon: "success",
+                    title: `Success!`,
+                    text: `Password reset succeed! Please sign in again.`,
+                });
+
+                $("#reset-btn").prop("disabled", false);
+
+                localStorage.removeItem("jwtToken");
+                window.location.href = "/signin.html";
+            },
+            error: function (e) {
+                console.log("ERROR : ", e);
+
+                Toast.fire({
+                    icon: "error",
+                    title: `Error!`,
+                    text: `User ${e.responseJSON.data}`,
+                    showConfirmButton: true,
+                    confirmButtonColor: "#F27475",
+                    allowOutsideClick: false,
+                });
+
+                $("#reset-btn").prop("disabled", false);
+            },
+        });
+    });
+});
+
+// password readable with eye icon
+$(document).ready(function () {
+    $(".toggle-password").click(function () {
+        let passwordInput = $(this).closest(".form-group").find("input[type]");
+
+        if (passwordInput.attr("type") === "password") {
+            passwordInput.attr("type", "text");
+        } else {
+            passwordInput.attr("type", "password");
+        }
     });
 });

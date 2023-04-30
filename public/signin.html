@@ -37,25 +37,25 @@
                                     <form id="signInForm">
                                         <div class="form-group">
                                             <label for="email">E-Mail Address</label>
-                                            <input
-                                                id="email"
-                                                type="email"
-                                                class="form-control"
-                                                name="email"
-                                                required=""
-                                                autofocus=""
-                                            />
+                                            <input id="email" type="email" class="form-control" name="email" required />
                                         </div>
 
                                         <div class="form-group">
                                             <label for="password">Password</label>
-                                            <input
-                                                id="password"
-                                                type="password"
-                                                class="form-control"
-                                                name="password"
-                                                required=""
-                                            />
+                                            <div class="input-group">
+                                                <input
+                                                    id="password"
+                                                    type="password"
+                                                    class="form-control"
+                                                    name="password"
+                                                    required
+                                                />
+                                                <div class="input-group-append">
+                                                    <button class="btn btn-outline-soft toggle-password" type="button">
+                                                        <i class="gd-eye"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
                                             <!-- <div class="text-right">
                                                 <a href="password-reset.html" class="small"> Forgot Your Password? </a>
                                             </div> -->
@@ -75,6 +75,7 @@
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="./script/user.js"></script>
         <script src="./script/signin.js"></script>
     </body>
 </html>

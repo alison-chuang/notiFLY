@@ -1,8 +1,3 @@
-const jwtToken = localStorage.getItem("jwtToken");
-if (jwtToken && jwtToken !== "undefined") {
-    window.location.replace("/index.html");
-}
-
 $(document).ready(function () {
     $("#signInBtn").on("click", async (e) => {
         const email = $("#signInForm input[name=email]").val();
