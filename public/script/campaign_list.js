@@ -80,6 +80,7 @@ $(document).ready(function () {
                 },
             },
         ],
+        processing: true,
     });
 
     // Add event listener for opening and closing details
