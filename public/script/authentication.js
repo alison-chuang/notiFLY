@@ -26,16 +26,6 @@ $.ajax({
         $("#profile-name").text(name);
     },
     error: function (e) {
-        console.error(e);
-        Swal.fire({
-            icon: "error",
-            title: `Error!`,
-            text: `User Validation Failed`,
-            showConfirmButton: true,
-            confirmButtonColor: "#F27475",
-            allowOutsideClick: false,
-            timer: 10000,
-        });
         window.localStorage.removeItem("jwtToken");
         window.location.replace("/signin.html");
     },
