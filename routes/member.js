@@ -18,11 +18,11 @@ import { isAuthorized, jwtauth } from "../util/auth.js";
 router.use(express.json());
 
 router.route("/members").post(checkKey, wrapAsync(postMember));
-router.route("/members/csv").post(upload.single("memberCsv"), wrapAsync(uploadMemberCsv));
+router.route("/members/csv").post(jwtauth, upload.single("memberCsv"), wrapAsync(uploadMemberCsv));
 router.route("/members").put(checkKey, wrapAsync(updateMember));
 router.route("/members").delete(checkKey, wrapAsync(deleteMember));
 router.route("/members/order").post(checkKey, wrapAsync(updateOrder));
-router.route("/members/order/csv").post(upload.single("orderCsv"), wrapAsync(uploadOrderCsv));
+router.route("/members/order/csv").post(jwtauth, upload.single("orderCsv"), wrapAsync(uploadOrderCsv));
 router.route("/members/order").put(checkKey, wrapAsync(deleteOrder));
 router.route("/keys").post(jwtauth, isAuthorized, wrapAsync(getKey));
 router.route("/keys").get(wrapAsync(getAllKey));
