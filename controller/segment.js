@@ -13,6 +13,7 @@ const postSegment = async (req, res) => {
     // const owner?
 
     try {
+        body.owner = req.payload.name;
         const segment = new Segment(body);
         const newSegment = await segment.save(body);
         console.log("saved segment to database");

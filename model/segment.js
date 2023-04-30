@@ -6,7 +6,7 @@ const segmentSchema = new Schema({
         type: String,
         // required: true,
     },
-    owner_name: {
+    owner: {
         type: String,
         // required: true,
     },
