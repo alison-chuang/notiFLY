@@ -1,5 +1,7 @@
 import Ajv from "ajv";
+import { v4 as uuidv4 } from "uuid";
 import { Member, newAttribute, delMember, newOrder, delOrder, checkMemberId } from "../model/member.js";
+import { ApiKey, updateOldKeys, selecAllKey } from "../model/apiKey.js";
 import { newMemberSchema } from "../util/util.js";
 import csv from "csvtojson";
 
@@ -230,4 +232,73 @@ const uploadOrderCsv = async (req, res) => {
     }
 };
 
-export { postMember, updateMember, updateOrder, deleteOrder, uploadMemberCsv, uploadOrderCsv, deleteMember };
+// generate key
+const getKey = async (req, res) => {
+    // generate key
+    const { id } = req.payload;
+    const apiKey = await uuidv4();
+    const data = {
+        user_id: id,
+        key: apiKey,
+    };
+
+    try {
+        // adjust old key expiration date first
+        await updateOldKeys();
+
+        const key = new ApiKey(data);
+        const newKey = await key.save();
+        res.status(200).json({ data: newKey });
+    } catch (e) {
+        console.error(e);
+        res.status(500).json({ error: "fail to generate key" });
+    }
+};
+
+const checkKey = async (req, res, next) => {
+    const apiKey = req.headers["x-api-key"];
+    if (!apiKey) {
+        return res.status(401).json({ error: "API key not found" });
+    }
+
+    try {
+        const keyInDb = await ApiKey.findOne({ key: apiKey });
+
+        if (!keyInDb) {
+            return res.status(401).json({ error: "Invalid API key" });
+        }
+
+        if (keyInDb.expired_at < Date.now()) {
+            return res.status(401).json({ error: "API key has expired" });
+        }
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ error: e.message });
+    }
+    next();
+};
+
+// render all user for user_list page
+const getAllKey = async (req, res) => {
+    try {
+        const allKeys = await selecAllKey();
+        console.log(allKeys);
+        return res.status(200).json({ data: allKeys });
+    } catch (e) {
+        console.log(e);
+        return res.status(500).json({ data: "get user failed" });
+    }
+};
+
+export {
+    postMember,
+    updateMember,
+    updateOrder,
+    deleteOrder,
+    uploadMemberCsv,
+    uploadOrderCsv,
+    deleteMember,
+    getKey,
+    checkKey,
+    getAllKey,
+};

@@ -8,9 +8,11 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge" />
 
         <!-- Favicon -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" />
         <link rel="shortcut icon" href="public/img/favicon.ico" />
         <link rel="stylesheet" href="./css/member.css" />
         <link rel="stylesheet" href="./css/graindashboard.css" />
+        <link rel="stylesheet" href="./css/btn.css" />
     </head>
     <body class="has-sidebar has-fixed-sidebar-and-header">
         <!-- Header -->
@@ -230,49 +232,35 @@
                     <div class="card mb-3 mb-md-4">
                         <div class="card-body">
                             <div class="mb-3 mb-md-4 d-flex justify-content-between">
-                                <div class="h3 mb-0">Import Member</div>
+                                <div class="h3 mb-0">Push Member Data with API Key</div>
                             </div>
-                            <h5 class="mb-0">Effortlessly stay up-to-date with simple CSV import.</h5>
-
-                            <div class="container">
-                                <form>
-                                    <div class="drag-area" id="member-drag-area">
-                                        <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                                        <img src="./icon/upload.png" class="upload-icon" />
-                                        <header>Upload Member Here</header>
-                                        <!-- 
-                                        <label for="member-upload">Browse File</label> -->
-                                        <span>CSV only!</span>
-                                        <input type="file" name="memberCsv" id="member-upload" accept=".csv" />
-                                    </div>
-                                    <p id="file-name"></p>
-                                    <div class="file-example">
-                                        <a href="./example_csv/member_example.csv" download
-                                            >Click & Download Member Example File</a
-                                        >
-                                    </div>
-                                    <button class="btn btn-soft-dark" id="memberUpload" type="submit">submit</button>
-                                </form>
-
-                                <form>
-                                    <div class="drag-area" id="order-drag-area">
-                                        <div class="icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                                        <img src="./icon/upload_purple.png" class="upload-icon" />
-                                        <header>Upload Order Here</header>
-                                        <span>CSV only!</span>
-                                        <!-- <span>OR</span> -->
-                                        <!-- <button type="button">Browse CSV File</button> -->
-                                        <input type="file" name="orderCsv" id="order-upload" accept=".csv" />
-                                    </div>
-                                    <p id="file-name"></p>
-                                    <div class="file-example">
-                                        <a href="./example_csv/order_example.csv" download
-                                            >Click & Download Order Example File</a
-                                        >
-                                    </div>
-                                    <button class="btn btn-soft-dark" id="orderUpload" type="submit">submit</button>
-                                </form>
-                            </div>
+                            <h5 class="mb-0">
+                                <ul style="line-height: 1.8">
+                                    <div class="md-2">Note :</div>
+                                    <li>We only display API keys once after you generate them.</li>
+                                    <li>Each newly generated key has a default validity period of 30 days.</li>
+                                    <li>
+                                        For security reasons, once a new key is generated, the old keys will expire in
+                                        five days. Please remember to change your API key.
+                                    </li>
+                                </ul>
+                            </h5>
+                            <div></div>
+                            <button id="key-btn" type="submit" class="btn btn-primary gd-plus mt-5 mb-5">
+                                Create New Key
+                            </button>
+                            <div></div>
+                            <table id="key-table" class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Key</th>
+                                        <th>Created</th>
+                                        <th>Expiration Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                            <div class="container"></div>
                         </div>
                     </div>
                 </div>
@@ -309,7 +297,10 @@
         </main>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
         <script src="./script/authentication.js"></script>
-        <script src="./script/member.js"></script>
+        <script src="./script/apikey.js"></script>
     </body>
 </html>

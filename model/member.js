@@ -200,7 +200,7 @@ const selectCity = async () => {
     return cities;
 };
 
-// TODO:get member count based on segment filter
+// get member count based on segment filter
 const matchMember = async (query) => {
     const counts = await Member.countDocuments(query);
     return counts;
