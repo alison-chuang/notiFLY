@@ -23,7 +23,12 @@ async function getDetail(id) {
         },
 
         error: function (e) {
-            alert("request segment not exist");
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Requested campaign not exist",
+                showConfirmButton: true,
+            });
             window.location.href = "/campaing_list.html";
             console.error("ERROR:", e);
         },

@@ -1,4 +1,5 @@
 import { renderQueryBuilder } from "./segment.js";
+const token = localStorage.getItem("jwtToken");
 
 const Toast = Swal.mixin({
     toast: true,
@@ -26,7 +27,11 @@ async function getDetail(id) {
             $("#name").val(body.data.name);
         },
         error: function (e) {
-            alert("request segment not exist");
+            Swal.fire({
+                icon: "error",
+                title: `Error!`,
+                text: `Requested segment is not exist`,
+            });
             window.location.href = "/segment_list.html";
             console.error("ERROR:", e);
         },
@@ -49,7 +54,6 @@ $("#update-btn").on("click", function () {
     let rules = $("#builder-import_export").queryBuilder("getRules");
     const segmentName = $("#name").val();
     const id = window.location.search.replace("?id=", "");
-    // TODO 多存 rules
     if (!$.isEmptyObject(result)) {
         const data = {
             id: id,
@@ -64,6 +68,9 @@ $("#update-btn").on("click", function () {
             data: JSON.stringify(data),
             contentType: "application/json",
             processData: false,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
             success: function (data) {
                 console.log("SUCCESS : ", data);
                 Toast.fire({
@@ -74,8 +81,14 @@ $("#update-btn").on("click", function () {
             },
             error: function (e) {
                 console.error("ERROR : ", e);
-                alert("error");
+                Toast.fire({
+                    icon: "error",
+                    title: `Error!`,
+                    text: `Please contact admin.`,
+                });
             },
         });
     }
 });
+
+export { Toast };

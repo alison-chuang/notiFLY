@@ -1,6 +1,20 @@
-// $(document).ready(function () {
-//     $(".dropdown").select2();
-// });
+const token = localStorage.getItem("jwtToken");
+
+const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: false,
+    showClass: {
+        popup: "",
+        backdrop: "",
+    },
+    hideClass: {
+        popup: "",
+        backdrop: "",
+    },
+});
 
 let filters = [
     {
@@ -57,34 +71,6 @@ let filters = [
         },
     },
     {
-        id: "created_at",
-        label: "Signed up at",
-        type: "date",
-        validation: {
-            format: "YYYY-MM-DD",
-        },
-        plugin: "datepicker",
-        plugin_config: {
-            // TODO: 可以再調整
-            format: "yyyy-mm-dd",
-            todayBtn: "linked",
-            todayHighlight: true,
-            autoclose: true,
-        },
-        // TODO: Date operater 對嗎？
-        operators: [
-            "equal",
-            "not_equal",
-            "less",
-            "less_or_equal",
-            "greater",
-            "greater_or_equal",
-            "between",
-            "not_between",
-        ],
-        //TODO: 怎麼處理日期
-    },
-    {
         id: "total_spending",
         label: "Total spending",
         type: "integer",
@@ -115,18 +101,28 @@ let filters = [
         ],
     },
     // {
-    //     id: "products",
-    //     label: "Products",
-    //     type: "string",
+    //     id: "created_at",
+    //     label: "Signed up at",
+    //     type: "date",
+    //     validation: {
+    //         format: "YYYY-MM-DD",
+    //     },
+    //     plugin: "datepicker",
+    //     plugin_config: {
+    //         format: "yyyy-mm-dd",
+    //         todayBtn: "linked",
+    //         todayHighlight: true,
+    //         autoclose: true,
+    //     },
     //     operators: [
     //         "equal",
     //         "not_equal",
-    //         "contains",
-    //         "not_contains",
-    //         "begins_with",
-    //         "not_begins_with",
-    //         "ends_with",
-    //         "not_ends_with",
+    //         "less",
+    //         "less_or_equal",
+    //         "greater",
+    //         "greater_or_equal",
+    //         "between",
+    //         "not_between",
     //     ],
     // },
 ];
@@ -141,6 +137,7 @@ async function getCityOptions() {
             type: "string",
             input: "select",
             values: cities,
+            operators: ["equal", "not_equal"],
         });
         filters.sort(function (a, b) {
             // Compare the 2 dates
@@ -184,7 +181,6 @@ $(".save").on("click", function () {
     let result = $("#builder-import_export").queryBuilder("getMongo");
     let rules = $("#builder-import_export").queryBuilder("getRules");
     const segmentName = $("#name").val();
-    // TODO 多存 rules
     if (!$.isEmptyObject(result)) {
         const data = {
             name: segmentName,
@@ -197,13 +193,24 @@ $(".save").on("click", function () {
             data: JSON.stringify(data),
             contentType: "application/json",
             processData: false,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
             success: function (data) {
                 console.log("SUCCESS : ", data);
-                alert("created");
+                Toast.fire({
+                    icon: "success",
+                    title: `Success!`,
+                    text: `Segment created`,
+                });
             },
             error: function (e) {
                 console.error("ERROR : ", e);
-                alert("error");
+                Toast.fire({
+                    icon: "error",
+                    title: `Error!`,
+                    text: `Please contact admin.`,
+                });
             },
         });
     }
@@ -218,6 +225,15 @@ $(".parse-mongo-check").on("click", function () {
             query: JSON.parse(JSON.stringify(result, null, 2)),
         };
 
+        Swal.fire({
+            title: "Checking....",
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            showConfirmButton: false,
+            allowOutsideClick: false,
+        });
+
         $.post({
             url: "/api/1.0/segments/count",
             data: JSON.stringify(data),
@@ -231,7 +247,13 @@ $(".parse-mongo-check").on("click", function () {
             },
             error: function (e) {
                 console.error("ERROR : ", e);
+                Toast.fire({
+                    icon: "error",
+                    title: `Error!`,
+                    text: `Please contact admin.`,
+                });
             },
         });
+        Swal.close();
     }
 });

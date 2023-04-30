@@ -31,7 +31,11 @@ fileInput.on("change", () => {
         const fileName = file.name;
         dragText.text(`${fileName} Uploaded`);
     } else {
-        alert("This file type is not allowed. Only CSV file is allowed.");
+        Toast.fire({
+            icon: "warning",
+            title: `Notice!`,
+            text: "This file type is not allowed. Only CSV file is allowed.",
+        });
         fileInput.val("");
     }
 });
@@ -43,25 +47,27 @@ const fileInputOrder = $("#order-upload");
 const originalTextOrder = "Upload Order Here";
 
 fileInputOrder.on("change", () => {
-    fileInputOrder.loading();
     const file = fileInputOrder.prop("files")[0];
     const fileType = file.type;
     const validExtensions = ["text/csv"];
-
+    console.log(file);
     if (validExtensions.includes(fileType)) {
         const fileName = file.name;
         dragTextOrder.text(`${fileName} Uploaded`);
     } else {
-        alert("This file type is not allowed. Only CSV file is allowed.");
+        Toast.fire({
+            icon: "warning",
+            title: `Notice!`,
+            text: "This file type is not allowed. Only CSV file is allowed.",
+        });
         fileInputOrder.val("");
         dragTextOrder.text(originalTextOrder);
     }
-    fileInputOrder.loading("stop");
 });
 
 // post member form to server
 $(document).ready(function () {
-    $("#memberUpload").click(function (e) {
+    $("#memberUpload").click(async function (e) {
         e.preventDefault();
         const file = $("#member-upload").prop("files")[0];
         const fileName = file.name;
@@ -79,7 +85,7 @@ $(document).ready(function () {
             showConfirmButton: false,
             allowOutsideClick: false,
         });
-        $.post({
+        await $.post({
             url: url,
             data: formData,
             contentType: false,
@@ -191,19 +197,10 @@ $(document).ready(function () {
             },
         });
         Swal.fire({
+            icon: "success",
             title: "Finished!",
             showConfirmButton: false,
             timer: 1000,
         });
     });
-});
-
-$("#member-upload").is(":loading");
-
-$("#loading-custom-overlay").loading({
-    overlay: $(".container"),
-});
-
-$("body").loading({
-    stoppable: true,
 });
