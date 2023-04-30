@@ -9,16 +9,23 @@ import {
     uploadMemberCsv,
     uploadOrderCsv,
     deleteMember,
+    getKey,
+    checkKey,
+    getAllKey,
 } from "../controller/member.js";
 import { upload } from "../util/util.js";
+import { isAuthorized, jwtauth } from "../util/auth.js";
 router.use(express.json());
 
-router.route("/members").post(wrapAsync(postMember));
+router.route("/members").post(checkKey, wrapAsync(postMember));
 router.route("/members/csv").post(upload.single("memberCsv"), wrapAsync(uploadMemberCsv));
-router.route("/members").put(wrapAsync(updateMember));
-router.route("/members").delete(wrapAsync(deleteMember));
-router.route("/members/order").post(wrapAsync(updateOrder));
+router.route("/members").put(checkKey, wrapAsync(updateMember));
+router.route("/members").delete(checkKey, wrapAsync(deleteMember));
+router.route("/members/order").post(checkKey, wrapAsync(updateOrder));
 router.route("/members/order/csv").post(upload.single("orderCsv"), wrapAsync(uploadOrderCsv));
-router.route("/members/order").put(wrapAsync(deleteOrder));
+router.route("/members/order").put(checkKey, wrapAsync(deleteOrder));
+router.route("/keys").post(jwtauth, isAuthorized, wrapAsync(getKey));
+router.route("/keys").get(wrapAsync(getAllKey));
+router.route("/keys/page").get(jwtauth, isAuthorized);
 
 export default router;

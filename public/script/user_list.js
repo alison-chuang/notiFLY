@@ -1,3 +1,5 @@
+const token = localStorage.getItem("jwtToken");
+
 // init table
 $(document).ready(function () {
     $("#user-table").DataTable({
@@ -17,7 +19,6 @@ $(document).ready(function () {
         scrollY: "500px",
         scrollCollapse: true,
         paging: true,
-
         ajax: {
             url: "/api/1.0/users",
             type: "GET",
@@ -66,20 +67,31 @@ $(document).on("click", ".delete-btn", function () {
         confirmButtonText: "Yes, delete it!",
     }).then((result) => {
         if (result.isConfirmed) {
+            console.log("confirmed");
             $.ajax({
-                url: `/api/1.0/users/?userId=${userId}`,
+                url: `/api/1.0/users?userId=${userId}`,
                 type: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
                 success: function (result) {
                     Swal.fire({
+                        icon: "success",
                         title: "Success!",
                         text: "User deleted",
                         showConfirmButton: false,
-                        timer: 1000,
+                        timer: 1500,
                     });
                     $tr.remove();
                 },
                 error: function (error) {
-                    Swal.fire(error, "error");
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error",
+                        text: error.responseJSON.data,
+                        showConfirmButton: true,
+                        timer: 5000,
+                    });
                 },
             });
         }

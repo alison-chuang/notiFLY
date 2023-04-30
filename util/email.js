@@ -42,11 +42,11 @@ const sendResetEmail = async (email, content) => {
         Message: {
             Body: {
                 Text: {
-                    Data: content,
+                    Data: `Please reset your password via this link ${content} within one day, thanks!`,
                 },
             },
             Subject: {
-                Data: "重置密碼信",
+                Data: "Reset Password of notiFLY",
             },
         },
         Source: SENDER,

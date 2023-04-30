@@ -82,11 +82,12 @@ $("#reset-btn").on("click", function (e) {
             Toast.fire({
                 icon: "success",
                 title: `Success!`,
-                text: `${formData.data} `,
+                text: `Password reset succeed! Please sign in again.`,
             });
 
             $("#create-btn").prop("disabled", false);
-            window.location.href = "/index.html";
+            // 這裡要清空 localstorage
+            window.location.href = "/signin.html";
         },
         error: function (e) {
             console.log("ERROR : ", e);

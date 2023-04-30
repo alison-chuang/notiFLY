@@ -15,13 +15,13 @@ import {
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-// TODO 開發方便，create user 先不限制權限中間件
-router.route("/users").post(/*jwtauth, isAuthorized*/ wrapAsync(postUser));
-router.route("/users").get(/*jwtauth, isAuthorized*/ wrapAsync(getAllUser));
+router.route("/users").post(jwtauth, isAuthorized, wrapAsync(postUser));
+router.route("/users").get(wrapAsync(getAllUser));
+// for frontend page validate logon status
 router.route("/users/pageview").get(wrapAsync(pageJwtAuth));
 router.route("/users/signin").post(wrapAsync(signIn));
 router.route("/users/password").post(jwtauth, wrapAsync(resetPassword));
 router.route("/users/password/link/:id/:token").post(wrapAsync(saveNewPassword));
-router.route("/users").delete(/*jwtauth, isAuthorized*/ wrapAsync(deleteUser));
+router.route("/users").delete(jwtauth, isAuthorized, wrapAsync(deleteUser));
 
 export default router;

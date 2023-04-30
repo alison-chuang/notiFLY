@@ -24,7 +24,7 @@ $(document).ready(function () {
             Swal.fire({
                 icon: "error",
                 title: `Error!`,
-                text: `Sign in failed:  ${e.response.data.data}`,
+                text: ` ${e.response.data}`,
                 confirmButtonColor: "#F27475",
                 allowOutsideClick: false,
             });

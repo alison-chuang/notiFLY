@@ -13,7 +13,6 @@ async function getDetail(id) {
             $("#channel").val(body.data.channel);
             $("#segmentId").val(body.data.segmentId);
             $("#send-date").val(sendTime.format(format));
-            $("input[name='type']").val(body.data.type);
             $("#interval").val(body.data.interval);
             $("#end-date").val(endTime.format(format));
             $("#title").val(body.data.message_variant[0].title);
@@ -71,27 +70,31 @@ $(document).ready(function () {
     $("#update-btn").click(function (event) {
         event.preventDefault();
 
-        // 驗證 periodic-delivery 和 interval 的值是否為數字且最小為 1
         let $periodicDelivery = $("#periodic-delivery");
         let $interval = $("#interval");
-        if ($periodicDelivery.prop("checked") && ($interval.val() < 1 || isNaN($interval.val()))) {
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "Interval must be a number greater than or equal to 1.",
-            });
-            return;
-        }
-
-        // 驗證 endtime 的值是否為 0
         let $endtime = $("#end-date");
-        if ($periodicDelivery.prop("checked") && !$endtime.val()) {
-            Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "End time is required for periodic-delivery campaign.",
-            });
-            return;
+        if ($periodicDelivery.prop("checked")) {
+            // 驗證 periodic-delivery 和 interval 的值是否為數字且最小為 1
+            if ($interval.val() < 1 || isNaN($interval.val())) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "Interval must be a number greater than or equal to 1.",
+                });
+                return;
+            }
+            // 驗證 endtime 的值是否為 0
+            if (!$endtime.val()) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "End time is required for periodic-delivery campaign.",
+                });
+                return;
+            }
+        } else {
+            $interval.val(0);
+            $("#end-date").val($("#send-date").val());
         }
 
         $("#update-btn").prop("disabled", true);
