@@ -139,6 +139,7 @@ const deleteOrder = async (req, res) => {
 // multer 上傳 csv 檔案 => save to db
 // member
 const uploadMemberCsv = async (req, res) => {
+    console.log("member CSV received.");
     if (!req.file) {
         return res.status(400).json({ error: "Please select CSV file to upload!" });
     }
@@ -152,7 +153,7 @@ const uploadMemberCsv = async (req, res) => {
         return res.status(200).json({ data: data.length });
     } catch (err) {
         console.error("err", err);
-        // console.error("errObj", err.writeErrors);
+        console.error("errObj", err.writeErrors);
         // const e = err.writeErrors.map((e) => e.err);
 
         return res.status(500).json({

@@ -2,21 +2,25 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const orderSchema = new Schema({
-    order_id: {
-        type: String,
-        unique: true,
+const orderSchema = new Schema(
+    {
+        order_id: {
+            type: String,
+            unique: false,
+            index: false,
+        },
+        date: {
+            type: Date,
+        },
+        amount: {
+            type: Number,
+        },
+        products: {
+            type: [String],
+        },
     },
-    date: {
-        type: Date,
-    },
-    amount: {
-        type: Number,
-    },
-    products: {
-        type: [String],
-    },
-});
+    { autoIndex: false }
+);
 
 const subscriptionSchema = new Schema({
     endpoint: {
