@@ -1,8 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
-const jsonParser = bodyParser.json();
 const router = express.Router();
-router.use(bodyParser.json());
 
 import { wrapAsync } from "../util/util.js";
 import { isAuthorized, jwtauth } from "../util/auth.js";
@@ -18,7 +16,9 @@ import {
     updateStatus,
     getSns,
 } from "../controller/campaign.js";
-router.use(express.json());
+
+router.use(bodyParser.json());
+// router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 router.route("/campaigns").post(jwtauth, wrapAsync(postCampaigns));
