@@ -12,7 +12,6 @@
         <link rel="shortcut icon" href="public/img/favicon.ico" />
 
         <!-- Template -->
-        <link rel="stylesheet" href="./css/campaign.css" />
         <link rel="stylesheet" href="./css/graindashboard.css" />
     </head>
 
@@ -234,9 +233,218 @@
                     <div class="card mb-3 mb-md-4">
                         <div class="card-body">
                             <div class="mb-3 mb-md-4 d-flex justify-content-between">
-                                <div class="h3 mb-0">TBD</div>
+                                <div class="h3 mb-0">Quick Start</div>
                             </div>
-                            <h5 class="mb-0">TBD</h5>
+                            <!-- Quick Start -->
+                            <div id="borderedAccordion">
+                                <div class="accordion accordion-bordered-y accordion-stacked">
+                                    <header
+                                        id="borderedAccordion-heading-1"
+                                        class="accordion-header"
+                                        aria-expanded="true"
+                                        aria-controls="borderedAccordion-1"
+                                        data-toggle="collapse"
+                                        data-target="#borderedAccordion-1"
+                                    >
+                                        <i class="gd-folder accordion-icon icon-text mr-2"></i>
+                                        <h5 class="mb-0">What is notiFLY ?</h5>
+                                        <i class="accordion-control gd-angle-down icon-text ml-auto"></i>
+                                    </header>
+
+                                    <div
+                                        id="borderedAccordion-1"
+                                        class="collapse show"
+                                        aria-labelledby="borderedAccordion-heading-1"
+                                        data-parent="#borderedAccordion"
+                                    >
+                                        <div class="accordion-body">
+                                            A push notification management system for internal use by the marketing
+                                            department of a company.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion accordion-bordered-y accordion-stacked">
+                                    <header
+                                        id="borderedAccordion-heading-2"
+                                        class="accordion-header collapsed"
+                                        aria-expanded="true"
+                                        aria-controls="borderedAccordion-2"
+                                        data-toggle="collapse"
+                                        data-target="#borderedAccordion-2"
+                                    >
+                                        <i class="gd-folder accordion-icon icon-text mr-2"></i>
+                                        <h5 class="mb-0">What are Member, Segment, and Campaign ?</h5>
+                                        <i class="accordion-control gd-angle-down icon-text ml-auto"></i>
+                                    </header>
+
+                                    <div
+                                        id="borderedAccordion-2"
+                                        class="collapse"
+                                        aria-labelledby="borderedAccordion-heading-2"
+                                        data-parent="#borderedAccordion"
+                                    >
+                                        <div class="accordion-body">
+                                            <ul>
+                                                <li>
+                                                    <strong>Member:</strong> Refers to the members of your company. They
+                                                    are people whom you can reach via your collected member database.
+                                                </li>
+                                                <li>
+                                                    <strong>Segment:</strong> Is the target audience of campaigns.
+                                                    Targeted communication based on member portfolio achieves better
+                                                    results and member experience. You can create your own Segment based
+                                                    on different campaign purposes.
+                                                </li>
+                                                <li>
+                                                    <strong>Campaign:</strong> The notification campaign you want to
+                                                    send to your members. When creating a notification campaign, you
+                                                    must select a segment, which refers to the groups of members you set
+                                                    up in the <code>Create Segment</code> section beforehand. This
+                                                    enables you to send targeted notifications to specific groups,
+                                                    improving the precision of your marketing efforts.
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="accordion accordion-bordered-y accordion-stacked">
+                                    <header
+                                        id="borderedAccordion-heading-3"
+                                        class="accordion-header collapsed"
+                                        aria-expanded="true"
+                                        aria-controls="borderedAccordion-3"
+                                        data-toggle="collapse"
+                                        data-target="#borderedAccordion-3"
+                                    >
+                                        <i class="gd-folder accordion-icon icon-text mr-2"></i>
+                                        <h5 class="mb-0">What is System User ?</h5>
+                                        <i class="accordion-control gd-angle-down icon-text ml-auto"></i>
+                                    </header>
+
+                                    <div
+                                        id="borderedAccordion-3"
+                                        class="collapse"
+                                        aria-labelledby="borderedAccordion-heading-3"
+                                        data-parent="#borderedAccordion"
+                                    >
+                                        <div class="accordion-body">
+                                            System User : People who have access to notiFLY. Note that only admin role
+                                            could create new user account. For any needs, contact admin in your company.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="accordion accordion-bordered-y accordion-stacked">
+                                    <header
+                                        id="borderedAccordion-heading-3"
+                                        class="accordion-header collapsed"
+                                        aria-expanded="true"
+                                        aria-controls="borderedAccordion-3"
+                                        data-toggle="collapse"
+                                        data-target="#borderedAccordion-3"
+                                    >
+                                        <i class="gd-folder accordion-icon icon-text mr-2"></i>
+                                        <h5 class="mb-0">How could Team collaborate better with notiFLY ?</h5>
+                                        <i class="accordion-control gd-angle-down icon-text ml-auto"></i>
+                                    </header>
+
+                                    <div
+                                        id="borderedAccordion-3"
+                                        class="collapse"
+                                        aria-labelledby="borderedAccordion-heading-3"
+                                        data-parent="#borderedAccordion"
+                                    >
+                                        <div class="accordion-body">
+                                            Based on our experience, here is some tips we recommend.
+                                            <li>
+                                                Naming : when naming Segment or Campaign , the best practice is :
+                                                “campaignName_createdate_channel_authorName”. For example:
+                                                ChristmasLimitedOffer_20230412_webpush_Alison. Clear naming can help you
+                                                quickly retrieve and analyze performance results in the future
+                                            </li>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Quick Start End -->
+                            <!-- Member Start -->
+                            <div class="mb-3 mb-md-4 d-flex justify-content-between">
+                                <div class="h3 mb-0 mt-3">Member</div>
+                            </div>
+                            <div class="accordion accordion-bordered-y accordion-stacked">
+                                <header
+                                    id="borderedAccordion-heading-1"
+                                    class="accordion-header"
+                                    aria-expanded="true"
+                                    aria-controls="borderedAccordion-1"
+                                    data-toggle="collapse"
+                                    data-target="#borderedAccordion-1"
+                                >
+                                    <i class="gd-folder accordion-icon icon-text mr-2"></i>
+                                    <h5 class="mb-0">Why & How to import member ?</h5>
+                                    <i class="accordion-control gd-angle-down icon-text ml-auto"></i>
+                                </header>
+
+                                <div
+                                    id="borderedAccordion-1"
+                                    class="collapse show"
+                                    aria-labelledby="borderedAccordion-heading-1"
+                                    data-parent="#borderedAccordion"
+                                >
+                                    <div class="accordion-body">
+                                        Once your company decides to use the notiFLY system, you first need to
+                                        synchronize your company's member data with notiFLY. 
+                                    </br>There
+                                        are two methods for updating the data. You can either upload a CSV file to
+                                        insert all member data ( We do  provide an "example CSV" for you
+                                        to download)  Alternatively, IT team could utilize an NPM package and API key to programmatically update the data to
+                                        the notiFLY database.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Member end -->
+                            <!-- Campaign Start -->
+                            <div class="mb-3 mb-md-4 d-flex justify-content-between">
+                                <div class="h3 mb-0 mt-3">Campaign</div>
+                            </div>
+                            <div class="accordion accordion-bordered-y accordion-stacked">
+                                <header
+                                    id="borderedAccordion-heading-1"
+                                    class="accordion-header"
+                                    aria-expanded="true"
+                                    aria-controls="borderedAccordion-1"
+                                    data-toggle="collapse"
+                                    data-target="#borderedAccordion-1"
+                                >
+                                    <i class="gd-folder accordion-icon icon-text mr-2"></i>
+                                    <h5 class="mb-0">What is Delivery Type ?</h5>
+                                    <i class="accordion-control gd-angle-down icon-text ml-auto"></i>
+                                </header>
+
+                                <div
+                                    id="borderedAccordion-1"
+                                    class="collapse show"
+                                    aria-labelledby="borderedAccordion-heading-1"
+                                    data-parent="#borderedAccordion"
+                                >
+                                    <div class="accordion-body">
+                                        <ul>
+                                            <li>
+                                            <strong>One-time Delivery:</strong> You send this campaign only once, and it will end after that.
+                                            </li>
+                                            <li>
+                                                <strong>Periodic Delivery:</strong> You will send the same message in a regular basis.
+                                            </li>
+                                         </ul>
+                                         Remember, when you choose periodic delivery, interval and end_time are required. Interval means the message will be sent out every interval days. If interval is set to one, it means the message will be sent at the same time every day until the end_time is reached.
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- Campaign end -->
                         </div>
                     </div>
                 </div>
