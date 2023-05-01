@@ -1,4 +1,5 @@
 import express from "express";
+import bodyParser from "body-parser";
 const router = express.Router();
 
 import { wrapAsync } from "../util/util.js";
@@ -16,6 +17,7 @@ import {
     getSns,
 } from "../controller/campaign.js";
 
+router.use(bodyParser.json());
 router.use(
     express.json({
         type: [
