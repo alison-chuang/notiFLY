@@ -16,4 +16,4 @@ public/uploads/*
 !public/uploads/.gitkeep
 
 # upload member in csv
-member_csv
+member_csv/*.csv
