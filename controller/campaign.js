@@ -238,6 +238,7 @@ const updateStatus = async (req, res) => {
 
 const getSns = (req, res) => {
     console.log("sns", req.body);
+    return res.status(200).json({ data: req.body });
 };
 
 export {

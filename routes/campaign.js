@@ -1,5 +1,9 @@
 import express from "express";
+import bodyParser from "body-parser";
+const jsonParser = bodyParser.json();
 const router = express.Router();
+router.use(bodyParser.json());
+
 import { wrapAsync } from "../util/util.js";
 import { isAuthorized, jwtauth } from "../util/auth.js";
 import {
