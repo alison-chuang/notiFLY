@@ -18,7 +18,14 @@ import {
 } from "../controller/campaign.js";
 
 router.use(bodyParser.json());
-// router.use(express.json());
+router.use(
+    express.json({
+        type: [
+            "application/json",
+            "text/plain", // AWS sends this content-type for its messages/notifications
+        ],
+    })
+);
 router.use(express.urlencoded({ extended: true }));
 
 router.route("/campaigns").post(jwtauth, wrapAsync(postCampaigns));
