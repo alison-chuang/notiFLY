@@ -236,6 +236,10 @@ const updateStatus = async (req, res) => {
     }
 };
 
+const getSns = (req, res) => {
+    console.log("sns", req.body);
+};
+
 export {
     getS3Url,
     postCampaigns,
@@ -246,4 +250,5 @@ export {
     genCopy,
     updateCampaignDetail,
     updateStatus,
+    getSns,
 };

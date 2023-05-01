@@ -51,6 +51,7 @@ async function jwtauth(req, res, next) {
         console.error(e);
         return res.status(403).json({ data: `Wrong token or token expired.${e}` });
     }
+    console.log("JWT passed.");
     next();
 }
 

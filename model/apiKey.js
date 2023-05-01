@@ -26,7 +26,6 @@ const apiKeySchema = new Schema({
             date.setDate(date.getDate() + 30);
             return date;
         },
-        index: { expires: "30d" }, // set index to expire in 30 days
     },
 });
 

@@ -12,6 +12,7 @@ import {
     genCopy,
     updateCampaignDetail,
     updateStatus,
+    getSns,
 } from "../controller/campaign.js";
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
@@ -24,6 +25,7 @@ router.route("/campaigns/s3Url").get(wrapAsync(getS3Url));
 router.route("/campaigns/images").get(wrapAsync(getS3Images));
 router.route("/lambdaUpdateDb").post(wrapAsync(lambdaUpdateDb));
 router.route("/campaigns/autocopy").post(wrapAsync(genCopy));
+router.route("/campaigns/sns").post(wrapAsync(getSns));
 router.route("/campaigns/:id").get(wrapAsync(getCampaignById));
 
 export default router;
