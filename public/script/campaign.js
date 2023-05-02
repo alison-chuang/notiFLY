@@ -341,19 +341,12 @@ $(document).ready(function () {
 
 // toggle list for copy & gallery
 $(document).ready(function () {
-    $("#borderedAccordion-heading-1").click(function () {
-        $("#borderedAccordion-1").collapse("toggle");
-    });
-
-    $("#borderedAccordion-heading-2").click(function () {
-        $("#borderedAccordion-2").collapse("toggle");
-    });
-});
-
-$(document).ready(function () {
     $(".accordion-header").click(function () {
+        $(this).toggleClass("collapsed");
         $(this).toggleClass("show hide");
         $(this).next(".collapse").toggleClass("show hide");
+        const expanded = $(this).attr("aria-expanded");
+        $(this).attr("aria-expanded", !expanded);
     });
 });
 

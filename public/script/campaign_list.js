@@ -61,8 +61,8 @@ $(document).ready(function () {
             {
                 data: "created",
                 title: "Created",
-                render: function (data) {
-                    var localTime = moment.utc(data).utcOffset("+08:00");
+                render: function (data, type, row) {
+                    var localTime = moment.utc(row.created_at).utcOffset("+08:00");
                     return localTime.format("YYYY-MM-DD HH:mm:ss");
                 },
             },
