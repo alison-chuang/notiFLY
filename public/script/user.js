@@ -1,3 +1,5 @@
+const token = localStorage.getItem("jwtToken");
+
 const Toast = Swal.mixin({
     toast: true,
     position: "top-end",
@@ -31,6 +33,9 @@ $(document).ready(function () {
             $.post({
                 url: "/api/1.0/users",
                 data: data,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
                 success: function (formData) {
                     console.log("SUCCESS : ", formData);
 
