@@ -5,7 +5,7 @@ import "./model/database.js";
 import { Campaign } from "./model/campaign.js";
 import { Member } from "./model/member.js";
 import { sendToS3 } from "./util/upload.js";
-import { REGISTERED, PROCESSING, FAILED } from "./statusConstant.js";
+import { REGISTERED, PROCESSING, FAILED, FINISHED } from "./statusConstant.js";
 import * as q from "./util/queue.js";
 
 const MIN = 1000 * 60;
@@ -84,11 +84,8 @@ const findLatestJob = (jobs, targetTime) => {
     return [null, null];
 };
 
-const updateStatusAndNext = async (record, idx, totalCount, s3fileNames, status) => {
+const updateStatus = async (record, idx, totalCount, s3fileNames, status) => {
     const filter = { _id: record._id };
-
-    const nextSendTime = addDays(record.send_time, record.interval);
-
     record.jobs[idx].total_count = totalCount;
     record.jobs[idx].s3fileNames = s3fileNames;
     record.jobs[idx].status = status;
@@ -98,12 +95,38 @@ const updateStatusAndNext = async (record, idx, totalCount, s3fileNames, status)
             $set: {
                 jobs: record.jobs,
                 bucket: record.bucket,
-                next_send_time: nextSendTime,
             },
         },
     ];
     const doc = await Campaign.findOneAndUpdate(filter, update, { new: true });
-    console.log("updated doc:", doc);
+    console.log(new Date().toISOString, "updated status and next:", { _id, totalCount, status, nextSendTime });
+    // console.log("updated doc:", doc);
+};
+
+const updateNext = async (id, next_send_time) => {
+    const filter = { _id: id };
+    const update = [
+        {
+            $set: {
+                next_send_time,
+            },
+        },
+    ];
+    const doc = await Campaign.findOneAndUpdate(filter, update, { new: true });
+    console.log(new Date().toISOString, `updated next_sent_time: ${next_send_time}`);
+};
+
+const markFinished = async (id) => {
+    const filter = { _id: id };
+    const update = [
+        {
+            $set: {
+                status: FINISHED,
+            },
+        },
+    ];
+    const doc = await Campaign.findOneAndUpdate(filter, update, { new: true });
+    console.log(new Date().toISOString, `updated status: ${FINISHED}`);
 };
 
 const main = async () => {
@@ -182,11 +205,18 @@ const main = async () => {
             // update status of sending campiagns to SQS
             // launched => processing, or failed
             const hasAllSent = msgStatuses.every((msgStatus) => msgStatus.$metadata.httpStatusCode == 200);
+            const nextSendTime = addDays(record.send_time, record.interval);
             if (hasAllSent) {
-                updateStatusAndNext(record, latestIdx, totalCount, s3fileNames, PROCESSING);
+                updateStatus(record, latestIdx, totalCount, s3fileNames, PROCESSING);
             } else {
                 console.error("send to SQS failed");
-                updateStatusAndNext(record, latestIdx, totalCount, s3fileNames, FAILED);
+                updateStatus(record, latestIdx, totalCount, s3fileNames, FAILED);
+            }
+
+            if (record.end_time.getTime() < nextSendTime.getTime()) {
+                markFinished(record._id);
+            } else {
+                updateNext(record._id, nextSendTime);
             }
         }
     } catch (e) {
