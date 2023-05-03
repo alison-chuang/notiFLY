@@ -21,15 +21,29 @@ $(document).ready(function () {
     $("#create-btn").click(function (e) {
         e.preventDefault();
 
-        // check password matched
+        let name = $("#name").val();
+        let email = $("#email").val();
         let password = $("#password").val();
         let confirm_password = $("#password_confirm").val();
 
+        // js injection
+        name = $("<div/>").text(name).html();
+        email = $("<div/>").text(email).html();
+        password = $("<div/>").text(password).html();
+        confirm_password = $("<div/>").text(confirm_password).html();
+
+        // check password matched
         if (password !== confirm_password) {
             $("#error-message").text("Passwords do not match");
         } else {
             $("#create-btn").prop("disabled", true);
-            let data = $("#user-form").serialize();
+
+            let data = {
+                name,
+                email,
+                password,
+            };
+
             $.post({
                 url: "/api/1.0/users",
                 data: data,

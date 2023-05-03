@@ -233,6 +233,43 @@ $(document).ready(function () {
     $("#save-btn").click(function (event) {
         event.preventDefault();
 
+        // input 是否有空值 (name, channel, segment, sent_time)
+        if ($("#name").val() === "") {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Name field is required.",
+            });
+            return;
+        }
+
+        if ($("#channel").val() === "") {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Channel field is required.",
+            });
+            return;
+        }
+
+        if ($("#segment").val() === "") {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Segment field is required.",
+            });
+            return;
+        }
+
+        if ($("#send-date").val() === "") {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Send Time field is required.",
+            });
+            return;
+        }
+
         // 驗證 periodic-delivery 和 interval 的值是否為數字且最小為 1
         let $periodicDelivery = $("#periodic-delivery");
         let $interval = $("#interval");
@@ -256,9 +293,29 @@ $(document).ready(function () {
             Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: "For periodic-delivery campaigns, an end time is required and the send time must be later than the end time",
+                text: "For periodic-delivery campaigns, end time is required and send time must be earlier than end time",
             });
             return;
+        }
+
+        // js injection
+        const name = $("#name").val();
+        const title = $("#title").val();
+        const subject = $("#subject").val();
+        const copy = $("#copy").val();
+        const landing = $("#landing").val();
+        const image = $("#image").val();
+
+        let fields = [name, subject, title, copy, landing, image];
+        for (let field of fields) {
+            if (field.includes("<") || field.includes(">")) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: " Special charaters  <  or  >  is not allowed in input field. ",
+                });
+                return;
+            }
         }
 
         $("#save-btn").prop("disabled", true);
@@ -307,6 +364,25 @@ $(document).ready(function () {
         const product = $("#product").val();
         const keywords = $("#keywords").val();
         const channel = $("#channel").val();
+
+        // 限制 input 長度
+        if (product.length > 100 || keywords.length > 100) {
+            Toast.fire({
+                icon: "Error!",
+                title: `Too Long...`,
+                text: `Product or keywords cannot exceed 100 characters.`,
+            });
+        }
+
+        Toast.fire({
+            title: "Generating...",
+            didOpen: () => {
+                Toast.showLoading();
+            },
+            showConfirmButton: false,
+            allowOutsideClick: false,
+        });
+
         $.ajax({
             url: "/api/1.0/campaigns/autocopy",
             type: "POST",
@@ -319,11 +395,16 @@ $(document).ready(function () {
                 channel: channel,
             },
             success: function (response) {
-                console.log(response);
                 $("#auto-copy-response").text(response.data);
+                Toast.close();
             },
-            error: function (xhr, status, error) {
-                console.log(error);
+            error: function (error) {
+                Toast.close();
+                Toast.fire({
+                    icon: "warning",
+                    title: `Sorry`,
+                    text: `The magic is current overloaded, please try it later.`,
+                });
             },
         });
     });

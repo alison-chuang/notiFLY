@@ -5,12 +5,11 @@ import { selectCity, matchMember } from "../model/member.js";
 const postSegment = async (req, res) => {
     const { body } = req;
     let { name, query, rules } = body;
-    console.log("name", name);
-    console.log("query", query);
-    console.log("rules", rules);
-    //資料驗證
 
-    // const owner?
+    //資料驗證
+    if (!name) {
+        return res.status(400).json({ data: "Name field is required." });
+    }
 
     try {
         body.owner = req.payload.name;

@@ -131,7 +131,7 @@ table.dataTable tr.dt-hasChild td.dt-control:before {
 }
 
 .rainbow-text {
-    background: linear-gradient(to right, rgb(164, 3, 223), rgb(198, 79, 222), rgb(220, 108, 166), rgb(241, 154, 224));
+    background: linear-gradient(to right, rgb(164, 3, 223), rgb(198, 79, 222), rgb(220, 108, 166), rgb(236, 138, 216));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     color: white;
@@ -162,8 +162,9 @@ table.dataTable tr.dt-hasChild td.dt-control:before {
 }
 
 #magic-container {
-    border: 0.8px double;
-    border-image: linear-gradient(to right, red, orange, rgb(255, 247, 0), green, blue, indigo, violet) 1;
+    border: 1px double;
+    border-image: linear-gradient(to right, rgb(164, 3, 223), rgb(198, 79, 222), rgb(220, 108, 166), rgb(236, 138, 216))
+        1;
     border-radius: 10px;
 }
 

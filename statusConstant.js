@@ -2,6 +2,7 @@
 export const REGISTERED = "registered";
 export const RUNNING = "running";
 export const STOPPED = "stopped";
+export const FINISHED = "finished";
 
 // job
 export const LAUNCHED = "launched";

@@ -19,7 +19,7 @@ $(document).ready(function () {
             Swal.fire({
                 icon: "error",
                 title: `Error!`,
-                text: ` ${e.response.data}`,
+                text: ` ${e.response.data.data}`,
                 confirmButtonColor: "#F27475",
                 allowOutsideClick: false,
             });

@@ -75,11 +75,48 @@ $(document).ready(function () {
     $("#update-btn").click(function (event) {
         event.preventDefault();
 
+        // input 是否有空值 (name, channel, segment, sent_time)
+        if ($("#name").val() === "") {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Name field is required.",
+            });
+            return;
+        }
+
+        if ($("#channel").val() === "") {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Channel field is required.",
+            });
+            return;
+        }
+
+        if ($("#segment").val() === "") {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Segment field is required.",
+            });
+            return;
+        }
+
+        if ($("#send-date").val() === "") {
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Send Time field is required.",
+            });
+            return;
+        }
+
+        // 驗證 periodic-delivery 和 interval 的值是否為數字且最小為 1
         let $periodicDelivery = $("#periodic-delivery");
         let $interval = $("#interval");
         let $endtime = $("#end-date");
         if ($periodicDelivery.prop("checked")) {
-            // 驗證 periodic-delivery 和 interval 的值是否為數字且最小為 1
             if ($interval.val() < 1 || isNaN($interval.val())) {
                 Swal.fire({
                     icon: "error",
@@ -100,6 +137,26 @@ $(document).ready(function () {
         } else {
             $interval.val(0);
             $("#end-date").val($("#send-date").val());
+        }
+
+        // js injection
+        const name = $("#name").val();
+        const title = $("#title").val();
+        const subject = $("#subject").val();
+        const copy = $("#copy").val();
+        const landing = $("#landing").val();
+        const image = $("#image").val();
+
+        let fields = [name, subject, title, copy, landing, image];
+        for (let field of fields) {
+            if (field.includes("<") || field.includes(">")) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: " Special charaters  <  or  >  is not allowed in input field. ",
+                });
+                return;
+            }
         }
 
         $("#update-btn").prop("disabled", true);

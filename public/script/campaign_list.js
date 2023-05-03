@@ -63,7 +63,7 @@ $(document).ready(function () {
                 title: "Created",
                 render: function (data, type, row) {
                     var localTime = moment.utc(row.created_at).utcOffset("+08:00");
-                    return localTime.format("YYYY-MM-DD HH:mm:ss");
+                    return localTime.format("YYYY-MM-DD HH:mm");
                 },
             },
             {

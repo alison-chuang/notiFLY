@@ -66,7 +66,7 @@ let filters = [
             "not_between",
         ],
         validation: {
-            min: 1923,
+            min: 1900,
             step: 1,
         },
     },
@@ -181,13 +181,25 @@ $(".save").on("click", function () {
     let result = $("#builder-import_export").queryBuilder("getMongo");
     let rules = $("#builder-import_export").queryBuilder("getRules");
     const segmentName = $("#name").val();
+    const encodedSegmentName = $("<div>").text(segmentName).html();
+
+    // segment name can't be empty
+    if (!segmentName) {
+        Toast.fire({
+            icon: "error",
+            title: `Error!`,
+            text: `Name field is required`,
+        });
+        return;
+    }
+
     if (!$.isEmptyObject(result)) {
         const data = {
-            name: segmentName,
+            name: encodedSegmentName,
             query: JSON.parse(JSON.stringify(result, null, 2)),
             rules: rules,
         };
-        console.log(data);
+
         $.post({
             url: "/api/1.0/segments",
             data: JSON.stringify(data),
@@ -225,10 +237,10 @@ $(".parse-mongo-check").on("click", function () {
             query: JSON.parse(JSON.stringify(result, null, 2)),
         };
 
-        Swal.fire({
-            title: "Checking....",
+        Toast.fire({
+            title: "Checking...",
             didOpen: () => {
-                Swal.showLoading();
+                Toast.showLoading();
             },
             showConfirmButton: false,
             allowOutsideClick: false,
@@ -241,12 +253,14 @@ $(".parse-mongo-check").on("click", function () {
             processData: false,
             success: function (data) {
                 console.log("MEMBER COUNTS : ", data);
+                Toast.close();
                 $("#member-count").html(`
                 <p>Estimated matched member :</p>
                 <p>${data.data}</p>`);
             },
             error: function (e) {
                 console.error("ERROR : ", e);
+                Toast.close();
                 Toast.fire({
                     icon: "error",
                     title: `Error!`,
@@ -254,6 +268,5 @@ $(".parse-mongo-check").on("click", function () {
                 });
             },
         });
-        Swal.close();
     }
 });

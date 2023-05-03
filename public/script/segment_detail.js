@@ -53,11 +53,23 @@ $("#update-btn").on("click", function () {
     let result = $("#builder-import_export").queryBuilder("getMongo");
     let rules = $("#builder-import_export").queryBuilder("getRules");
     const segmentName = $("#name").val();
+    const encodedSegmentName = $("<div>").text(segmentName).html();
     const id = window.location.search.replace("?id=", "");
+
+    // segment name can't be empty
+    if (!segmentName) {
+        Toast.fire({
+            icon: "error",
+            title: `Error!`,
+            text: `Name field is required`,
+        });
+        return;
+    }
+
     if (!$.isEmptyObject(result)) {
         const data = {
             id: id,
-            name: segmentName,
+            name: encodedSegmentName,
             query: JSON.parse(JSON.stringify(result, null, 2)),
             rules: rules,
         };

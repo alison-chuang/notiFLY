@@ -24,8 +24,6 @@ const getS3Url = async (req, res) => {
 // save campaign info to db
 const postCampaigns = async (req, res) => {
     console.log("req.body", req.body);
-    // TODO 後端要做資料驗證 xss attack
-    // TODO 時區問題（收local, 但 mongodb UTC 0 , 但cron_job拿也是 UTC 0 )
     const owner = req.payload.name;
     let {
         name,
@@ -43,16 +41,23 @@ const postCampaigns = async (req, res) => {
         landing,
     } = req.body;
 
-    /* 如果是 one-time delivery, set interval=0 & endTime=sendTime
-    如果是 periodic delivery, 沒有 interval endTime 要報錯 */
+    // name, channel, segment, sent_time 必填
+    if (!name || !channel || !segmentId || !sendTime) {
+        return res.status(400).json({ data: "Required filed is empty" });
+    }
+    // one-time delivery, set interval=0 & endTime=sendTime
     if (type === "one-time-delivery") {
         interval = Number(0);
         endTime = sendTime;
     }
-
+    // periodic delivery, 沒有 interval endTime 要報錯, endTIme > sendTime
     if (type === "periodic-delivery") {
         if (!interval || !endTime) {
-            return res.status(400).json({ data: "interval & endtime is required for periodic-delivery " });
+            return res.status(400).json({ data: "interval & endtime is required for periodic-delivery." });
+        }
+
+        if (endTime < sendTime) {
+            return res.status(400).json({ data: "End Time should be later than Send Time" });
         }
     }
 
@@ -153,8 +158,14 @@ const getCampaignById = async (req, res) => {
 // Open AI generate copy
 const genCopy = async (req, res) => {
     const { tone, language, channel, product, keywords } = req.body;
+
+    // 驗證 input 長度
+    if (product.length > 100 || keywords.length > 100) {
+        return res.status(400).json({ data: "Product or keywords cannot exceed 100 characters." });
+    }
+
     const prompt = `Using a ${tone} tone, write a ${language} ${channel} copy highlighting the ${keywords} of a ${product}.
-    No more than 20 words in total.`;
+    No more than 20 words in total. No need to provide translation. `;
     const api = new ChatGPTAPI({
         apiKey: process.env.OPEN_AI,
         completionParams: {
