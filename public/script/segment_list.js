@@ -2,6 +2,7 @@
 
 $(document).ready(function () {
     $("#segment-table").DataTable({
+        order: [[1, "desc"]],
         searching: true,
         sPaginationType: "full_numbers",
         lengthMenu: [

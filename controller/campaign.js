@@ -165,7 +165,7 @@ const genCopy = async (req, res) => {
     }
 
     const prompt = `Using a ${tone} tone, write a ${language} ${channel} copy highlighting the ${keywords} of a ${product}.
-    No more than 20 words in total. No need to provide translation. `;
+    No more than 25 words in total. No imcompleted sentences is allowed No need to provide translation. simplified Chinese is permitted.`;
     const api = new ChatGPTAPI({
         apiKey: process.env.OPEN_AI,
         completionParams: {

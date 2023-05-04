@@ -75,6 +75,7 @@ $("#key-btn").click(function () {
 
 $(document).ready(function () {
     $("#key-table").DataTable({
+        order: [[2, "desc"]],
         searching: true,
         sPaginationType: "full_numbers",
         lengthMenu: [

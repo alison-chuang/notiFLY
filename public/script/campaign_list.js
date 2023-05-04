@@ -18,6 +18,7 @@ const Toast = Swal.mixin({
 // init table
 $(document).ready(function () {
     let table = $("#campaign-table").DataTable({
+        order: [[3, "desc"]],
         searching: true,
         sPaginationType: "full_numbers",
         lengthMenu: [
