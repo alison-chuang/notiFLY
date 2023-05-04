@@ -3,7 +3,7 @@ dotenv.config();
 const { DATABASE_URL } = process.env;
 
 import mongoose from "mongoose";
-mongoose.set("debug", true);
+// mongoose.set("debug", true);
 const url = DATABASE_URL;
 const db = mongoose
     .connect(url)

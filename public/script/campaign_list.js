@@ -35,6 +35,7 @@ $(document).ready(function () {
         scrollY: "500px",
         scrollCollapse: true,
         paging: true,
+        deferRender: true,
 
         ajax: {
             url: "/api/1.0/campaigns",
