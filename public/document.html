@@ -12,6 +12,7 @@
         <link rel="shortcut icon" href="/icon/favicon.png" />
 
         <!-- Template -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/css/shepherd.css"/>
         <link rel="stylesheet" href="./css/graindashboard.css" />
     </head>
 
@@ -105,11 +106,24 @@
             <!-- Sidebar Nav -->
             <aside id="sidebar" class="js-custom-scroll side-nav">
                 <ul id="sideNav" class="side-nav-menu side-nav-menu-top-level mb-0">
+                    
+                <div id="tour-step-0">
                     <!-- Title -->
                     <li class="sidebar-heading h6">Document</li>
                     <!-- End Title -->
 
                     <!-- Dashboard -->
+                    <li class="side-nav-menu-item">
+                        <div class="side-nav-menu-link media align-items-center">
+                            <span class="side-nav-menu-icon d-flex mr-3">
+                                <i class="gd-map-alt"></i>
+                            </span>
+                            <span class="side-nav-fadeout-on-closed media-body" id="tour">Web Tour</span>
+                        </div>
+                    </li>
+                    <!-- End Dashboard -->
+
+                      <!-- Dashboard -->
                     <li class="side-nav-menu-item">
                         <a class="side-nav-menu-link media align-items-center" href="/document.html">
                             <span class="side-nav-menu-icon d-flex mr-3">
@@ -119,7 +133,9 @@
                         </a>
                     </li>
                     <!-- End Dashboard -->
+                </div>
 
+                    <div id="tour-step-1">
                     <!-- Title -->
                     <li class="sidebar-heading h6">Member</li>
                     <!-- End Title -->
@@ -141,11 +157,13 @@
                             <span class="side-nav-menu-icon d-flex mr-3">
                                 <i class="gd-key"></i>
                             </span>
-                            <span class="side-nav-fadeout-on-closed media-body">API Key</span>
+                            <span class="side-nav-fadeout-on-closed media-body"id="tour-step-1">API Key</span>
                         </a>
                     </li>
                     <!-- End Dashboard -->
+                    </div>
 
+                    <div id="tour-step-2">
                     <!-- Title -->
                     <li class="sidebar-heading h6">Segment</li>
                     <!-- End Title -->
@@ -171,7 +189,9 @@
                         </a>
                     </li>
                     <!-- End Documentation -->
+                    </div>
 
+                    <div id="tour-step-3">
                     <!-- Title -->
                     <li class="sidebar-heading h6">Campaign</li>
                     <!-- End Title -->
@@ -197,7 +217,9 @@
                         </a>
                     </li>
                     <!-- End Documentation -->
+                    </div>
 
+                    <div id="tour-step-4">
                     <!-- Title -->
                     <li class="sidebar-heading h6">System User</li>
                     <!-- End Title -->
@@ -223,6 +245,7 @@
                         </a>
                     </li>
                     <!-- End Documentation -->
+                    </div>
                 </ul>
             </aside>
             <!-- End Sidebar Nav -->
@@ -454,7 +477,9 @@
             <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
             <script src="./script/authentication.js"></script>
+            <script src="./script/tour.js"></script>
             <script src="./script/document.js"></script>
         </main>
     </body>
