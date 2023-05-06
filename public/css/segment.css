@@ -76,3 +76,7 @@
 .rule-value-container input[type="radio"] {
     margin-right: 5%;
 }
+
+.rule-value-container select {
+    padding: 1px 20% !important;
+}
