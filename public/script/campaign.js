@@ -468,3 +468,33 @@ fileInput.on("change", async function (event) {
     console.log(file);
     await handleImageSelection(file);
 });
+
+$("#delivery-type-help").click(function () {
+    Swal.fire({
+        icon: "info",
+        title: "What is delivery type?",
+        html: `<div style="text-align: left;">
+                    <ul>
+                    <li>One-time Delivery
+                     <ul>
+                        <li> Delivered only once at the Send Time.</li>
+                    </ul>
+                    </li>
+                    </br>
+                    <li>Periodic Delivery
+                        <ul>
+                            <li>Send Time: 2023/6/13 12:00</li>
+                            <li>Interval: 1</li>
+                            <li>End Time: 2023/6/20 13:00</li>
+                        </ul>
+                    </li>
+                    </ul>
+                It means that your campaign will be first delivered  at 2023/6/13 12:00. 
+                And then, at 6/14 12:00, 6/15 12:00....repeat every 1 day until 6/20 12:00.
+            </div>`,
+        showCloseButton: true,
+        showCancelButton: false,
+        focusConfirm: false,
+        confirmButtonText: "Great!",
+    });
+});

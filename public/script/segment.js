@@ -281,5 +281,6 @@ $("#segment-example").on("click", function () {
         width: "auto",
         height: "auto",
         imageAlt: "Define your Segment (target audience) for campaign.",
+        confirmButtonText: "Great!",
     });
 });
