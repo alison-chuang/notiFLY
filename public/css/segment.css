@@ -69,5 +69,10 @@
 }
 
 .rule-value-container label {
-    justify-content: left;
+    width: 200%;
+    justify-content: flex-start;
+}
+
+.rule-value-container input[type="radio"] {
+    margin-right: 5%;
 }
