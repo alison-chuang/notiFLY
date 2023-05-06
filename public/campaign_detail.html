@@ -17,6 +17,7 @@
             integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0"
             crossorigin="anonymous"
         />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/css/shepherd.css" />
         <link rel="stylesheet" href="./css/campaign.css" />
         <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet" />
         <link rel="stylesheet" href="./css/graindashboard.css" />
@@ -112,124 +113,133 @@
             <!-- Sidebar Nav -->
             <aside id="sidebar" class="js-custom-scroll side-nav">
                 <ul id="sideNav" class="side-nav-menu side-nav-menu-top-level mb-0">
-                    <!-- Title -->
-                    <li class="sidebar-heading h6">Document</li>
-                    <!-- End Title -->
-
-                    <!-- Dashboard -->
-                    <li class="side-nav-menu-item">
-                        <a class="side-nav-menu-link media align-items-center" href="/document.html">
-                            <span class="side-nav-menu-icon d-flex mr-3">
-                                <i class="gd-light-bulb"></i>
-                            </span>
-                            <span class="side-nav-fadeout-on-closed media-body">Instruction</span>
-                        </a>
-                    </li>
-                    <!-- End Dashboard -->
-
-                    <!-- Title -->
-                    <li class="sidebar-heading h6">Member</li>
-                    <!-- End Title -->
-
-                    <!-- Dashboard -->
-                    <li class="side-nav-menu-item">
-                        <a class="side-nav-menu-link media align-items-center" href="/member.html">
-                            <span class="side-nav-menu-icon d-flex mr-3">
-                                <i class="gd-cloud-up"></i>
-                            </span>
-                            <span class="side-nav-fadeout-on-closed media-body">Import</span>
-                        </a>
-                    </li>
-                    <!-- End Dashboard -->
-
-                    <!-- Dashboard -->
-                    <li class="side-nav-menu-item">
-                        <a class="side-nav-menu-link media align-items-center" href="/apikey.html">
-                            <span class="side-nav-menu-icon d-flex mr-3">
-                                <i class="gd-key"></i>
-                            </span>
-                            <span class="side-nav-fadeout-on-closed media-body">API Key</span>
-                        </a>
-                    </li>
-                    <!-- End Dashboard -->
-
-                    <!-- Title -->
-                    <li class="sidebar-heading h6">Segment</li>
-                    <!-- End Title -->
-
-                    <!-- Dashboard -->
-                    <li class="side-nav-menu-item">
-                        <a class="side-nav-menu-link media align-items-center" href="/segment.html">
-                            <span class="side-nav-menu-icon d-flex mr-3">
-                                <i class="gd-pencil-alt"></i>
-                            </span>
-                            <span class="side-nav-fadeout-on-closed media-body">Create</span>
-                        </a>
-                    </li>
-                    <!-- End Dashboard -->
-
-                    <!-- Documentation -->
-                    <li class="side-nav-menu-item">
-                        <a class="side-nav-menu-link media align-items-center" href="/segment_list.html">
-                            <span class="side-nav-menu-icon d-flex mr-3">
-                                <i class="gd-file"></i>
-                            </span>
-                            <span class="side-nav-fadeout-on-closed media-body">List</span>
-                        </a>
-                    </li>
-                    <!-- End Documentation -->
-
-                    <!-- Title -->
-                    <li class="sidebar-heading h6">Campaign</li>
-                    <!-- End Title -->
-
-                    <!-- Dashboard -->
-                    <li class="side-nav-menu-item">
-                        <a class="side-nav-menu-link media align-items-center" href="/campaign.html">
-                            <span class="side-nav-menu-icon d-flex mr-3">
-                                <i class="gd-pencil-alt"></i>
-                            </span>
-                            <span class="side-nav-fadeout-on-closed media-body">Create</span>
-                        </a>
-                    </li>
-                    <!-- End Dashboard -->
-
-                    <!-- Documentation -->
-                    <li class="side-nav-menu-item">
-                        <a class="side-nav-menu-link media align-items-center" href="/campaign_list.html">
-                            <span class="side-nav-menu-icon d-flex mr-3">
-                                <i class="gd-file"></i>
-                            </span>
-                            <span class="side-nav-fadeout-on-closed media-body">List</span>
-                        </a>
-                    </li>
-                    <!-- End Documentation -->
-
-                    <!-- Title -->
-                    <li class="sidebar-heading h6">System User</li>
-                    <!-- End Title -->
-
-                    <!-- Dashboard -->
-                    <li class="side-nav-menu-item">
-                        <a class="side-nav-menu-link media align-items-center" href="/user.html">
-                            <span class="side-nav-menu-icon d-flex mr-3">
-                                <i class="gd-pencil-alt"></i>
-                            </span>
-                            <span class="side-nav-fadeout-on-closed media-body">Create</span>
-                        </a>
-                    </li>
-                    <!-- End Dashboard -->
-
-                    <!-- Documentation -->
-                    <li class="side-nav-menu-item">
-                        <a class="side-nav-menu-link media align-items-center" href="/user_list.html">
-                            <span class="side-nav-menu-icon d-flex mr-3">
-                                <i class="gd-file"></i>
-                            </span>
-                            <span class="side-nav-fadeout-on-closed media-body">List</span>
-                        </a>
-                    </li>
-                    <!-- End Documentation -->
+                    <div id="tour-step-0">
+                        <!-- Title -->
+                        <li class="sidebar-heading h6">Get Started</li>
+                        <!-- End Title -->
+                        <!-- Dashboard -->
+                        <li class="side-nav-menu-item">
+                            <div class="side-nav-menu-link media align-items-center">
+                                <span class="side-nav-menu-icon d-flex mr-3">
+                                    <i class="gd-map-alt"></i>
+                                </span>
+                                <span class="side-nav-fadeout-on-closed media-body" id="tour">Web Tour</span>
+                            </div>
+                        </li>
+                        <!-- End Dashboard -->
+                        <!-- Dashboard -->
+                        <li class="side-nav-menu-item">
+                            <a class="side-nav-menu-link media align-items-center" href="/document.html">
+                                <span class="side-nav-menu-icon d-flex mr-3">
+                                    <i class="gd-light-bulb"></i>
+                                </span>
+                                <span class="side-nav-fadeout-on-closed media-body">Document</span>
+                            </a>
+                        </li>
+                        <!-- End Dashboard -->
+                    </div>
+                    <div id="tour-step-1">
+                        <!-- Title -->
+                        <li class="sidebar-heading h6">Member</li>
+                        <!-- End Title -->
+                        <!-- Dashboard -->
+                        <li class="side-nav-menu-item">
+                            <a class="side-nav-menu-link media align-items-center" href="/apikey.html">
+                                <span class="side-nav-menu-icon d-flex mr-3">
+                                    <i class="gd-key"></i>
+                                </span>
+                                <span class="side-nav-fadeout-on-closed media-body" id="tour-step-1"
+                                    >Import with NPM</span
+                                >
+                            </a>
+                        </li>
+                        <!-- End Dashboard -->
+                        <!-- Dashboard -->
+                        <li class="side-nav-menu-item">
+                            <a class="side-nav-menu-link media align-items-center" href="/member.html">
+                                <span class="side-nav-menu-icon d-flex mr-3">
+                                    <i class="gd-cloud-up"></i>
+                                </span>
+                                <span class="side-nav-fadeout-on-closed media-body">Import with CSV</span>
+                            </a>
+                        </li>
+                        <!-- End Dashboard -->
+                    </div>
+                    <div id="tour-step-2">
+                        <!-- Title -->
+                        <li class="sidebar-heading h6">Segment</li>
+                        <!-- End Title -->
+                        <!-- Documentation -->
+                        <li class="side-nav-menu-item">
+                            <a class="side-nav-menu-link media align-items-center" href="/segment_list.html">
+                                <span class="side-nav-menu-icon d-flex mr-3">
+                                    <i class="gd-file"></i>
+                                </span>
+                                <span class="side-nav-fadeout-on-closed media-body">List</span>
+                            </a>
+                        </li>
+                        <!-- End Documentation -->
+                        <!-- Dashboard -->
+                        <li class="side-nav-menu-item">
+                            <a class="side-nav-menu-link media align-items-center" href="/segment.html">
+                                <span class="side-nav-menu-icon d-flex mr-3">
+                                    <i class="gd-pencil-alt"></i>
+                                </span>
+                                <span class="side-nav-fadeout-on-closed media-body">Create</span>
+                            </a>
+                        </li>
+                        <!-- End Dashboard -->
+                    </div>
+                    <div id="tour-step-3">
+                        <!-- Title -->
+                        <li class="sidebar-heading h6">Campaign</li>
+                        <!-- End Title -->
+                        <!-- Documentation -->
+                        <li class="side-nav-menu-item">
+                            <a class="side-nav-menu-link media align-items-center" href="/campaign_list.html">
+                                <span class="side-nav-menu-icon d-flex mr-3">
+                                    <i class="gd-file"></i>
+                                </span>
+                                <span class="side-nav-fadeout-on-closed media-body">List</span>
+                            </a>
+                        </li>
+                        <!-- End Documentation -->
+                        <!-- Dashboard -->
+                        <li class="side-nav-menu-item">
+                            <a class="side-nav-menu-link media align-items-center" href="/campaign.html">
+                                <span class="side-nav-menu-icon d-flex mr-3">
+                                    <i class="gd-pencil-alt"></i>
+                                </span>
+                                <span class="side-nav-fadeout-on-closed media-body">Create</span>
+                            </a>
+                        </li>
+                        <!-- End Dashboard -->
+                    </div>
+                    <div id="tour-step-4">
+                        <!-- Title -->
+                        <li class="sidebar-heading h6">System User</li>
+                        <!-- End Title -->
+                        <!-- Documentation -->
+                        <li class="side-nav-menu-item">
+                            <a class="side-nav-menu-link media align-items-center" href="/user_list.html">
+                                <span class="side-nav-menu-icon d-flex mr-3">
+                                    <i class="gd-file"></i>
+                                </span>
+                                <span class="side-nav-fadeout-on-closed media-body">List</span>
+                            </a>
+                        </li>
+                        <!-- End Documentation -->
+                        <!-- Dashboard -->
+                        <li class="side-nav-menu-item">
+                            <a class="side-nav-menu-link media align-items-center" href="/user.html">
+                                <span class="side-nav-menu-icon d-flex mr-3">
+                                    <i class="gd-pencil-alt"></i>
+                                </span>
+                                <span class="side-nav-fadeout-on-closed media-body">Create</span>
+                            </a>
+                        </li>
+                        <!-- End Dashboard -->
+                    </div>
                 </ul>
             </aside>
             <!-- End Sidebar Nav -->
@@ -344,67 +354,52 @@
                                             <button class="ql-html">HTML</button>
                                         </div>
                                         <div id="editor_1" class="quill__editor">
-                                            <h1 style="color: #e5645e; font-size: 24px; margin: 20px 0">
-                                                View Email Example
+                                            <h1>
+                                                View Email Example, and Edit Yours
                                             </h1>
-                                            <h3 style="color: #e5645e; font-size: 24px; margin: 20px 0">
-                                                New Collection is ON!
+                                            <p>=============================</p>
+                                        </br>
+                                            <p style="font-size: 16px; line-height: 1.5">Dear Valued Customers,</p>
+                                            <h3>
+                                                 <strong>We are pleased to inform you that notiFLY is going to live TODAY!</strong>
                                             </h3>
-                                            <p style="font-size: 16px; line-height: 1.5">Dear member,</p>
+                                        </br>
                                             <p style="font-size: 16px; line-height: 1.5">
-                                                We are pleased to inform you that a new collection has been added to our
-                                                platform:
-                                            </p>
-                                            <h2 style="color: #e5645e; font-size: 20px; margin: 20px 0 10px 0">
-                                                30th Anniversary Crayon Shin-chan Collection
-                                            </h2>
-                                            <p style="font-size: 16px; line-height: 1.5">
-                                                Whether you're a long-time fan or new to the series, the Crayon Shin
-                                                Chan 30th Anniversary Collection is a must-have to delight your day.
-                                                Don't miss out on this exclusive release and get your hands on the
-                                                collection today!
-                                            </p>
+                                                As a marketer, you know the importance of keeping your audience engaged with timely and relevant messages. 
+                                                However, managing push notifications across multiple channels can be a daunting task. 
+                                                That's where notiFLY comes in!
                                             <div style="text-align: center">
-                                                <img
-                                                    src="https://notifly-campaign-image.s3.ap-northeast-1.amazonaws.com/d3884bed94d8f5da"
-                                                    alt="product Image"
-                                                    style="width: 100%; max-width: 400px; height: auto; margin: 20px 0"
+                                                <a href="https://gotolive.online">
+                                                 <img
+                                                    src="https://notifly-campaign-image.s3.ap-northeast-1.amazonaws.com/0256c932042cd7bd"
+                                                    alt="eDM Image"
+                                                    style="width: 80%; max-width: 400px; height: auto; margin: 20px 0"
                                                 />
-                                                <a
-                                                    href="https://www.caco.com.tw/mkgdispgroup/dispunit/141610/1"
+                                                <a>
+                                                <h3><strong>With notiFLY, let notifications FLY</strong><h3>
+                                                     <a
+                                                    href="https://www.gotolive.online"
                                                     style="
                                                         display: inline-block;
                                                         margin: 20px 0;
                                                         padding: 10px 20px;
-                                                        background-color: #e5645e;
+                                                        background-color: #275DF1;
                                                         color: #fff;
                                                         text-decoration: none;
                                                         border-radius: 5px;
+                                                        font-size: 20px;
                                                     "
-                                                    >Shop Now</a
+                                                    >Explore Now</a
                                                 >
                                             </div>
-                                            <p style="font-size: 16px; line-height: 1.5; margin: 20px 0">
-                                                Thank you for choosing Stylish.
-                                            </p>
+                                           
                                             <p style="font-size: 16px; line-height: 1.5">Best regards,</p>
-                                            <p style="font-size: 16px; line-height: 1.5">The Stylish Team</p>
-                                            <p
-                                                style="
-                                                    background-color: #f2f2f2;
-                                                    padding: 20px;
-                                                    text-align: center;
-                                                    font-size: 14px;
-                                                    color: #666;
-                                                "
-                                            >
-                                                You are receiving this email because you signed up for notifications
-                                                from Stylish. If you wish to unsubscribe, please click
-                                                <a href="#" style="color: #e5645e; text-decoration: none">here</a>.
-                                            </p>
+                                            <p style="font-size: 16px; line-height: 1.5">The notiFLY Team</p>
                                         </div>
                                     </div>
                                 </div>
+
+                                   
                             </div>
                             <button class="btn btn-primary mt-3" type="submit" id="update-btn">Update</button>
                         </form>
@@ -433,7 +428,7 @@
                         >
                             <div class="accordion-body">
                                 <div class="action-container">
-                                    <h5>Answer a few questions, and... Magic!</h5>
+                                    <h5>Declare your needs for copy, and... Magic!</h5>
                                     <!--ChatGPT playground -->
                                     <div class="auto-copy">
                                         <div class="questions-container">
@@ -471,7 +466,7 @@
                                                     type="text"
                                                     id="keywords"
                                                     name="keywords"
-                                                    placeholder="marketing tool, work efficiency"
+                                                    placeholder="marketing tool, CRM"
                                                 />
                                             </div>
                                         </div>
@@ -481,11 +476,11 @@
                                             <div
                                                 id="auto-copy-response"
                                                 type="text"
-                                                class="form-control form-control-onfocus-inherit bg-transparent small text-muted m-1"
+                                                class="form-control form-control-onfocus-inherit bg-transparent small text-primary m-1"
                                             >
-                                                Copy Response
+                                                Magic Response Here
                                             </div>
-                                            <i id="clipboard" class="gd-layers icon-text icon-text m-1"></i>
+                                            <i id="clipboard" class="gd-layers icon-text m-1"></i>
                                             <div class="tooltip">Copy to clipboard</div>
                                         </div>
                                     </div>
@@ -498,7 +493,7 @@
                     <div class="accordion accordion-bordered-y accordion-stacked">
                         <header
                             id="borderedAccordion-heading-2"
-                            class="accordion-header"
+                            class="accordion-header collapsed"
                             aria-expanded="false"
                             aria-controls="borderedAccordion-2"
                             data-toggle="collapse"
@@ -518,8 +513,11 @@
                             <div class="accordion-body">
                                 <div class="image-form">
                                     <h5>
-                                        Browse latest campaign images here! <br />Simply click on the desired image to
-                                        copy its URL<br />You can also upload a new image of your choice.
+                                        <ul>
+                                        <li>For eDM : Drag images into editor.</li>
+                                        <li>For web-push: Click on the image to copy its URL</li>
+                                        <li>You can also upload a new image of your choice.</li>
+                                        <ul>
                                     </h5>
                                     <form id="imageForm" class="mt-3">
                                         <div class="mb-3">
@@ -542,7 +540,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- </div> -->
             </div>
 
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -556,8 +553,10 @@
             <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
             <script src="./script/authentication.js"></script>
             <script src="./script/campaign.js"></script>
+            <script src="./script/tour.js"></script>
             <script src="./script/campaign_detail.js"></script>
         </main>
     </body>

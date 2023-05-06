@@ -1,3 +1,8 @@
+const checktoken = localStorage.getItem("jwtToken");
+if (checktoken) {
+    window.location.replace("/document.html");
+}
+
 $(document).ready(function () {
     $("#signInBtn").on("click", async (e) => {
         const email = $("#signInForm input[name=email]").val();
@@ -11,8 +16,8 @@ $(document).ready(function () {
         $("#signInBtn").prop("disabled", true);
         try {
             const response = await axios.post("/api/1.0/users/signin", body);
-            const token = response.data.data.access_token;
-            localStorage.setItem("jwtToken", token);
+            const newtoken = response.data.data.access_token;
+            localStorage.setItem("jwtToken", newtoken);
             window.location.replace("/document.html");
         } catch (e) {
             console.error("error", e);

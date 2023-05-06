@@ -67,7 +67,7 @@
                                 data-unfold-animation-out="fadeOut"
                             >
                                 <span class="mr-md-2 gd-face-smile"></span>
-                                <span id="profile-name" class="d-none d-md-block">John Doe</span>
+                                <span id="profile-name" class="d-none d-md-block"></span>
                                 <i class="gd-angle-down d-none d-md-block ml-2"></i>
                             </a>
 
@@ -105,13 +105,11 @@
         <main class="main">
             <!-- Sidebar Nav -->
             <aside id="sidebar" class="js-custom-scroll side-nav">
-                <ul id="sideNav" class="side-nav-menu side-nav-menu-top-level mb-0">
-                    
+                <ul id="sideNav" class="side-nav-menu side-nav-menu-top-level mb-0">                    
                 <div id="tour-step-0">
                     <!-- Title -->
-                    <li class="sidebar-heading h6">Document</li>
+                    <li class="sidebar-heading h6">Get Started</li>
                     <!-- End Title -->
-
                     <!-- Dashboard -->
                     <li class="side-nav-menu-item">
                         <div class="side-nav-menu-link media align-items-center">
@@ -122,52 +120,56 @@
                         </div>
                     </li>
                     <!-- End Dashboard -->
-
-                      <!-- Dashboard -->
+                    <!-- Dashboard -->
                     <li class="side-nav-menu-item">
                         <a class="side-nav-menu-link media align-items-center" href="/document.html">
                             <span class="side-nav-menu-icon d-flex mr-3">
                                 <i class="gd-light-bulb"></i>
                             </span>
-                            <span class="side-nav-fadeout-on-closed media-body">Instruction</span>
+                            <span class="side-nav-fadeout-on-closed media-body">Document</span>
                         </a>
                     </li>
                     <!-- End Dashboard -->
                 </div>
-
                     <div id="tour-step-1">
                     <!-- Title -->
                     <li class="sidebar-heading h6">Member</li>
                     <!-- End Title -->
-
-                    <!-- Dashboard -->
-                    <li class="side-nav-menu-item">
-                        <a class="side-nav-menu-link media align-items-center" href="/member.html">
-                            <span class="side-nav-menu-icon d-flex mr-3">
-                                <i class="gd-cloud-up"></i>
-                            </span>
-                            <span class="side-nav-fadeout-on-closed media-body">Import</span>
-                        </a>
-                    </li>
-                    <!-- End Dashboard -->
-
                     <!-- Dashboard -->
                     <li class="side-nav-menu-item">
                         <a class="side-nav-menu-link media align-items-center" href="/apikey.html">
                             <span class="side-nav-menu-icon d-flex mr-3">
                                 <i class="gd-key"></i>
                             </span>
-                            <span class="side-nav-fadeout-on-closed media-body"id="tour-step-1">API Key</span>
+                            <span class="side-nav-fadeout-on-closed media-body"id="tour-step-1">Import with NPM</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard -->
+                    <!-- Dashboard -->
+                    <li class="side-nav-menu-item">
+                        <a class="side-nav-menu-link media align-items-center" href="/member.html">
+                            <span class="side-nav-menu-icon d-flex mr-3">
+                                <i class="gd-cloud-up"></i>
+                            </span>
+                            <span class="side-nav-fadeout-on-closed media-body">Import with CSV</span>
                         </a>
                     </li>
                     <!-- End Dashboard -->
                     </div>
-
                     <div id="tour-step-2">
                     <!-- Title -->
                     <li class="sidebar-heading h6">Segment</li>
                     <!-- End Title -->
-
+                     <!-- Documentation -->
+                    <li class="side-nav-menu-item">
+                        <a class="side-nav-menu-link media align-items-center" href="/segment_list.html">
+                            <span class="side-nav-menu-icon d-flex mr-3">
+                                <i class="gd-file"></i>
+                            </span>
+                            <span class="side-nav-fadeout-on-closed media-body">List</span>
+                        </a>
+                    </li>
+                    <!-- End Documentation -->
                     <!-- Dashboard -->
                     <li class="side-nav-menu-item">
                         <a class="side-nav-menu-link media align-items-center" href="/segment.html">
@@ -178,35 +180,11 @@
                         </a>
                     </li>
                     <!-- End Dashboard -->
-
-                    <!-- Documentation -->
-                    <li class="side-nav-menu-item">
-                        <a class="side-nav-menu-link media align-items-center" href="/segment_list.html">
-                            <span class="side-nav-menu-icon d-flex mr-3">
-                                <i class="gd-file"></i>
-                            </span>
-                            <span class="side-nav-fadeout-on-closed media-body">List</span>
-                        </a>
-                    </li>
-                    <!-- End Documentation -->
                     </div>
-
                     <div id="tour-step-3">
                     <!-- Title -->
                     <li class="sidebar-heading h6">Campaign</li>
-                    <!-- End Title -->
-
-                    <!-- Dashboard -->
-                    <li class="side-nav-menu-item">
-                        <a class="side-nav-menu-link media align-items-center" href="/campaign.html">
-                            <span class="side-nav-menu-icon d-flex mr-3">
-                                <i class="gd-pencil-alt"></i>
-                            </span>
-                            <span class="side-nav-fadeout-on-closed media-body">Create</span>
-                        </a>
-                    </li>
-                    <!-- End Dashboard -->
-
+                    <!-- End Title -->                    
                     <!-- Documentation -->
                     <li class="side-nav-menu-item">
                         <a class="side-nav-menu-link media align-items-center" href="/campaign_list.html">
@@ -217,16 +195,9 @@
                         </a>
                     </li>
                     <!-- End Documentation -->
-                    </div>
-
-                    <div id="tour-step-4">
-                    <!-- Title -->
-                    <li class="sidebar-heading h6">System User</li>
-                    <!-- End Title -->
-
                     <!-- Dashboard -->
                     <li class="side-nav-menu-item">
-                        <a class="side-nav-menu-link media align-items-center" href="/user.html">
+                        <a class="side-nav-menu-link media align-items-center" href="/campaign.html">
                             <span class="side-nav-menu-icon d-flex mr-3">
                                 <i class="gd-pencil-alt"></i>
                             </span>
@@ -234,7 +205,11 @@
                         </a>
                     </li>
                     <!-- End Dashboard -->
-
+                    </div>
+                    <div id="tour-step-4">
+                    <!-- Title -->
+                    <li class="sidebar-heading h6">System User</li>
+                    <!-- End Title -->                   
                     <!-- Documentation -->
                     <li class="side-nav-menu-item">
                         <a class="side-nav-menu-link media align-items-center" href="/user_list.html">
@@ -245,6 +220,16 @@
                         </a>
                     </li>
                     <!-- End Documentation -->
+                    <!-- Dashboard -->
+                    <li class="side-nav-menu-item">
+                        <a class="side-nav-menu-link media align-items-center" href="/user.html">
+                            <span class="side-nav-menu-icon d-flex mr-3">
+                                <i class="gd-pencil-alt"></i>
+                            </span>
+                            <span class="side-nav-fadeout-on-closed media-body">Create</span>
+                        </a>
+                    </li>
+                    <!-- End Dashboard -->
                     </div>
                 </ul>
             </aside>
@@ -479,6 +464,7 @@
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script src="https://cdn.jsdelivr.net/npm/shepherd.js@10.0.1/dist/js/shepherd.min.js"></script>
             <script src="./script/authentication.js"></script>
+            <script src="./script/auto_tour.js"></script>
             <script src="./script/tour.js"></script>
             <script src="./script/document.js"></script>
         </main>
