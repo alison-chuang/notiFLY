@@ -1,17 +1,4 @@
-const autotour = new Shepherd.Tour({
-    defaultStepOptions: {
-        cancelIcon: {
-            enabled: true,
-        },
-        classes: "class-1 class-2",
-        scrollTo: { behavior: "smooth", block: "center" },
-    },
-    useModalOverlay: true,
-});
-
 $("#tour").on("click", function () {
-    autotour.complete();
-
     const tour = new Shepherd.Tour({
         defaultStepOptions: {
             cancelIcon: {
@@ -25,7 +12,7 @@ $("#tour").on("click", function () {
 
     tour.addStep({
         title: "STEP 1 : Member",
-        text: `- Import your company's member data to notiFLY via :  </br></br> 1. CSV file upload </br> 2. API endpoint ( NPM provided )`,
+        text: `- Import your company's member data to notiFLY via :  </br></br> 1. API endpoint ( NPM provided ) </br> 2. CSV file upload`,
         attachTo: {
             element: "#tour-step-1",
             on: "right",
