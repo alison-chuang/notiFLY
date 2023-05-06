@@ -14,6 +14,11 @@
     color: var(--bs-btn-bg);
 }
 
+#segment-example {
+    background-color: var(--bs-btn-bg);
+    color: white;
+}
+
 .btn-secondary:hover {
     background-color: var(--bs-btn-bg);
     border-color: var(--bs-btn-bg);
@@ -53,10 +58,6 @@
 #member-count p {
     display: inline;
     margin: 0;
-}
-
-#name {
-    width: 30%;
 }
 
 .no-underline.link-black:hover {

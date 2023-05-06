@@ -274,13 +274,12 @@ $(".parse-mongo-check").on("click", function () {
 // view example
 $("#segment-example").on("click", function () {
     Swal.fire({
-        title: "Sweet!",
-        text: "Modal with a custom image.",
-        imageUrl: "https://unsplash.it/400/200",
-        imageWidth: 400,
-        imageHeight: 200,
-        width: "70%",
+        text: "Define your Segment (target audience) for campaign.",
+        imageUrl: "./icon/segment-example.gif",
+        imageWidth: 700,
+        imageHeight: 700,
+        width: "auto",
         height: "auto",
-        imageAlt: "Custom image",
+        imageAlt: "Define your Segment (target audience) for campaign.",
     });
 });
