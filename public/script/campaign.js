@@ -320,7 +320,12 @@ $(document).ready(function () {
 
         $("#save-btn").prop("disabled", true);
         let data = $("#campaign-form").serialize();
-        const htmlContent = $("#editor_1").children().first().html();
+        const htmlContent = $("#editor_1")
+            .children()
+            .first()
+            .html()
+            .replace(/<img/gi, '<img style="max-width: 50%; height: auto;"');
+
         data += "&htmlContent=" + encodeURIComponent(htmlContent);
 
         $.post({
