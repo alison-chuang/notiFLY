@@ -1,9 +1,8 @@
 // lambda send web-push & update db
-import webpush from "web-push";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import axios from "axios";
-const REGION = "ap-northeast-1";
-const s3 = new S3Client({ region: REGION });
+import webpush from "web-push";
+const s3 = new S3Client({ region: process.env.REGION });
 
 export async function handler(event) {
     // get event（message variant) from SQS
@@ -12,7 +11,7 @@ export async function handler(event) {
     console.log("Parsed Body:", body);
 
     // get member subscriptions from s3
-    const receivers = await getSubList(boby.bucket, body.pushKey);
+    const receivers = await getSubList(body.bucket, body.s3fileName);
     console.log({ receivers });
 
     // Create payload
@@ -21,7 +20,12 @@ export async function handler(event) {
         title: messageVariant.title,
         body: messageVariant.copy,
         icon: messageVariant.image,
+        url: "https:/www.google.com",
     });
+
+    const publicVapidKey = process.env.publicVapidKey;
+    const privateVapidKey = process.env.privateVapidKey;
+    webpush.setVapidDetails("mailto:test@test.com", publicVapidKey, privateVapidKey);
 
     // Pass object into sendNotification => send
     let succeedCount = 0;
@@ -44,6 +48,9 @@ export async function handler(event) {
     console.log(succeedCount, failCount);
 
     // go update DB
+    const idWithoutSuffix = body._id.split("_")[0];
+    await goUpdateDb(idWithoutSuffix, body.job_id, succeedCount, failCount);
+    return;
 }
 
 async function goUpdateDb(id, job_id, succeedCount, failCount) {
@@ -63,10 +70,10 @@ async function goUpdateDb(id, job_id, succeedCount, failCount) {
     }
 }
 
-async function getSubList(bucket, pushKey) {
+async function getSubList(bucket, s3fileName) {
     const input = {
         Bucket: bucket, // required
-        Key: pushKey, // required
+        Key: s3fileName, // required
     };
     const command = new GetObjectCommand(input);
     const response = await s3.send(command);

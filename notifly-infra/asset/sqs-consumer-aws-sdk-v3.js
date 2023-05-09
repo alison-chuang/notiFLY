@@ -1,9 +1,8 @@
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import axios from "axios";
-const REGION = "ap-northeast-1";
-const ses = new SESClient({ region: REGION });
-const s3 = new S3Client({ region: REGION });
+const ses = new SESClient({ region: process.env.REGION });
+const s3 = new S3Client({ region: process.env.REGION });
 
 export async function handler(event) {
     // get event from SQS
@@ -13,7 +12,7 @@ export async function handler(event) {
     const messageVariant = body["message_variant"];
 
     // get emails from s3
-    const emails = await getEmailList(body.bucket, body.emailKey);
+    const emails = await getEmailList(body.bucket, body.s3fileName);
     console.log({ emails });
 
     // send edm via SES
@@ -61,7 +60,11 @@ async function goUpdateDb(id, job_id, succeedCount, failCount) {
         succeedCount,
         failCount,
     };
-    const config = { headers: { "Content-Type": "application/json" } };
+
+    const config = {
+        headers: { "Content-Type": "application/json" },
+    };
+
     try {
         const res = await axios.post(process.env.lambdaUpdateDb, body, config);
         console.log("axios res", res);
@@ -71,10 +74,10 @@ async function goUpdateDb(id, job_id, succeedCount, failCount) {
     }
 }
 
-async function getEmailList(bucket, emailKey) {
+async function getEmailList(bucket, s3fileName) {
     const input = {
         Bucket: bucket, // required
-        Key: emailKey, // required
+        Key: s3fileName, // required
     };
     const command = new GetObjectCommand(input);
     const response = await s3.send(command);
