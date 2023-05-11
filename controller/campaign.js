@@ -2,7 +2,10 @@ import dotenv from "dotenv";
 dotenv.config();
 import { ChatGPTAPI } from "chatgpt";
 import { generateImageURL, selectS3Images } from "../util/upload.js";
+import {campaignSchema} from "../util/util.js";
 import "../model/database.js";
+import Ajv from "ajv";
+
 import {
     Campaign,
     updateCounts,
@@ -11,6 +14,7 @@ import {
     selectById,
     updateCampaign,
     changeStatus,
+    createCampaign
 } from "../model/campaign.js";
 const sender = process.env.SENDER;
 
@@ -23,7 +27,14 @@ const getS3Url = async (req, res) => {
 
 // save campaign info to db
 const postCampaigns = async (req, res) => {
-    console.log("req.body", req.body);
+
+    const ajv = new Ajv();
+    const validate = ajv.compile(campaignSchema);
+    const isValid = validate(req.body);
+    if (!isValid) {
+        return res.status(400).json({ error: validate.errors});
+    }
+
     const owner = req.payload.name;
     let {
         name,
@@ -41,19 +52,14 @@ const postCampaigns = async (req, res) => {
         landing,
     } = req.body;
 
-    // name, channel, segment, sent_time 必填
-    if (!name || !channel || !segmentId || !sendTime) {
-        return res.status(400).json({ data: "Required filed is empty" });
-    }
-    // one-time delivery, set interval=0 & endTime=sendTime
     if (type === "one-time-delivery") {
         interval = Number(0);
         endTime = sendTime;
     }
-    // periodic delivery, 沒有 interval endTime 要報錯, endTIme > sendTime
+
     if (type === "periodic-delivery") {
         if (!interval || !endTime) {
-            return res.status(400).json({ data: "interval & endtime is required for periodic-delivery." });
+            return res.status(400).json({ data: "Interval & End Time are required for periodic-delivery." });
         }
 
         if (endTime < sendTime) {
@@ -83,15 +89,8 @@ const postCampaigns = async (req, res) => {
         next_send_time: sendTime,
     };
 
-    const campaign = new Campaign(data);
-    try {
-        const newCampaign = await campaign.save();
-        console.log("saved campaign to database");
-        res.status(201).json(newCampaign);
-    } catch (e) {
-        console.log(e);
-        res.status(500).json({ data: e.message });
-    }
+    await createCampaign(data);
+    res.status(201).json({ data: "Campaign created successfully.'"});
 };
 
 // for lambda, update DB after campaign sent successfully

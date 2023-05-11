@@ -1,8 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
 const { PORT, API_VERSION } = process.env;
-import { wrapAsync } from "./util/util.js";
-import { verifyLink } from "./controller/user.js";
 
 // Express Initialization
 import express from "express";
@@ -31,7 +29,8 @@ app.use("/api/" + API_VERSION, segmentRouter);
 app.use("/api/" + API_VERSION, userRouter);
 
 // reset password view
-// TODO: 開一個 view 的 router 再把這個註冊進去
+import { wrapAsync } from "./util/util.js";
+import { verifyLink } from "./controller/user.js";
 app.get("/users/password/link/:id/:token", wrapAsync(verifyLink));
 
 // Page not found
@@ -41,10 +40,10 @@ app.use((req, res, next) => {
 
 // Error handling
 app.use((err, req, res, next) => {
-    console.log(err);
+    console.error(err);
     res.status(500).json("Internal Server Error");
 });
 
 app.listen(port, () => {
-    console.log(`The application is runnung on localhost ${port}`);
+    console.log(`The application is running on localhost ${port}`);
 });

@@ -118,4 +118,24 @@ const newMemberSchema = {
     additionalProperties: false,
 };
 
-export { wrapAsync, randomBytes, newMemberSchema, upload };
+const campaignSchema = {
+    type: "object",
+    properties: {
+        name: { type: "string" },
+        channel: { type: "string" },
+        segmentId: { type: "string" },
+        sendTime: { type: "string" },
+        type: { type: "string" },
+        interval: { type: "integer" },
+        endTime: { type: "string" },
+        title: { type: "string" },
+        copy: { type: "string" },
+        subject: { type: "string" },
+        htmlContent: { type: "string" },
+        image: { type: "string" },
+        landing: { type: "string" },
+    },
+    required: ["name", "channel", "segmentId", "sendTime", "type"],
+};
+
+export { wrapAsync, randomBytes, newMemberSchema,campaignSchema, upload };

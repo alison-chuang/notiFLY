@@ -125,14 +125,10 @@ campaignSchema.pre("save", function (next) {
 
 const Campaign = mongoose.model("campaigns", campaignSchema);
 
-const findLastestJobIndex = (jobs, filterKey, filterValue) => {
-    const jobLen = jobs.length;
-    // 從後面找
-    for (let i = jobLen - 1; i >= 0; i--) {
-        if (jobs[i][filterKey] == filterValue) {
-            return i;
-        }
-    }
+const createCampaign = async (data) => {
+    const campaign = new Campaign(data);
+    await campaign.save();
+    return true;
 };
 
 const updateCounts = async (id, job_id, succeed, fail) => {
@@ -204,4 +200,4 @@ const changeStatus = async (id, status) => {
     }
 };
 
-export { Campaign, updateCounts, checkRequest, selectAllCampaign, selectById, updateCampaign, changeStatus };
+export { Campaign, updateCounts, checkRequest, selectAllCampaign, selectById, updateCampaign, changeStatus, createCampaign };
