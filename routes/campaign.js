@@ -3,7 +3,8 @@ import bodyParser from "body-parser";
 const router = express.Router();
 
 import { wrapAsync } from "../util/util.js";
-import { isAuthorized, jwtauth } from "../util/auth.js";
+import { jwtauth } from "../util/auth.js";
+import { validateSchema, campaignSchema  } from "../util/validator.js";
 import {
     postCampaigns,
     getS3Url,
@@ -28,7 +29,7 @@ router.use(
 );
 router.use(express.urlencoded({ extended: true }));
 
-router.route("/campaigns").post(jwtauth, wrapAsync(postCampaigns));
+router.route("/campaigns").post(jwtauth,  validateSchema(campaignSchema) , wrapAsync(postCampaigns));
 router.route("/campaigns").put(jwtauth, wrapAsync(updateCampaignDetail));
 router.route("/campaigns/status").put(jwtauth, wrapAsync(updateStatus));
 router.route("/campaigns").get(wrapAsync(getAllCampaign));

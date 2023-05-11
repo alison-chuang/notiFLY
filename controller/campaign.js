@@ -2,9 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import { ChatGPTAPI } from "chatgpt";
 import { generateImageURL, selectS3Images } from "../util/upload.js";
-import {campaignSchema} from "../util/util.js";
 import "../model/database.js";
-import Ajv from "ajv";
 
 import {
     Campaign,
@@ -27,14 +25,6 @@ const getS3Url = async (req, res) => {
 
 // save campaign info to db
 const postCampaigns = async (req, res) => {
-
-    const ajv = new Ajv();
-    const validate = ajv.compile(campaignSchema);
-    const isValid = validate(req.body);
-    if (!isValid) {
-        return res.status(400).json({ error: validate.errors});
-    }
-
     const owner = req.payload.name;
     let {
         name,
@@ -102,7 +92,7 @@ const lambdaUpdateDb = async (req, res) => {
     if (!isFromLambda) {
         res.status(400).json({ data: "bad request" });
     }
-    // update sent_suceed, sent_fail fields
+    // update sent_succeed, sent_fail fields
     try {
         console.log(`update from lambda: id -> ${_id}, job_id -> ${job_id}`);
         const updated = await updateCounts(_id, job_id, Number(succeedCount), Number(failCount));
