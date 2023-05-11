@@ -1,7 +1,7 @@
 import cron from "node-cron";
 import "./model/database.js";
 import { Campaign } from "./model/campaign.js";
-import { REGISTERED, RUNNING } from "./status_constant.js";
+import { REGISTERED, RUNNING, REGISTER_RANGE } from "./cron_constant.js";
 
 const MIN = 1000 * 60;
 const HOUR = 60 * MIN;
@@ -20,8 +20,8 @@ const addDays = (date, numOfDays) => {
 
 const registerJobs = async () => {
     let now = new Date(); // now => object, UTC+0 time
-    let nowPlus20 = addMins(now, 1);
-    const cond = { $gte: now, $lt: nowPlus20 };
+    let nowPlusRange = addMins(now, REGISTER_RANGE);
+    const cond = { $gte: now, $lt: nowPlusRange };
     console.log("condition:", cond);
     try {
         const list = await Campaign.find({
@@ -31,7 +31,6 @@ const registerJobs = async () => {
                 {
                     $or: [
                         { next_send_time: cond },
-                        { send_time: cond }, // TODO  可刪
                         /* send_time 在這個區間，應該是第一次發送情形（）send_time = next_send_time，所以要把他更新 next_send_time並註冊到job */
                         /* next_send_time 在這個區間，表示要註冊到job
                         /* next_send_time 意義：cron_job要看
@@ -49,9 +48,6 @@ const registerJobs = async () => {
         const updates = list.map(async (item) => {
             let filter = { _id: item._id };
             let updated = {};
-
-            // FIXME 可刪（因為表單存入即更新，不會有空的 next_send_time），第一次發送會有的情形
-            let nextSendTime = item.send_time;
 
             //如果不是第一次發送，jobs 裡會有之前註冊過的job，要用最後一個job加上interval = next_send_time
             if (item.jobs.length != 0) {
@@ -73,9 +69,7 @@ const registerJobs = async () => {
     }
 };
 
-// registerJobs();
-
-cron.schedule(`*/1 * * * *`, async () => {
-    console.log(`cron register jobs starts .`);
+cron.schedule("*/4 * * * *", async () => {
+    console.log("cron register jobs starts.");
     registerJobs();
 });

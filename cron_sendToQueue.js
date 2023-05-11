@@ -5,7 +5,7 @@ import "./model/database.js";
 import { Campaign } from "./model/campaign.js";
 import { Member } from "./model/member.js";
 import { sendToS3 } from "./util/upload.js";
-import { REGISTERED, PROCESSING, FAILED, FINISHED } from "./statusConstant.js";
+import { REGISTERED, PROCESSING, FAILED, FINISHED, BATCH_SIZE, SENDER_RANGE } from "./cron_constant.js";
 import * as q from "./util/queue.js";
 
 const MIN = 1000 * 60;
@@ -22,8 +22,7 @@ const fieldMap = {
 // DB 取出此時間範圍內該發送的 campaign & 對象名單
 const getList = async () => {
     let now = new Date(); // UTC+0 time
-    // let prev = now - 1.5 * MIN;
-    let prev = now - 10 * MIN;
+    let prev = now - SENDER_RANGE * MIN;
     console.log("prev:", new Date(prev), "now:", new Date(now));
 
     try {
@@ -53,7 +52,6 @@ const getList = async () => {
             },
             { $unwind: "$segment" },
         ]);
-        // console.log(list);
         console.log("length of list:", list.length);
 
         // list = 要做的campaign + segment query. 依據 query 篩出對應的 email / push subscription
@@ -145,11 +143,10 @@ const main = async () => {
             const [latestIdx, latestJob] = findLatestJob(record.jobs, record.next_send_time);
             if (latestIdx == null || !latestJob) {
                 console.error(`[${new Date().toISOString()}] There is a registered campaign without jobs.`);
-                return;
+                continue; // FIXME
             }
 
             // divide receivers into smaller pack to send to s3
-            // send campaign info(message))to SQS
             const jobId = latestJob._id;
             const campaignName = record.name;
 
@@ -160,10 +157,10 @@ const main = async () => {
                 totalCount = parsedLead.length;
             } else {
                 console.error("Invalid record: no lead data found.");
+                continue;
             }
 
             let i = 0;
-            const BATCH_SIZE = 1;
             let msgStatuses = [];
             let s3fileNames = [];
             while (i * BATCH_SIZE < totalCount) {
@@ -181,15 +178,13 @@ const main = async () => {
                 console.log(`msg._id(${i}):`, msg._id);
                 record.bucket = bucket;
 
-                // 選擇要送到哪一個 SQS
+                // send campaign info(message))to SQS & 選擇要送到哪一個 SQS
                 const sqsMap = {
                     edm: process.env.EDM_SQS_URL,
                     webpush: process.env.WEB_PUSH_SQS_URL,
                 };
 
                 const sqsURL = sqsMap[record.channel];
-                console.log(record.channel);
-                console.log({ sqsURL });
 
                 if (!sqsURL) {
                     console.error("Do not match any SQS URL.");
@@ -202,7 +197,7 @@ const main = async () => {
                 i += 1;
             }
 
-            // update status of sending campiagns to SQS
+            // update status of sending campaigns to SQS
             // launched => processing, or failed
             const hasAllSent = msgStatuses.every((msgStatus) => msgStatus.$metadata.httpStatusCode == 200);
             const nextSendTime = addDays(record.send_time, record.interval);
@@ -224,74 +219,7 @@ const main = async () => {
     }
 };
 
-// main();
-
-cron.schedule(`* * * * *`, async () => {
-    console.log(`cron started.`);
+cron.schedule("* * * * *", async () => {
+    console.log("cron started.");
     main();
 });
-
-const oldmain = async () => {
-    // mongodb 篩選名單
-    const records = await getList();
-
-    if (records.length == 0) {
-        console.log(`[${new Date().toISOString()}] There is no task for now.`);
-    }
-
-    // send bucketName, objKey, message to SQS
-    try {
-        for (let record of records) {
-            // register worker 錯誤處理
-            const [latestIdx, latestJob] = findLatestJob(record.jobs, record.next_send_time);
-            if (latestIdx == null || !latestJob) {
-                console.error(`[${new Date().toISOString()}] There is a registered campaign without jobs.`);
-                return;
-            }
-
-            // divide receivers into smaller pack to send to s3
-            // send campaign info(message))to SQS
-            const jobId = latestJob._id;
-            const campaignName = record.name;
-            const parsedEmail = JSON.parse(JSON.stringify(record.emails));
-            const totalCount = parsedEmail.length;
-
-            let i = 0;
-            const BATCH_SIZE = 1;
-            let msgStatuses = [];
-            let s3fileNames = [];
-            while (i * BATCH_SIZE < totalCount) {
-                let emails = JSON.stringify(parsedEmail.slice(i, i + BATCH_SIZE));
-                let [bucket, s3fileName] = await sendToS3(emails, campaignName, i);
-
-                const msg = {
-                    _id: record._id + "_" + i,
-                    job_id: jobId,
-                    message_variant: record["message_variant"][0],
-                    bucket,
-                    s3fileName,
-                    totalCount,
-                };
-                console.log(`msg._id(${i}):`, msg._id);
-                record.bucket = bucket;
-
-                const msgStatus = await q.sendMessage(msg);
-                msgStatuses.push(msgStatus);
-                s3fileNames.push(s3fileName);
-                i += 1;
-            }
-
-            // update status of sending campiagns to SQS
-            // launched => processing, or failed
-            const hasAllSent = msgStatuses.every((msgStatus) => msgStatus.$metadata.httpStatusCode == 200);
-            if (hasAllSent) {
-                updateStatus(record, latestIdx, totalCount, s3fileNames, PROCESSING);
-            } else {
-                console.error("send to SQS failed");
-                updateStatus(record, latestIdx, totalCount, s3fileNames, FAILED);
-            }
-        }
-    } catch (e) {
-        console.error(e);
-    }
-};

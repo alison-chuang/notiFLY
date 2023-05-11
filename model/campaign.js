@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { PROCESSED, RUNNING } from "../status_constant.js";
+import { PROCESSED, RUNNING } from "../cron_constant.js";
 const Schema = mongoose.Schema;
 
 const messageSchema = new Schema({
