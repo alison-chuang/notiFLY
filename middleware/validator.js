@@ -1,22 +1,25 @@
-import Ajv from "ajv";
+import Ajv, { ValidationError } from "ajv";
 const ajv = new Ajv();
 
 const validateSchema = (schema) => {
     return async (req, res, next) => {
+        schema.$async = true;
         const validate = ajv.compile(schema);
-        const isValid = await validate(req.body);
-        if (!isValid) {
-            console.log("validator failed.");
-            return res.status(400).json({ error: validate.errors });
-        } else {
+        try {
+            await validate(req.body);
             console.log("validator passed.");
             next();
+        } catch (err) {
+            if (err instanceof ValidationError) {
+                console.error(err.message);
+                return res.status(400).json({ error: err.errors });
+            }
+            throw err;
         }
     };
 };
 
 const campaignSchema = {
-    $async: true,
     type: "object",
     properties: {
         name: { type: "string" },
@@ -24,7 +27,7 @@ const campaignSchema = {
         segmentId: { type: "string" },
         sendTime: { type: "string" },
         type: { type: "string" },
-        interval: { type: "integer" },
+        interval: { oneOf: [{ type: "integer" }, { type: "string" }] },
         endTime: { type: "string" },
         title: { type: "string" },
         copy: { type: "string" },
@@ -37,7 +40,6 @@ const campaignSchema = {
 };
 
 const idSchema = {
-    $async: true,
     type: "object",
     properties: {
         id: { type: "string", pattern: "^[0-9a-fA-F]{24}$" },

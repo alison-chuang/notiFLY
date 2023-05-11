@@ -21,7 +21,7 @@ router.use(
     express.json({
         type: [
             "application/json",
-            "text/plain", // AWS sends this content-type for its messages/notifications
+            "text/plain", // AWS sends this content-type for its messages
         ],
     })
 );
@@ -30,12 +30,17 @@ router.use(express.urlencoded({ extended: true }));
 router
     .route("/campaigns")
     .get(wrapAsync(getAllCampaign))
-    .post(jwtauth, validateSchema(campaignSchema), wrapAsync(postCampaigns))
-    .put(jwtauth, validateSchema(campaignSchema), validateSchema(idSchema), wrapAsync(updateCampaignDetail));
-router.route("/campaigns/status").put(jwtauth, wrapAsync(updateStatus));
+    .post(jwtauth, wrapAsync(validateSchema(campaignSchema)), wrapAsync(postCampaigns))
+    .put(
+        jwtauth,
+        wrapAsync(validateSchema(campaignSchema)),
+        wrapAsync(validateSchema(idSchema)),
+        wrapAsync(updateCampaignDetail)
+    );
+router.route("/campaigns/status").put(jwtauth, wrapAsync(validateSchema(idSchema)), wrapAsync(updateStatus));
 router.route("/campaigns/s3Url").get(wrapAsync(getS3Url));
 router.route("/campaigns/images").get(wrapAsync(getS3Images));
-router.route("/lambdaUpdateDb").post(wrapAsync(lambdaUpdateDb));
+router.route("/lambdaUpdateDb").post(jwtauth, wrapAsync(lambdaUpdateDb));
 router.route("/campaigns/autocopy").post(wrapAsync(genCopy));
 router.route("/campaigns/sns").post(wrapAsync(getSns));
 router.route("/campaigns/:id").get(wrapAsync(getCampaignById));

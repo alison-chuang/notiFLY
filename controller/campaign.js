@@ -6,23 +6,22 @@ import "../model/database.js";
 
 import {
     updateCounts,
-    checkRequest,
     selectAllCampaign,
     selectById,
     updateCampaign,
     changeStatus,
     createCampaign,
 } from "../model/campaign.js";
+
 const sender = process.env.SENDER;
 
-// get presigned URL for client uploading image
+// presigned URL
 const getS3Url = async (req, res) => {
     const url = await generateImageURL();
     console.log({ url });
     res.send({ url });
 };
 
-// save campaign info to db
 const postCampaigns = async (req, res) => {
     const owner = req.payload.name;
     let {
@@ -84,34 +83,24 @@ const postCampaigns = async (req, res) => {
 
 // for lambda, update DB after campaign sent successfully
 const lambdaUpdateDb = async (req, res) => {
-    // FIXME token
-    // 驗證請求來自 lambda
-    console.log("lambda打來的request body", req.body);
     const { _id, job_id, succeedCount, failCount } = req.body;
-    const isFromLambda = await checkRequest(_id);
-    if (!isFromLambda) {
-        res.status(400).json({ data: "bad request" });
+
+    console.log(`update from lambda: id -> ${_id}, job_id -> ${job_id}`);
+    const updatedCounts = await updateCounts(_id, job_id, Number(succeedCount), Number(failCount));
+    if (!updatedCounts) {
+        return res.status(400).json({ data: "no matched campaign with request id " });
     }
-    // update sent_succeed, sent_fail fields
-    try {
-        console.log(`update from lambda: id -> ${_id}, job_id -> ${job_id}`);
-        const updated = await updateCounts(_id, job_id, Number(succeedCount), Number(failCount));
-        console.log("updated doc:", updated);
-        res.status(200).json({ data: "DB updated" });
-    } catch (e) {
-        console.error(e);
-        res.status(500).json({ data: "fail to update" });
-    }
+    res.status(200).json({ data: "success & fail counts updated" });
 };
 
 const getS3Images = async (req, res) => {
     const s3Images = await selectS3Images();
-    res.json({ data: s3Images });
+    res.status(200).json({ data: s3Images });
 };
 
 const getAllCampaign = async (req, res) => {
     const allCampaigns = await selectAllCampaign();
-    return res.status(200).json({ data: allCampaigns });
+    res.status(200).json({ data: allCampaigns });
 };
 
 const getCampaignById = async (req, res) => {
@@ -119,11 +108,12 @@ const getCampaignById = async (req, res) => {
     if (!id) {
         return res.status(400).json({ data: "bad request" });
     }
+
     const detail = await selectById(id);
     if (!detail) {
-        return res.status(400).json({ data: "no matched segment with request id " });
+        return res.status(400).json({ data: "no matched campaign with request id " });
     }
-    return res.status(200).json({ data: detail });
+    res.status(200).json({ data: detail });
 };
 
 const genCopy = async (req, res) => {
@@ -135,13 +125,15 @@ const genCopy = async (req, res) => {
     }
 
     const prompt = `
-    You are a expert copywriter. Using a ${tone} tone, write a ${language} ${channel} copy highlighting the ${keywords} of a ${product}.
+    Using a ${tone} tone, write a ${language} ${channel} copy highlighting the ${keywords} of a ${product}.
     No incomplete sentences is permitted.
     No need to provide translation. 
     No simplified Chinese is permitted. Only zh-TW for Chinese Copy.
     Should complete the sentence before it reaches max_tokens.
+    No more than 30 words.
     Not to provide incomplete sentences in your responses. Every sentense should completed.
     `;
+
     const api = new ChatGPTAPI({
         apiKey: process.env.OPEN_AI,
         completionParams: {
@@ -153,7 +145,7 @@ const genCopy = async (req, res) => {
     });
 
     const copy = await api.sendMessage(prompt);
-    return res.status(200).json({ data: copy.text });
+    res.status(200).json({ data: copy.text });
 };
 
 const updateCampaignDetail = async (req, res) => {
@@ -195,29 +187,26 @@ const updateCampaignDetail = async (req, res) => {
         },
         next_send_time: sendTime,
     };
-    const updateRes = await updateCampaign(id, formUpdate);
-    if (!updateRes) {
-        return res.status(400).json({ data: "The campaign id isn't exist." });
-    } else {
-        return res.status(200).json({ data: "updated" });
+    const updatedCampaign = await updateCampaign(id, formUpdate);
+    if (!updatedCampaign) {
+        return res.status(400).json({ data: "no matched campaign with request id." });
     }
+    res.status(200).json({ data: "updated" });
 };
 
+// client click stop btn
 const updateStatus = async (req, res) => {
-    try {
-        const { id, status } = req.body;
-        console.log(req.body);
-        await changeStatus(id, status);
-        return res.status(200).json({ data: "stopped" });
-    } catch (e) {
-        console.error(e);
-        return res.status(500).json({ data: e });
+    const { id, status } = req.body;
+    const updatedStatus = await changeStatus(id, status);
+    if (!updatedStatus) {
+        return res.status(400).json({ data: "no matched campaign with request id." });
     }
+    res.status(200).json({ data: "stopped" });
 };
 
 const getSns = (req, res) => {
     console.log("sns", req.body);
-    return res.status(200).json({ data: req.body });
+    res.status(200).json({ data: req.body });
 };
 
 export {

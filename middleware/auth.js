@@ -57,13 +57,11 @@ async function jwtauth(req, res, next) {
 
 // authorization middelware
 async function isAuthorized(req, res, next) {
-    // 1. 拿到client req endpoint(不含 query string)
     const resource = req.path.split("/")[1];
     const method = req.method;
-
-    // 2. 用 client req 的 endpoint & method 去資料庫查有沒有存在
     const { id } = req.payload;
     console.log("req from user id:", id);
+
     const permission = await checkPermissions(id, resource, method);
     console.log("permission", permission);
     if (!permission) {

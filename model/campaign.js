@@ -54,7 +54,7 @@ const jobSchema = new Schema({
         default: 0,
     },
     status: {
-        type: String, //launched, processing(送到SQS後), processed（lambda有做過）
+        type: String,
         default: "launched",
         required: true,
     },
@@ -128,7 +128,7 @@ const Campaign = mongoose.model("campaigns", campaignSchema);
 const createCampaign = async (data) => {
     const campaign = new Campaign(data);
     await campaign.save();
-    return true;
+    return;
 };
 
 const updateCounts = async (id, job_id, succeed, fail) => {
@@ -143,70 +143,31 @@ const updateCounts = async (id, job_id, succeed, fail) => {
             "jobs.$.fail_count": fail,
         },
     };
-    const doc = await Campaign.findOneAndUpdate(filter, update, {
-        new: true,
-    });
-    console.log("updated doc:", doc);
-    return doc;
+    return await Campaign.findOneAndUpdate(filter, update, { new: true });
 };
 
-const checkRequest = async (id) => {
-    const isInDb = await Campaign.findOne({ _id: id });
-    if (!isInDb) {
-        return false;
-    } else {
-        return true;
-    }
-};
-
-// get campaign for render campaign list
+// for campaign list page
 const selectAllCampaign = async () => {
     const campaigns = await Campaign.find({});
     return campaigns;
 };
 
-// select campaign by id for campaign detail page
+// for campaign detail page
 const selectById = async (id) => {
-    try {
-        return await Campaign.findOne({ _id: id });
-    } catch (e) {
-        return false;
-    }
+    return await Campaign.findOne({ _id: id });
 };
 
-// update campaign
 const updateCampaign = async (id, formUpdate) => {
-    try {
-        const filter = { _id: id };
-        const update = { $set: formUpdate };
-        const doc = await Campaign.findOneAndUpdate(filter, update, { new: true });
-        console.log("**", doc); // null
-        // id 不存在會回 null，id 格式錯誤報錯會掉到 catch
-        return doc;
-    } catch (e) {
-        console.log("@@", e);
-    }
+    const filter = { _id: id };
+    const update = { $set: formUpdate };
+    return await Campaign.findOneAndUpdate(filter, update, { new: true });
 };
 
-// stop campaign
+// manually stop campaign
 const changeStatus = async (id, status) => {
-    try {
-        const filter = { _id: id };
-        const update = { $set: { status: status } };
-        const doc = await Campaign.findOneAndUpdate(filter, update, { new: true });
-        return doc;
-    } catch (e) {
-        return false;
-    }
+    const filter = { _id: id };
+    const update = { $set: { status: status } };
+    return await Campaign.findOneAndUpdate(filter, update, { new: true });
 };
 
-export {
-    Campaign,
-    updateCounts,
-    checkRequest,
-    selectAllCampaign,
-    selectById,
-    updateCampaign,
-    changeStatus,
-    createCampaign,
-};
+export { updateCounts, selectAllCampaign, selectById, updateCampaign, changeStatus, createCampaign };
