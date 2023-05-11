@@ -18,7 +18,9 @@ const tokenSchema = new Schema(
             index: { expires: "1d" }, // expire in one day
         },
     },
-    { timestamps: true }
+    {
+        timestamps: true,
+    }
 );
 
 const Token = mongoose.model("token", tokenSchema);

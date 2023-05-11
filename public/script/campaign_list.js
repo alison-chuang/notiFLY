@@ -61,10 +61,10 @@ $(document).ready(function () {
                 title: "Status",
             },
             {
-                data: "created",
-                title: "Created",
-                render: function (data, type, row) {
-                    var localTime = moment.utc(row.created_at).utcOffset("+08:00");
+                data: "updatedAt",
+                title: "Last Updated",
+                render: function (data) {
+                    let localTime = moment.utc(data).utcOffset("+08:00");
                     return localTime.format("YYYY-MM-DD HH:mm");
                 },
             },
@@ -114,8 +114,8 @@ $(document).ready(function () {
         if (rowData.status === "stopped") {
             Toast.fire({
                 icon: "info",
-                title: `Notice`,
-                text: `This campaign is already stopped.`,
+                title: "Notice",
+                text: "This campaign is already stopped.",
             });
             return;
         }
@@ -143,8 +143,8 @@ $(document).ready(function () {
                         console.log();
                         Toast.fire({
                             icon: "success",
-                            title: `Success!`,
-                            text: `Campaign stopped`,
+                            title: "Success!",
+                            text: "Campaign stopped",
                         });
 
                         $("#update-btn").prop("disabled", false);
@@ -152,7 +152,7 @@ $(document).ready(function () {
                     error: function (e) {
                         Swal.fire({
                             icon: "error",
-                            title: `Error!`,
+                            title: "Error!",
                             text: `Campaign is not stopped  ${e.responseJSON.data}`,
                             confirmButtonColor: "#F27475",
                             allowOutsideClick: false,

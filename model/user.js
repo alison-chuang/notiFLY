@@ -1,50 +1,37 @@
+import dotenv from "dotenv";
+dotenv.config();
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 import { Role } from "./role.js";
 
-// TODO default role ObjectId 不寫死
-// const defaultRole = async function () {
-//     const defaultRole = await Role.findOne({ role_id: 2 }).select("_id");
-//     return defaultRole._id;
-// };
-const defaultRole = new mongoose.Types.ObjectId("6440a8fceebac57447ba38a0");
+const defaultRole = new mongoose.Types.ObjectId(process.env.DEFAULT_ROLE_ID);
 
-const userSchema = new Schema({
-    name: {
-        type: String,
-        required: true,
+const userSchema = new Schema(
+    {
+        name: {
+            type: String,
+            required: true,
+        },
+        email: {
+            type: Object,
+            required: true,
+            unique: true,
+        },
+        password: {
+            type: String,
+            required: true,
+        },
+        role: {
+            type: Schema.Types.ObjectId,
+            required: true,
+            default: defaultRole,
+            ref: Role,
+        },
     },
-    email: {
-        type: Object,
-        required: true,
-        unique: true,
-    },
-    password: {
-        type: String,
-        required: true,
-    },
-    role: {
-        type: Schema.Types.ObjectId,
-        required: true, // 1:admin & 2:user & 3: viewer
-        default: defaultRole,
-        ref: Role,
-    },
-    created_at: {
-        type: Date,
-        required: true,
-        default: Date.now,
-    },
-    updated_At: {
-        type: Date,
-        required: true,
-        default: Date.now,
-    },
-});
-
-userSchema.pre("save", function (next) {
-    this.updated_at = new Date();
-    next();
-});
+    {
+        timestamps: true,
+    }
+);
 
 const User = mongoose.model("user", userSchema);
 

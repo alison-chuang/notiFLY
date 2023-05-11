@@ -30,11 +30,11 @@ $(document).ready(function () {
                 data: "name",
             },
             {
-                data: "created_at",
+                data: "updatedAt",
                 title: "Last Updated",
                 render: function (data) {
                     var localTime = moment.utc(data).utcOffset("+08:00");
-                    return localTime.format("YYYY-MM-DD HH:mm:ss");
+                    return localTime.format("YYYY-MM-DD HH:mm");
                 },
             },
             { data: "owner" },

@@ -11,34 +11,24 @@ const permissionSchema = new Schema({
     delete: { type: Boolean },
 });
 
-const roleSchema = new Schema({
-    role_id: {
-        type: String,
-        required: true, // 1:admin & 2:user & 3: reader
+const roleSchema = new Schema(
+    {
+        role_id: {
+            type: String,
+            required: true,
+        },
+        name: {
+            type: String,
+            required: true,
+        },
+        permissions: {
+            type: [permissionSchema],
+        },
     },
-    name: {
-        type: String, // admin, user, viewer
-        required: true,
-    },
-    permissions: {
-        type: [permissionSchema],
-    },
-    created_at: {
-        type: Date,
-        required: true,
-        default: Date.now,
-    },
-    updated_At: {
-        type: Date,
-        required: true,
-        default: Date.now,
-    },
-});
-
-roleSchema.pre("save", function (next) {
-    this.updated_at = new Date();
-    next();
-});
+    {
+        timestamps: true,
+    }
+);
 
 const Role = mongoose.model("role", roleSchema);
 

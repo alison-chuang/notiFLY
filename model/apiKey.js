@@ -1,33 +1,33 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
-const apiKeySchema = new Schema({
-    user_id: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-    },
-    key: {
-        type: String,
-        unique: true,
-        required: true,
-    },
-    created_at: {
-        type: Date,
-        default: Date.now,
-        required: true,
-    },
-    expired_at: {
-        type: Date,
-        required: true,
-        default: function () {
-            const date = new Date();
-            // Add 30 days to the current date
-            date.setDate(date.getDate() + 30);
-            return date;
+const apiKeySchema = new Schema(
+    {
+        user_id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+        key: {
+            type: String,
+            unique: true,
+            required: true,
+        },
+        expired_at: {
+            type: Date,
+            required: true,
+            default: function () {
+                const date = new Date();
+                // Add 30 days to the current date
+                date.setDate(date.getDate() + 30);
+                return date;
+            },
         },
     },
-});
+    {
+        timestamps: true,
+    }
+);
 
 const ApiKey = mongoose.model("ApiKey", apiKeySchema);
 

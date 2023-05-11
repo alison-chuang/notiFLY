@@ -1,32 +1,5 @@
 const token = localStorage.getItem("jwtToken");
 
-// $(document).ready(function () {
-//     $.ajax({
-//         type: "GET",
-//         url: "api/1.0/keys/page",
-//         headers: {
-//             "Content-Type": "application/json",
-//             Authorization: `Bearer ${token}`,
-//         },
-//         success: function (data) {
-//             console.log(data);
-//         },
-//         error: function (e) {
-//             console.error(e);
-//             Swal.fire({
-//                 icon: "warning",
-//                 title: `Error!`,
-//                 text: `Only system admin has access to this page. Sorry.`,
-//                 confirmButtonColor: "#F27475",
-//                 allowOutsideClick: true,
-//             });
-//             setTimeout(function () {
-//                 window.location.replace("member.html");
-//             }, 2000);
-//         },
-//     });
-// });
-
 $("#key-btn").click(function () {
     $.ajax({
         type: "POST",
@@ -64,7 +37,7 @@ $("#key-btn").click(function () {
             console.error(e);
             Swal.fire({
                 icon: "error",
-                title: `Error!`,
+                title: "Error!",
                 text: `${e.responseJSON.data}`,
                 confirmButtonColor: "#F27475",
                 allowOutsideClick: false,
@@ -106,17 +79,17 @@ $(document).ready(function () {
                 },
             },
             {
-                data: "created_at",
+                data: "createdAt",
                 render: function (data) {
                     var localTime = moment.utc(data).utcOffset("+08:00");
-                    return localTime.format("YYYY-MM-DD HH:mm:ss");
+                    return localTime.format("YYYY-MM-DD HH:mm");
                 },
             },
             {
                 data: "expired_at",
                 render: function (data) {
                     var localTime = moment.utc(data).utcOffset("+08:00");
-                    return localTime.format("YYYY-MM-DD HH:mm:ss");
+                    return localTime.format("YYYY-MM-DD HH:mm");
                 },
             },
         ],

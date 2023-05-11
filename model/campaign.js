@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { PROCESSED, RUNNING } from "../cron_constant.js";
+import { LAUNCHED, PROCESSED, RUNNING } from "../cron_constant.js";
 const Schema = mongoose.Schema;
 
 const messageSchema = new Schema({
@@ -55,73 +55,63 @@ const jobSchema = new Schema({
     },
     status: {
         type: String,
-        default: "launched",
+        default: LAUNCHED,
         required: true,
     },
 });
 
-const campaignSchema = new Schema({
-    name: {
-        type: String,
-        required: false,
+const campaignSchema = new Schema(
+    {
+        name: {
+            type: String,
+            required: false,
+        },
+        owner_name: {
+            type: String,
+            required: true,
+        },
+        status: {
+            type: String,
+            required: true,
+            default: RUNNING,
+        },
+        send_time: {
+            type: Date,
+        },
+        next_send_time: {
+            type: Date,
+        },
+        type: {
+            type: String,
+            required: true,
+        },
+        interval: {
+            type: Number,
+            default: 0,
+        },
+        end_time: {
+            type: Date,
+        },
+        jobs: {
+            type: [jobSchema],
+            default: [],
+        },
+        segment_id: {
+            type: Schema.Types.ObjectId,
+            required: true,
+        },
+        channel: {
+            type: String, // edm, sms ...
+            required: true,
+        },
+        message_variant: {
+            type: [messageSchema],
+        },
     },
-    owner_name: {
-        type: String,
-        required: true,
-    },
-    status: {
-        type: String,
-        required: true,
-        default: "running",
-        // running, registered, finished, stopped
-    },
-    created_at: {
-        type: Date,
-        default: Date.now,
-    },
-    updated_at: {
-        type: Date,
-        default: Date.now,
-    },
-    send_time: {
-        type: Date,
-    },
-    next_send_time: {
-        type: Date,
-    },
-    type: {
-        type: String, // one-time, periodic
-        required: true,
-    },
-    interval: {
-        type: Number,
-        default: 0,
-    },
-    end_time: {
-        type: Date,
-    },
-    jobs: {
-        type: [jobSchema],
-        default: [],
-    },
-    segment_id: {
-        type: Schema.Types.ObjectId,
-        required: true,
-    },
-    channel: {
-        type: String, // edm, sms ...(for upload to correct queue)
-        required: true,
-    },
-    message_variant: {
-        type: [messageSchema],
-    },
-});
-
-// middleware
-campaignSchema.pre("save", function (next) {
-    this.updated_at = new Date();
-    next();
-});
+    {
+        timestamps: true,
+    }
+);
 
 const Campaign = mongoose.model("campaigns", campaignSchema);
 

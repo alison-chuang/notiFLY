@@ -1,35 +1,27 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
-const segmentSchema = new Schema({
-    name: {
-        type: String,
-        // required: true,
+const segmentSchema = new Schema(
+    {
+        name: {
+            type: String,
+            // required: true,
+        },
+        owner: {
+            type: String,
+            // required: true,
+        },
+        query: {
+            type: Object,
+        },
+        rules: {
+            type: Object,
+        },
     },
-    owner: {
-        type: String,
-        // required: true,
-    },
-    query: {
-        type: Object,
-    },
-    rules: {
-        type: Object,
-    },
-    created_at: {
-        type: Date,
-        default: Date.now,
-    },
-    updated_at: {
-        type: Date,
-        default: Date.now,
-    },
-});
-
-segmentSchema.pre("save", function (next) {
-    this.updated_at = new Date();
-    next();
-});
+    {
+        timestamps: true,
+    }
+);
 
 const Segment = mongoose.model("segment", segmentSchema);
 

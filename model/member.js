@@ -43,69 +43,66 @@ const subscriptionSchema = new Schema({
     },
 });
 
-const memberSchema = new Schema({
-    client_member_id: {
-        type: String,
-        unique: true,
-        // required: true,
+const memberSchema = new Schema(
+    {
+        client_member_id: {
+            type: String,
+            unique: true,
+            // required: true,
+        },
+        name: {
+            type: String,
+            required: false,
+        },
+        email: {
+            type: String,
+            required: true,
+            unique: true,
+        },
+        cellphone: {
+            type: String,
+            required: false,
+        },
+        gender: {
+            type: String, // f, m ,n
+            required: false,
+        },
+        birthday_year: {
+            type: Number,
+            required: false,
+        },
+        birthday_month: {
+            type: Number,
+            required: false,
+        },
+        birthday_date: {
+            type: Number,
+            required: false,
+        },
+        city: {
+            type: String,
+            required: false,
+        },
+        orders: {
+            type: [orderSchema],
+            default: [],
+        },
+        total_purchase_count: {
+            type: Number,
+            default: 0,
+        },
+        total_spending: {
+            type: Number,
+            default: 0,
+        },
+        subscription: {
+            type: subscriptionSchema,
+        },
     },
-    name: {
-        type: String,
-        required: false,
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    cellphone: {
-        type: String,
-        required: false,
-    },
-    gender: {
-        type: String, // f, m ,n
-        required: false,
-    },
-    birthday_year: {
-        type: Number,
-        required: false,
-    },
-    birthday_month: {
-        type: Number,
-        required: false,
-    },
-    birthday_date: {
-        type: Number,
-        required: false,
-    },
-    city: {
-        type: String,
-        required: false,
-    },
-    created_at: {
-        type: Date,
-        default: Date.now,
-    },
-    updated_at: {
-        type: Date,
-        default: Date.now,
-    },
-    orders: {
-        type: [orderSchema],
-        default: [],
-    },
-    total_purchase_count: {
-        type: Number,
-        default: 0,
-    },
-    total_spending: {
-        type: Number,
-        default: 0,
-    },
-    subscription: {
-        type: subscriptionSchema,
-    },
-});
+    {
+        timestamps: true,
+    }
+);
 
 // mongoose middleware
 memberSchema.pre("save", function (next) {
