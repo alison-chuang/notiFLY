@@ -1,7 +1,7 @@
 import cron from "node-cron";
 import "./model/database.js";
 import { Campaign } from "./model/campaign.js";
-import { REGISTERED, RUNNING } from "./statusConstant.js";
+import { REGISTERED, RUNNING } from "./status_constant.js";
 
 const MIN = 1000 * 60;
 const HOUR = 60 * MIN;

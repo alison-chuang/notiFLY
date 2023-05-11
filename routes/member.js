@@ -14,7 +14,7 @@ import {
     getAllKey,
 } from "../controller/member.js";
 import { upload } from "../util/util.js";
-import { isAuthorized, jwtauth } from "../util/auth.js";
+import { isAuthorized, jwtauth } from "../middleware/auth.js";
 router.use(express.json());
 
 router.route("/members").post(checkKey, wrapAsync(postMember));

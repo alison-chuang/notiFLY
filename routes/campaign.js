@@ -1,10 +1,9 @@
 import express from "express";
-import bodyParser from "body-parser";
 const router = express.Router();
 
 import { wrapAsync } from "../util/util.js";
-import { jwtauth } from "../util/auth.js";
-import { validateSchema, campaignSchema  } from "../util/validator.js";
+import { jwtauth } from "../middleware/auth.js";
+import { validateSchema, campaignSchema, idSchema } from "../middleware/validator.js";
 import {
     postCampaigns,
     getS3Url,
@@ -18,7 +17,6 @@ import {
     getSns,
 } from "../controller/campaign.js";
 
-router.use(bodyParser.json());
 router.use(
     express.json({
         type: [
@@ -29,10 +27,12 @@ router.use(
 );
 router.use(express.urlencoded({ extended: true }));
 
-router.route("/campaigns").post(jwtauth,  validateSchema(campaignSchema) , wrapAsync(postCampaigns));
-router.route("/campaigns").put(jwtauth, wrapAsync(updateCampaignDetail));
+router
+    .route("/campaigns")
+    .get(wrapAsync(getAllCampaign))
+    .post(jwtauth, validateSchema(campaignSchema), wrapAsync(postCampaigns))
+    .put(jwtauth, validateSchema(campaignSchema), validateSchema(idSchema), wrapAsync(updateCampaignDetail));
 router.route("/campaigns/status").put(jwtauth, wrapAsync(updateStatus));
-router.route("/campaigns").get(wrapAsync(getAllCampaign));
 router.route("/campaigns/s3Url").get(wrapAsync(getS3Url));
 router.route("/campaigns/images").get(wrapAsync(getS3Images));
 router.route("/lambdaUpdateDb").post(wrapAsync(lambdaUpdateDb));

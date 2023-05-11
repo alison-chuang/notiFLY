@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { PROCESSED, RUNNING } from "../statusConstant.js";
+import { PROCESSED, RUNNING } from "../status_constant.js";
 const Schema = mongoose.Schema;
 
 const messageSchema = new Schema({
@@ -168,8 +168,7 @@ const selectAllCampaign = async () => {
 // select campaign by id for campaign detail page
 const selectById = async (id) => {
     try {
-        const doc = await Campaign.findOne({ _id: id });
-        return doc;
+        return await Campaign.findOne({ _id: id });
     } catch (e) {
         return false;
     }
@@ -181,10 +180,11 @@ const updateCampaign = async (id, formUpdate) => {
         const filter = { _id: id };
         const update = { $set: formUpdate };
         const doc = await Campaign.findOneAndUpdate(filter, update, { new: true });
-        console.log("updated", doc);
+        console.log("**", doc); // null
+        // id 不存在會回 null，id 格式錯誤報錯會掉到 catch
         return doc;
     } catch (e) {
-        return false;
+        console.log("@@", e);
     }
 };
 
@@ -200,4 +200,13 @@ const changeStatus = async (id, status) => {
     }
 };
 
-export { Campaign, updateCounts, checkRequest, selectAllCampaign, selectById, updateCampaign, changeStatus, createCampaign };
+export {
+    Campaign,
+    updateCounts,
+    checkRequest,
+    selectAllCampaign,
+    selectById,
+    updateCampaign,
+    changeStatus,
+    createCampaign,
+};

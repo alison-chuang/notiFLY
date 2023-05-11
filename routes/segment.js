@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import { wrapAsync } from "../util/util.js";
-import { jwtauth } from "../util/auth.js";
+import { jwtauth } from "../middleware/auth.js";
 import {
     postSegment,
     getSegment,

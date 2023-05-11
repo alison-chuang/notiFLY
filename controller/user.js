@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import { User, getUser, insertUser, delUser, selecAlltUser } from "../model/user.js";
 import { Token } from "../model/token.js";
-import { signJwt, verifyJwt } from "../util/auth.js";
+import { signJwt, verifyJwt } from "../middleware/auth.js";
 import { sendResetEmail } from "../util/email.js";
 
 import { fileURLToPath } from "url";

@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import { wrapAsync } from "../util/util.js";
-import { isAuthorized, jwtauth } from "../util/auth.js";
+import { isAuthorized, jwtauth } from "../middleware/auth.js";
 import {
     postUser,
     signIn,

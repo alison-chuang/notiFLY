@@ -57,7 +57,7 @@ const updateMember = async (req, res) => {
     // check member in db
     const isMember = await checkMemberId(id);
     if (!isMember) {
-        return es.status(400).json({ data: "bad request" });
+        return res.status(400).json({ data: "bad request" });
     }
 
     // $set: object
@@ -156,7 +156,7 @@ const uploadMemberCsv = async (req, res) => {
         console.error("errObj", err.writeErrors);
         // const e = err.writeErrors.map((e) => e.err);
 
-        return res.status(500).json({
+        return res.status(400).json({
             data: {
                 total: Object.keys(err.result.insertedIds).length,
                 inserted: err.result.insertedCount,
