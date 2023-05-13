@@ -63,7 +63,7 @@ async function isAuthorized(req, res, next) {
     const permission = await checkPermissions(id, resource, method);
     console.log("permission", permission);
     if (!permission) {
-        return res.status(403).json({ data: "Unauthorized" });
+        return res.status(403).json({ data: "Unauthorized. Admin only." });
     }
     next();
 }
