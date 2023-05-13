@@ -1,9 +1,9 @@
 import dotenv from "dotenv";
 dotenv.config();
 import cron from "node-cron";
-import "./model/database.js";
-import { Campaign } from "./model/campaign.js";
-import { Member } from "./model/member.js";
+import "./util/database_connection.js";
+import { Campaign } from "./server/model/campaign.js";
+import { Member } from "./server/model/member.js";
 import { sendToS3 } from "./util/upload.js";
 import { REGISTERED, PROCESSING, FAILED, FINISHED, BATCH_SIZE, SENDER_RANGE } from "./cron_constant.js";
 import * as q from "./util/queue.js";
@@ -143,7 +143,7 @@ const main = async () => {
             const [latestIdx, latestJob] = findLatestJob(record.jobs, record.next_send_time);
             if (latestIdx == null || !latestJob) {
                 console.error(`[${new Date().toISOString()}] There is a registered campaign without jobs.`);
-                continue; // FIXME
+                continue;
             }
 
             // divide receivers into smaller pack to send to s3

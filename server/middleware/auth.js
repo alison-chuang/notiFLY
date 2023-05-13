@@ -30,7 +30,6 @@ function verifyJwt(token) {
 // authentication middleware
 async function jwtauth(req, res, next) {
     const authHeader = req.headers.authorization;
-    // console.log("authHeader: ", authHeader);
     if (!authHeader) {
         return res.status(401).json({ data: "No authorization in header " });
     }
@@ -40,7 +39,6 @@ async function jwtauth(req, res, next) {
     }
 
     const token = authHeader.split(" ")[1];
-
     if (!token) {
         return res.status(401).json({ data: "No token" });
     }

@@ -1,8 +1,7 @@
 import dotenv from "dotenv";
 dotenv.config();
 import { ChatGPTAPI } from "chatgpt";
-import { generateImageURL, selectS3Images } from "../util/upload.js";
-import "../model/database.js";
+import { generateImageURL, selectS3Images } from "../../util/upload.js";
 
 import {
     updateCounts,
@@ -124,21 +123,26 @@ const genCopy = async (req, res) => {
         return res.status(400).json({ data: "Product or keywords cannot exceed 100 characters." });
     }
 
+    if (!product || !keywords) {
+        return res.status(400).json({ data: "Please provide name & keyword for better magic" });
+    }
+
     const prompt = `
-    Using a ${tone} tone, write a ${language} ${channel} copy highlighting the ${keywords} of a ${product}.
+    You are an expert in coopy-writing.
+    Use ${tone} tone, write a ${language} ${channel} copy highlighting the ${keywords} of a ${product}.
     No incomplete sentences is permitted.
     No need to provide translation. 
-    No simplified Chinese is permitted. Only zh-TW for Chinese Copy.
+    No simplified Chinese is permitted.
     Should complete the sentence before it reaches max_tokens.
     No more than 30 words.
-    Not to provide incomplete sentences in your responses. Every sentense should completed.
+    Not to provide incomplete sentences in your responses. Every sentense should be completed.
     `;
 
     const api = new ChatGPTAPI({
         apiKey: process.env.OPEN_AI,
         completionParams: {
             model: "gpt-3.5-turbo",
-            max_tokens: 60,
+            max_tokens: 50,
             temperature: 1,
             top_p: 0.5,
         },

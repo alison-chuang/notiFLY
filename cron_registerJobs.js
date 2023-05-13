@@ -1,6 +1,6 @@
 import cron from "node-cron";
-import "./model/database.js";
-import { Campaign } from "./model/campaign.js";
+import "./util/database_connection.js";
+import { Campaign } from "./server/model/campaign.js";
 import { REGISTERED, RUNNING, REGISTER_RANGE } from "./cron_constant.js";
 
 const MIN = 1000 * 60;
@@ -51,6 +51,7 @@ const registerJobs = async () => {
 
             //如果不是第一次發送，jobs 裡會有之前註冊過的job，要用最後一個job加上interval = next_send_time
             if (item.jobs.length != 0) {
+                let nextSendTime;
                 nextSendTime = addDays(item.jobs[item.jobs.length - 1].send_time, item.interval);
             }
 

@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { wrapAsync } from "../util/util.js";
+import { wrapAsync } from "../../util/util.js";
 import {
     postMember,
     updateMember,
@@ -13,7 +13,7 @@ import {
     checkKey,
     getAllKey,
 } from "../controller/member.js";
-import { upload } from "../util/util.js";
+import { upload } from "../../util/util.js";
 import { isAuthorized, jwtauth } from "../middleware/auth.js";
 router.use(express.json());
 

@@ -2,7 +2,7 @@ import Ajv from "ajv";
 import { v4 as uuidv4 } from "uuid";
 import { Member, newAttribute, delMember, newOrder, delOrder, checkMemberId } from "../model/member.js";
 import { ApiKey, updateOldKeys, selecAllKey } from "../model/apiKey.js";
-import { newMemberSchema } from "../util/util.js";
+import { newMemberSchema } from "../../util/util.js";
 import csv from "csvtojson";
 
 // save member info to db

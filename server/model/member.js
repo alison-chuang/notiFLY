@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-
 const Schema = mongoose.Schema;
 
 const orderSchema = new Schema(
@@ -48,7 +47,7 @@ const memberSchema = new Schema(
         client_member_id: {
             type: String,
             unique: true,
-            // required: true,
+            required: true,
         },
         name: {
             type: String,
@@ -64,7 +63,7 @@ const memberSchema = new Schema(
             required: false,
         },
         gender: {
-            type: String, // f, m ,n
+            type: String,
             required: false,
         },
         birthday_year: {
@@ -195,21 +194,14 @@ const checkMemberId = async (id) => {
     }
 };
 
-// get city in DB
 const selectCity = async () => {
     const cities = await Member.find({}, { city: 1, _id: 0 });
     return cities;
 };
 
-// get member count based on segment filter
 const matchMember = async (query) => {
     const counts = await Member.countDocuments(query);
     return counts;
 };
-/*
-query: {
-    '$and': [ {  birthday_month: 12 } ]
-  }
-*/
 
 export { Member, newAttribute, newOrder, delOrder, checkMemberId, selectCity, matchMember, delMember };

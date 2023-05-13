@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { LAUNCHED, PROCESSED, RUNNING } from "../cron_constant.js";
+import { LAUNCHED, PROCESSED, RUNNING } from "../../cron_constant.js";
 const Schema = mongoose.Schema;
 
 const messageSchema = new Schema({
@@ -160,4 +160,4 @@ const changeStatus = async (id, status) => {
     return await Campaign.findOneAndUpdate(filter, update, { new: true });
 };
 
-export { updateCounts, selectAllCampaign, selectById, updateCampaign, changeStatus, createCampaign };
+export { Campaign, updateCounts, selectAllCampaign, selectById, updateCampaign, changeStatus, createCampaign };
