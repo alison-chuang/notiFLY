@@ -18,7 +18,6 @@ const apiKeySchema = new Schema(
             required: true,
             default: function () {
                 const date = new Date();
-                // Add 30 days to the current date
                 date.setDate(date.getDate() + 30);
                 return date;
             },
@@ -29,25 +28,30 @@ const apiKeySchema = new Schema(
     }
 );
 
-const ApiKey = mongoose.model("ApiKey", apiKeySchema);
+const Key = mongoose.model("Key", apiKeySchema);
 
 const updateOldKeys = async () => {
     const now = new Date();
     const searchDate = new Date(now.getTime() + 6 * 24 * 60 * 60 * 1000);
 
     const filter = { expired_at: { $gte: searchDate } };
-    const update = { $set: { expired_at: new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000) } };
-    await ApiKey.updateMany(filter, update);
+    const update = {
+        $set: { expired_at: new Date(now.getTime() + 5 * 24 * 60 * 60 * 1000) },
+    };
+    return await Key.updateMany(filter, update, { new: true });
 };
 
-const selecAllKey = async () => {
-    try {
-        const keys = await ApiKey.find({});
-        return keys;
-    } catch (e) {
-        console.error(`Error retrieving key: ${e.message}`);
-        return null;
-    }
+const selectAllKey = async () => {
+    return await Key.find({});
 };
 
-export { ApiKey, updateOldKeys, selecAllKey };
+const isKey = async (apiKey) => {
+    return await Key.findOne({ key: apiKey });
+};
+
+const createKey = async (data) => {
+    const key = new Key(data);
+    return await key.save();
+};
+
+export { Key, updateOldKeys, selectAllKey, isKey, createKey };
