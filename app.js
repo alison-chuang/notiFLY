@@ -2,7 +2,6 @@ import dotenv from "dotenv";
 dotenv.config();
 const { PORT, API_VERSION } = process.env;
 
-// Express Initialization
 import express from "express";
 const app = express();
 const port = PORT;
@@ -16,22 +15,23 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Altas database connection
-import "./model/database.js";
+import "./util/database_connection.js";
 
 // API routes
-import campaignRouter from "./routes/campaign.js";
-import memberRouter from "./routes/member.js";
-import segmentRouter from "./routes/segment.js";
-import userRouter from "./routes/user.js";
+import campaignRouter from "./server/routes/campaign.js";
+import memberRouter from "./server/routes/member.js";
+import segmentRouter from "./server/routes/segment.js";
+import userRouter from "./server/routes/user.js";
 app.use("/api/" + API_VERSION, campaignRouter);
 app.use("/api/" + API_VERSION, memberRouter);
 app.use("/api/" + API_VERSION, segmentRouter);
 app.use("/api/" + API_VERSION, userRouter);
 
-// reset password view
+// Reset password server-side render
 import { wrapAsync } from "./util/util.js";
-import { verifyLink } from "./controller/user.js";
-app.get("/users/password/link/:id/:token", wrapAsync(verifyLink));
+import { verifySource } from "./server/middleware/reset_password.js";
+import { resetLink } from "./server/controller/user.js";
+app.get("/users/password/link/:id/:token", wrapAsync(verifySource), wrapAsync(resetLink));
 
 // Page not found
 app.use((req, res, next) => {
@@ -41,7 +41,7 @@ app.use((req, res, next) => {
 // Error handling
 app.use((err, req, res, next) => {
     console.error(err);
-    res.status(500).json("Internal Server Error");
+    res.status(500).json({ data: "Internal Server Error" });
 });
 
 app.listen(port, () => {
