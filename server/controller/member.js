@@ -1,5 +1,13 @@
 import { v4 as uuidv4 } from "uuid";
-import { createMember, checkMemberId, delMember, delOrder, Member, updateMember, newOrder } from "../model/member.js";
+import {
+    createMember,
+    checkMemberId,
+    delMember,
+    delOrder,
+    Member,
+    updateMember,
+    updateOrder,
+} from "../model/member.js";
 import { selectAllKey, updateOldKeys, createKey } from "../model/key.js";
 import csv from "csvtojson";
 
@@ -28,7 +36,7 @@ const updateMemberDetail = async (req, res) => {
     try {
         const updatedMember = await updateMember(id, body);
         if (!updatedMember) {
-            return res.status(400).json({ data: "No matched member with request id" });
+            return res.status(400).json({ data: "No matched member with request id." });
         }
     } catch (err) {
         if (err.code == 11000) {
@@ -48,56 +56,46 @@ const deleteMember = async (req, res) => {
 
     const deletedMember = await delMember(id);
     if (!deletedMember) {
-        return res.status(400).json({ data: "No matched member with request id" });
+        return res.status(400).json({ data: "No matched member with request id." });
     }
     res.status(200).json({ data: "deleted" });
 };
 
-const updateOrder = async (req, res) => {
+const updateOrderDetail = async (req, res) => {
     const { id, order } = req.body;
 
-    // check member in db
-    const isMember = await checkMemberId(id);
-    if (!isMember) {
-        return res.status(400).json({ data: "bad request" });
+    if (!id) {
+        return res.status(400).json({ data: "Member id is required." });
     }
 
-    // $push : new order
     try {
-        const updated = await newOrder(id, order);
-        return res.status(200).json({ data: "DB updated" });
-    } catch (e) {
-        console.error(e);
-        return res.status(500).json({ data: "fail to update" });
+        const updatedOrder = await updateOrder(id, order);
+        if (!updatedOrder) {
+            return res.status(400).json({ data: "No matched member with request id." });
+        }
+    } catch (err) {
+        if (err.code == 11000) {
+            return res.status(400).json({ data: "DuplicateKey in order_id." });
+        }
+        throw err;
     }
+    res.status(200).json({ data: "updated" });
 };
 
 const deleteOrder = async (req, res) => {
-    console.log("client update member data:", req.body);
-    const { id, order } = req.body;
+    const { id, order_id } = req.body;
 
-    if (!id || !order.order_id) {
-        return res.status(400).json({ data: "bad request" });
+    if (!id) {
+        return res.status(400).json({ data: "Member id is required." });
     }
 
-    // check member in db
-    const isMember = await checkMemberId(id);
-    if (!isMember) {
-        return res.status(400).json({ data: "bad request" });
+    const deletedOrder = await delOrder(id, order_id);
+    if (!deletedOrder) {
+        return res.status(400).json({ data: "No matched member / order." });
     }
-
-    // $: delete order
-    try {
-        const updated = await delOrder(id, order);
-        return res.status(200).json({ data: "DB updated" });
-    } catch (e) {
-        console.error(e);
-        return res.status(500).json({ data: "fail to delete" });
-    }
+    res.status(200).json({ data: "deleted" });
 };
 
-// multer 上傳 csv 檔案 => save to db
-// member
 const uploadMemberCsv = async (req, res) => {
     console.log("member CSV received.");
     if (!req.file) {
@@ -129,7 +127,6 @@ const uploadMemberCsv = async (req, res) => {
     }
 };
 
-//order
 const uploadOrderCsv = async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: "Please select CSV file to upload!" });
@@ -226,7 +223,7 @@ const getAllKey = async (req, res) => {
 export {
     postMember,
     updateMemberDetail,
-    updateOrder,
+    updateOrderDetail,
     deleteOrder,
     uploadMemberCsv,
     uploadOrderCsv,

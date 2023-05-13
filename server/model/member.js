@@ -5,8 +5,7 @@ const orderSchema = new Schema(
     {
         order_id: {
             type: String,
-            unique: false,
-            index: false,
+            unique: true,
         },
         date: {
             type: Date,
@@ -51,7 +50,6 @@ const memberSchema = new Schema(
         },
         name: {
             type: String,
-            required: false,
         },
         email: {
             type: String,
@@ -60,27 +58,21 @@ const memberSchema = new Schema(
         },
         cellphone: {
             type: String,
-            required: false,
         },
         gender: {
             type: String,
-            required: false,
         },
         birthday_year: {
             type: Number,
-            required: false,
         },
         birthday_month: {
             type: Number,
-            required: false,
         },
         birthday_date: {
             type: Number,
-            required: false,
         },
         city: {
             type: String,
-            required: false,
         },
         orders: {
             type: [orderSchema],
@@ -131,42 +123,32 @@ const delMember = async (id) => {
     return await Member.findOneAndDelete(filter);
 };
 
-const newOrder = async (id, order) => {
-    try {
-        const doc = await Member.findOneAndUpdate(
-            { _id: id },
-            {
-                $push: {
-                    orders: order,
-                },
-                $inc: { total_spending: order.amount, total_purchase_count: 1 },
-            },
-            {
-                new: true,
-            }
-        );
-        console.log("newOrder", doc);
-        return doc;
-    } catch (e) {
-        console.error(e);
-        return e;
-    }
+const updateOrder = async (id, order) => {
+    const filter = { _id: id };
+    const update = {
+        $push: {
+            orders: order,
+        },
+        $inc: { total_spending: order.amount, total_purchase_count: 1 },
+    };
+    return await Member.findOneAndUpdate(filter, update, { new: true });
 };
 
-const delOrder = async (id, order) => {
-    try {
-        const filter = { _id: id };
+const delOrder = async (id, orderId) => {
+    const filter = { _id: id };
+    const member = await Member.findOne({
+        ...filter,
+        "orders.order_id": orderId,
+    });
+    if (member) {
+        const order = member.orders.filter((order) => order.order_id == orderId)[0];
         const update = {
-            $pull: { orders: { order_id: order.order_id } },
+            $pull: { orders: { order_id: orderId } },
             $inc: { total_spending: -order.amount, total_purchase_count: -1 },
         };
-        const doc = await Member.findOneAndUpdate(filter, update, {
-            new: true,
-        });
-        console.log("updated doc:", doc);
-        return doc;
-    } catch (e) {
-        return e;
+        return await Member.findOneAndUpdate(filter, update, { new: true });
+    } else {
+        return null;
     }
 };
 
@@ -181,13 +163,11 @@ const checkMemberId = async (id) => {
 };
 
 const selectCity = async () => {
-    const cities = await Member.find({}, { city: 1, _id: 0 });
-    return cities;
+    return await Member.find({}, { city: 1, _id: 0 });
 };
 
 const matchMember = async (query) => {
-    const counts = await Member.countDocuments(query);
-    return counts;
+    return await Member.countDocuments(query);
 };
 
-export { Member, createMember, updateMember, newOrder, delOrder, checkMemberId, selectCity, matchMember, delMember };
+export { Member, createMember, updateMember, updateOrder, delOrder, checkMemberId, selectCity, matchMember, delMember };
