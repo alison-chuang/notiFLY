@@ -1,97 +1,56 @@
-import Ajv from "ajv";
 import { v4 as uuidv4 } from "uuid";
-import { Member, newAttribute, delMember, newOrder, delOrder, checkMemberId } from "../model/member.js";
-import { ApiKey, updateOldKeys, selecAllKey } from "../model/apiKey.js";
-import { newMemberSchema } from "../../util/util.js";
+import { createMember, checkMemberId, delMember, delOrder, Member, updateMember, newOrder } from "../model/member.js";
+import { selectAllKey, updateOldKeys, createKey } from "../model/key.js";
 import csv from "csvtojson";
 
 // save member info to db
 const postMember = async (req, res) => {
-    console.log(req.originalUrl, req.method);
-    console.log("client push new members:", req.body);
     const { body } = req;
-    const { email, cellphone } = req.body;
-
-    // validate body format
-    const ajv = new Ajv();
-    const validate = ajv.compile(newMemberSchema);
-    const isValid = validate(req.body);
-    if (!isValid) {
-        return res.status(400).json({ data: validate.errors });
-    }
-
-    // required fields
-    if (!email) {
-        return res.status(400).json({ data: "email is required" });
-    }
-
-    // validate email, cellphone
-    const tester = (regex, field) => {
-        if (!regex.test(field)) {
-            return res.status(400).send(`Invalid ${field}`);
-        }
-    };
-    const emailRegex = /^[\w.+-]+@(?:[a-z\d-]+\.)+[a-z]{2,}$/g;
-    const cellphoneRegex = /^([0-9]{4})\)?[-.\s]?([0-9]{3})[-.\s]?([0-9]{3})$/;
-    tester(emailRegex, email);
-    tester(cellphoneRegex, cellphone);
-
-    // save to DB
     try {
-        const member = new Member(body);
-        const newmember = await member.save();
-        console.log("saved member to database");
-        return res.status(201).json(newmember);
-    } catch (e) {
-        console.log(e);
-        return res.status(500).json({ data: e.message });
+        const newMember = await createMember(body);
+        res.status(201).json({ data: newMember._id });
+    } catch (err) {
+        if (err.code == 11000) {
+            return res.status(400).json({ data: "DuplicateKey in client_member_id or email." });
+        }
+        throw err;
     }
 };
 
-// upadate
-const updateMember = async (req, res) => {
-    console.log("client update member data:", req.body);
-
+const updateMemberDetail = async (req, res) => {
     const { id } = req.body;
     const { body } = req;
 
-    // check member in db
-    const isMember = await checkMemberId(id);
-    if (!isMember) {
-        return res.status(400).json({ data: "bad request" });
+    if (!id) {
+        return res.status(400).json({ data: "Member id is required." });
     }
 
-    // $set: object
     try {
-        const updated = await newAttribute(id, body);
-        console.log("updated newAttribute:", updated);
-        return res.status(200).json({ data: "DB updated" });
-    } catch (e) {
-        console.error(e);
-        return res.status(500).json({ data: "fail to update" });
+        const updatedMember = await updateMember(id, body);
+        if (!updatedMember) {
+            return res.status(400).json({ data: "No matched member with request id" });
+        }
+    } catch (err) {
+        if (err.code == 11000) {
+            return res.status(400).json({ data: "DuplicateKey in client_member_id or email." });
+        }
+        throw err;
     }
+    res.status(200).json({ data: "updated" });
 };
+
 const deleteMember = async (req, res) => {
     const { id } = req.body;
 
     if (!id) {
-        return res.status(400).json({ data: "bad request" });
+        return res.status(400).json({ data: "Member id is required." });
     }
 
-    // check member in db
-    const isMember = await checkMemberId(id);
-    if (!isMember) {
-        return res.status(400).json({ data: "bad request" });
+    const deletedMember = await delMember(id);
+    if (!deletedMember) {
+        return res.status(400).json({ data: "No matched member with request id" });
     }
-
-    // $: delete order
-    try {
-        await delMember(id);
-        return res.status(200).json({ data: "DB updated" });
-    } catch (e) {
-        console.error(e);
-        return res.status(500).json({ data: "fail to delete" });
-    }
+    res.status(200).json({ data: "deleted" });
 };
 
 const updateOrder = async (req, res) => {
@@ -149,7 +108,10 @@ const uploadMemberCsv = async (req, res) => {
         const jsonObj = await csv().fromFile(req.file.path);
         console.log(jsonObj);
 
-        const data = await Member.insertMany(jsonObj, { ordered: false, rawResult: false });
+        const data = await Member.insertMany(jsonObj, {
+            ordered: false,
+            rawResult: false,
+        });
         // console.log("insertMany result", data);
         return res.status(200).json({ data: data.length });
     } catch (err) {
@@ -179,7 +141,11 @@ const uploadOrderCsv = async (req, res) => {
     // group by client_member_id
     const groupedData = jsonObj.reduce((acc, cur) => {
         if (!acc[cur.client_member_id]) {
-            acc[cur.client_member_id] = { orders: [], total_spending: 0, total_purchase_count: 0 };
+            acc[cur.client_member_id] = {
+                orders: [],
+                total_spending: 0,
+                total_purchase_count: 0,
+            };
         }
         acc[cur.client_member_id].orders.push({
             order_id: cur.order_id,
@@ -195,7 +161,9 @@ const uploadOrderCsv = async (req, res) => {
 
     // Find client_member_id that don't exist
     const memberIds = Object.keys(groupedData);
-    const existingMembers = await Member.find({ client_member_id: { $in: memberIds } });
+    const existingMembers = await Member.find({
+        client_member_id: { $in: memberIds },
+    });
     const existingMemberIds = existingMembers.map((member) => member.client_member_id);
     const nonExistingMemberIds = memberIds.filter((id) => !existingMemberIds.includes(id));
 
@@ -234,73 +202,35 @@ const uploadOrderCsv = async (req, res) => {
     }
 };
 
-// generate key
+// generate api key
 const getKey = async (req, res) => {
-    // generate key
     const { id } = req.payload;
-    const apiKey = await uuidv4();
+    const apiKey = uuidv4();
     const data = {
         user_id: id,
         key: apiKey,
     };
 
-    try {
-        // adjust old key expiration date first
-        await updateOldKeys();
+    // adjust old key expiration date
+    await updateOldKeys();
 
-        const key = new ApiKey(data);
-        const newKey = await key.save();
-        res.status(200).json({ data: newKey });
-    } catch (e) {
-        console.error(e);
-        res.status(500).json({ error: "fail to generate key" });
-    }
+    const newKey = await createKey(data);
+    res.status(200).json({ data: newKey });
 };
 
-const checkKey = async (req, res, next) => {
-    const apiKey = req.headers["x-api-key"];
-    if (!apiKey) {
-        return res.status(401).json({ error: "API key not found" });
-    }
-
-    try {
-        const keyInDb = await ApiKey.findOne({ key: apiKey });
-
-        if (!keyInDb) {
-            return res.status(401).json({ error: "Invalid API key" });
-        }
-
-        if (keyInDb.expired_at < Date.now()) {
-            return res.status(401).json({ error: "API key has expired" });
-        }
-    } catch (e) {
-        console.error(e);
-        return res.status(500).json({ error: e.message });
-    }
-    next();
-};
-
-// render all user for user_list page
 const getAllKey = async (req, res) => {
-    try {
-        const allKeys = await selecAllKey();
-        console.log(allKeys);
-        return res.status(200).json({ data: allKeys });
-    } catch (e) {
-        console.log(e);
-        return res.status(500).json({ data: "get user failed" });
-    }
+    const allKeys = await selectAllKey();
+    return res.status(200).json({ data: allKeys });
 };
 
 export {
     postMember,
-    updateMember,
+    updateMemberDetail,
     updateOrder,
     deleteOrder,
     uploadMemberCsv,
     uploadOrderCsv,
     deleteMember,
     getKey,
-    checkKey,
     getAllKey,
 };

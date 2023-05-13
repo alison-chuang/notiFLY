@@ -58,11 +58,42 @@ const userSchema = {
             type: "string",
             minLength: 8,
         },
-        name: {
-            type: "string",
-        },
+        name: { type: "string" },
     },
     required: ["email", "password"],
 };
 
-export { validateSchema, campaignSchema, idSchema, userSchema };
+const memberSchema = {
+    type: "object",
+    properties: {
+        client_member_id: { type: "string" },
+        name: { type: "string" },
+        email: {
+            type: "string",
+            pattern: "^[\\w.+-]+@(?:[a-z\\d-]+\\.)+[a-z]{2,}$",
+        },
+        gender: {
+            type: "string",
+            enum: ["f", "m", "n"],
+        },
+        birthday_year: {
+            type: "number",
+            minimum: 1900,
+            maximum: 2099,
+        },
+        birthday_month: {
+            type: "number",
+            minimum: 1,
+            maximum: 12,
+        },
+        birthday_date: {
+            type: "number",
+            minimum: 1,
+            maximum: 31,
+        },
+        city: { type: "string" },
+    },
+    required: ["email", "client_member_id"],
+};
+
+export { validateSchema, campaignSchema, idSchema, userSchema, memberSchema };
