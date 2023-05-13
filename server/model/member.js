@@ -103,46 +103,32 @@ const memberSchema = new Schema(
     }
 );
 
-// mongoose middleware
-memberSchema.pre("save", function (next) {
-    this.total_purchase_count = this.orders.length;
-    this.total_spending = this.orders.reduce((total, order) => total + order.amount, 0);
-    next();
-});
-
-memberSchema.pre("save", function (next) {
-    this.updated_at = new Date();
-    next();
-});
+// // middleware
+// memberSchema.pre("save", function (next) {
+//     this.total_purchase_count = this.orders.length;
+//     this.total_spending = this.orders.reduce(
+//         (total, order) => total + order.amount,
+//         0
+//     );
+//     next();
+// });
 
 const Member = mongoose.model("members", memberSchema);
 
-const newAttribute = async (id, attributes) => {
-    console.log("check here attribute");
-    try {
-        const filter = { _id: id };
-        const update = {
-            $set: attributes,
-        };
-        const doc = await Member.findOneAndUpdate(filter, update, {
-            new: true,
-        });
-        console.log("updated doc:", doc);
-        return doc;
-    } catch (e) {
-        return e;
-    }
+const createMember = async (data) => {
+    const member = new Member(data);
+    return await member.save();
+};
+
+const updateMember = async (id, attributes) => {
+    const filter = { _id: id };
+    const update = { $set: attributes };
+    return await Member.findOneAndUpdate(filter, update, { new: true });
 };
 
 const delMember = async (id) => {
-    try {
-        const filter = { _id: id };
-        const doc = await Member.findOneAndDelete(filter);
-        console.log("updated doc:", doc);
-        return doc;
-    } catch (e) {
-        return e;
-    }
+    const filter = { _id: id };
+    return await Member.findOneAndDelete(filter);
 };
 
 const newOrder = async (id, order) => {
@@ -204,4 +190,4 @@ const matchMember = async (query) => {
     return counts;
 };
 
-export { Member, newAttribute, newOrder, delOrder, checkMemberId, selectCity, matchMember, delMember };
+export { Member, createMember, updateMember, newOrder, delOrder, checkMemberId, selectCity, matchMember, delMember };
