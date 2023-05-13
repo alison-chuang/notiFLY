@@ -96,4 +96,14 @@ const memberSchema = {
     required: ["email", "client_member_id"],
 };
 
-export { validateSchema, campaignSchema, idSchema, userSchema, memberSchema };
+const orderSchema = {
+    type: "object",
+    properties: {
+        order_id: { type: "string" },
+        date: { type: "string" },
+        amount: { type: "number" },
+        products: { type: "array", items: { type: "string" } },
+    },
+};
+
+export { validateSchema, campaignSchema, idSchema, userSchema, memberSchema, orderSchema };
