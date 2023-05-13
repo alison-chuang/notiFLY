@@ -41,7 +41,7 @@ $("#one-time-delivery").on("click", function () {
 
 // render segments
 $.get({
-    url: `/api/1.0/segments/names`,
+    url: "/api/1.0/segments/names",
     success: function (body) {
         $.each(body.data, function (idx) {
             const seg = body.data[idx];
@@ -109,8 +109,8 @@ $(document).ready(function () {
         if (!file) {
             Toast.fire({
                 icon: "error",
-                title: `Error!`,
-                text: `Please upload one image`,
+                title: "Error!",
+                text: "Please upload one image",
             });
             return;
         }
@@ -151,8 +151,8 @@ $(document).ready(function () {
         $("#image-container").prepend(imgDiv);
         Toast.fire({
             icon: "success",
-            title: `Success!`,
-            text: `Image uploaded!`,
+            title: "Success!",
+            text: "Image uploaded!",
         });
         // register event
         attachClickEvent();
@@ -166,8 +166,8 @@ function attachClickEvent() {
         navigator.clipboard.writeText(copyText);
         Toast.fire({
             icon: "success",
-            title: `Success!`,
-            text: `Copied to clipboard!`,
+            title: "Success!",
+            text: "Copied to clipboard!",
         });
     });
 }
@@ -177,7 +177,7 @@ $(document).ready(function () {
     // render gallery images
     // call backend => backend fetch s3 picture & response
     $.get({
-        url: `/api/1.0/campaigns/images`,
+        url: "/api/1.0/campaigns/images",
         success: function (body) {
             $.each(body.data, function (idx) {
                 const url = body.data[idx];
@@ -324,7 +324,7 @@ $(document).ready(function () {
             .children()
             .first()
             .html()
-            .replace(/<img/gi, '<img style="max-width: 50%; height: auto;"');
+            .replace(/<img/gi, '<img style="max-width: 50%; height: auto;&quot;">');
 
         data += "&htmlContent=" + encodeURIComponent(htmlContent);
 
@@ -338,7 +338,7 @@ $(document).ready(function () {
             success: function (formData) {
                 Toast.fire({
                     icon: "success",
-                    title: `Success!`,
+                    title: "Success!",
                     text: `Campaign ${formData.name} created`,
                 });
 
@@ -347,7 +347,7 @@ $(document).ready(function () {
             error: function (e) {
                 Swal.fire({
                     icon: "error",
-                    title: `Error!`,
+                    title: "Error!",
                     text: `Campaign not created.  ${e.responseJSON.data}`,
                     // showConfirmButton: true,
                     confirmButtonColor: "#F27475",
@@ -373,10 +373,19 @@ $(document).ready(function () {
         // 限制 input 長度
         if (product.length > 100 || keywords.length > 100) {
             Toast.fire({
-                icon: "Error!",
-                title: `Too Long...`,
-                text: `Product or keywords cannot exceed 100 characters.`,
+                icon: "warning",
+                title: "Too Long...",
+                text: "Product or keywords cannot exceed 100 characters.",
             });
+            return;
+        }
+
+        if (!product || !keywords) {
+            Toast.fire({
+                icon: "warning",
+                text: "Please provide name & keyword for better magic.",
+            });
+            return;
         }
 
         Toast.fire({
@@ -407,8 +416,8 @@ $(document).ready(function () {
                 Toast.close();
                 Toast.fire({
                     icon: "warning",
-                    title: `Sorry`,
-                    text: `The magic is current overloaded, please try it later.`,
+                    title: "Sorry",
+                    text: `${error.responseJSON.data}`,
                 });
             },
         });
@@ -419,7 +428,7 @@ $(document).ready(function () {
         await navigator.clipboard.writeText(copyText);
         Toast.fire({
             icon: "success",
-            title: `Success!`,
+            title: "Success!",
             text: `Copied!: ${copyText}`,
         });
     });

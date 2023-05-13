@@ -32,9 +32,19 @@ $(document).ready(function () {
         password = $("<div/>").text(password).html();
         confirm_password = $("<div/>").text(confirm_password).html();
 
-        // check password matched
+        const emailPattern = /^[\w.+-]+@(?:[a-z\d-]+\.)+[a-z]{2,}$/i;
+        if (!emailPattern.test(email)) {
+            $("#error-message").text("Please enter valid email.");
+            return;
+        }
+
+        if (password.length < 8) {
+            $("#error-message").text("Passwords should be 8 characters long.");
+            return;
+        }
+
         if (password !== confirm_password) {
-            $("#error-message").text("Passwords do not match");
+            $("#error-message").text("Password and confirm password do not match");
         } else {
             $("#create-btn").prop("disabled", true);
 
@@ -55,7 +65,7 @@ $(document).ready(function () {
 
                     Toast.fire({
                         icon: "success",
-                        title: `Success!`,
+                        title: "Success!",
                         text: `User ${formData.data.name} created`,
                     });
 
@@ -66,7 +76,7 @@ $(document).ready(function () {
 
                     Toast.fire({
                         icon: "error",
-                        title: `Error!`,
+                        title: "Error!",
                         text: `User ${e.responseJSON.data}`,
                         showConfirmButton: true,
                         confirmButtonColor: "#F27475",
@@ -85,34 +95,40 @@ $(document).ready(function () {
     $("#reset-btn").on("click", function (e) {
         e.preventDefault();
 
-        // input validation
         let passwordValue = $("#password").val();
         let passwordConfirmValue = $("#password-confirm").val();
 
         if (passwordValue === "" || passwordConfirmValue === "") {
             Toast.fire({
                 icon: "warning",
-                title: `Oops`,
-                text: `Please fill out both fields`,
+                title: "Oops",
+                text: "Please fill out both fields",
             });
-            return false;
+            return;
         }
 
         if (passwordValue !== passwordConfirmValue) {
             Toast.fire({
                 icon: "warning",
-                title: `Oops`,
-                text: `The two passwords are inconsistent.`,
+                title: "Oops",
+                text: "The two passwords are inconsistent.",
             });
-            return false;
+            return;
+        }
+
+        if (passwordValue.length < 8) {
+            Toast.fire({
+                icon: "warning",
+                title: "Oops",
+                text: "Password should be 8 characters long.",
+            });
+            return;
         }
 
         const path = window.location.pathname;
         const pathArray = path.split("/");
         const id = pathArray[pathArray.length - 2];
-        console.log(id);
         const token = pathArray[pathArray.length - 1];
-        console.log(token);
 
         let data = $("#reset-form").serialize();
 
@@ -124,8 +140,8 @@ $(document).ready(function () {
 
                 Toast.fire({
                     icon: "success",
-                    title: `Success!`,
-                    text: `Password reset succeed! Please sign in again.`,
+                    title: "Success!",
+                    text: "Password reset succeed! Please sign in again.",
                 });
 
                 $("#reset-btn").prop("disabled", false);
@@ -138,7 +154,7 @@ $(document).ready(function () {
 
                 Toast.fire({
                     icon: "error",
-                    title: `Error!`,
+                    title: "Error!",
                     text: `User ${e.responseJSON.data}`,
                     showConfirmButton: true,
                     confirmButtonColor: "#F27475",

@@ -291,3 +291,8 @@ table.dataTable tr.dt-hasChild td.dt-control:before {
 .opacity-low {
     opacity: 0.5;
 }
+
+.auto-height {
+    height: auto !important;
+    min-height: 30px; /* 設定最小高度 */
+}
