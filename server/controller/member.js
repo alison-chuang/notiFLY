@@ -1,19 +1,20 @@
 import { v4 as uuidv4 } from "uuid";
 import {
     createMember,
-    checkMemberId,
     delMember,
     delOrder,
-    Member,
     updateMember,
     updateOrder,
+    insertManyMembers,
+    getMembersByIds,
+    bulkUpdateOrders,
 } from "../model/member.js";
 import { selectAllKey, updateOldKeys, createKey } from "../model/key.js";
-import csv from "csvtojson";
 
-// save member info to db
+// import with API
 const postMember = async (req, res) => {
     const { body } = req;
+
     try {
         const newMember = await createMember(body);
         res.status(201).json({ data: newMember._id });
@@ -96,47 +97,22 @@ const deleteOrder = async (req, res) => {
     res.status(200).json({ data: "deleted" });
 };
 
+// import with CSV
 const uploadMemberCsv = async (req, res) => {
-    console.log("member CSV received.");
-    if (!req.file) {
-        return res.status(400).json({ error: "Please select CSV file to upload!" });
-    }
+    const { jsonObjs } = req.body;
+
     try {
-        // convert csvfile to jsonArray
-        const jsonObj = await csv().fromFile(req.file.path);
-        console.log(jsonObj);
-
-        const data = await Member.insertMany(jsonObj, {
-            ordered: false,
-            rawResult: false,
-        });
-        // console.log("insertMany result", data);
-        return res.status(200).json({ data: data.length });
+        const insertedCount = await insertManyMembers(jsonObjs);
+        return res.status(201).json({ data: insertedCount });
     } catch (err) {
-        console.error("err", err);
-        console.error("errObj", err.writeErrors);
-        // const e = err.writeErrors.map((e) => e.err);
-
-        return res.status(400).json({
-            data: {
-                total: Object.keys(err.result.insertedIds).length,
-                inserted: err.result.insertedCount,
-                errors: err.writeErrors, // array
-            },
-        });
+        return res.status(400).json({ data: err });
     }
 };
 
 const uploadOrderCsv = async (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: "Please select CSV file to upload!" });
-    }
-
-    const jsonObj = await csv().fromFile(req.file.path);
-    // console.log(jsonObj);
-
-    // group by client_member_id
-    const groupedData = jsonObj.reduce((acc, cur) => {
+    const { jsonObjs } = req.body;
+    // group by id
+    const groupedData = jsonObjs.reduce((acc, cur) => {
         if (!acc[cur.client_member_id]) {
             acc[cur.client_member_id] = {
                 orders: [],
@@ -148,7 +124,7 @@ const uploadOrderCsv = async (req, res) => {
             order_id: cur.order_id,
             date: cur.date,
             amount: cur.amount,
-            products: cur.products.split(","),
+            products: cur.products,
         });
         acc[cur.client_member_id].total_spending += cur.amount;
         acc[cur.client_member_id].total_purchase_count += 1;
@@ -156,18 +132,16 @@ const uploadOrderCsv = async (req, res) => {
     }, {});
     console.log({ groupedData });
 
-    // Find client_member_id that don't exist
+    // Find id that doesn't exist
     const memberIds = Object.keys(groupedData);
-    const existingMembers = await Member.find({
-        client_member_id: { $in: memberIds },
-    });
+    const existingMembers = await getMembersByIds(memberIds);
     const existingMemberIds = existingMembers.map((member) => member.client_member_id);
     const nonExistingMemberIds = memberIds.filter((id) => !existingMemberIds.includes(id));
 
-    // Check if there are non-existing members
+    // Check non-existing members
     if (nonExistingMemberIds.length > 0) {
         return res.status(400).json({
-            error: `The following member ids do not exist: ${nonExistingMemberIds.join(", ")}`,
+            data: `The following member id do not exist: ${nonExistingMemberIds.join(", ")}`,
             not_exist: nonExistingMemberIds,
         });
     }
@@ -189,13 +163,10 @@ const uploadOrderCsv = async (req, res) => {
     );
 
     try {
-        const result = await Member.bulkWrite(writeOperations);
-        console.log("result", result);
-        res.json({ message: result });
+        const modifiedCount = await bulkUpdateOrders(writeOperations);
+        res.json({ data: modifiedCount });
     } catch (e) {
-        console.error(e);
-        console.log(e.responseJSON.error);
-        res.status(500).json({ error: e.responseJSON.error });
+        res.status(400).json({ data: e.message });
     }
 };
 

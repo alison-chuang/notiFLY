@@ -1,24 +1,22 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
-const orderSchema = new Schema(
-    {
-        order_id: {
-            type: String,
-            unique: true,
-        },
-        date: {
-            type: Date,
-        },
-        amount: {
-            type: Number,
-        },
-        products: {
-            type: [String],
-        },
+const orderSchema = new Schema({
+    order_id: {
+        type: String,
+        unique: true,
     },
-    { autoIndex: false }
-);
+    date: {
+        type: Date,
+    },
+    amount: {
+        type: Number,
+    },
+    products: {
+        type: [String],
+    },
+});
+orderSchema.index({ order_id: 1 }, { unique: true });
 
 const subscriptionSchema = new Schema({
     endpoint: {
@@ -95,16 +93,6 @@ const memberSchema = new Schema(
     }
 );
 
-// // middleware
-// memberSchema.pre("save", function (next) {
-//     this.total_purchase_count = this.orders.length;
-//     this.total_spending = this.orders.reduce(
-//         (total, order) => total + order.amount,
-//         0
-//     );
-//     next();
-// });
-
 const Member = mongoose.model("members", memberSchema);
 
 const createMember = async (data) => {
@@ -152,13 +140,37 @@ const delOrder = async (id, orderId) => {
     }
 };
 
-const checkMemberId = async (id) => {
-    console.log("check here");
-    const isInDb = await Member.findOne({ _id: id });
-    if (!isInDb) {
-        return false;
-    } else {
-        return true;
+const insertManyMembers = async (jsonObjs) => {
+    try {
+        const insertedMember = await Member.insertMany(jsonObjs, {
+            ordered: false,
+            rawResult: false,
+        });
+        return insertedMember.length;
+    } catch (err) {
+        console.error("errObj", err.writeErrors);
+        const errorObj = {
+            total: Object.keys(err.result.insertedIds).length,
+            inserted: err.result.insertedCount,
+            errors: err.writeErrors,
+        };
+        throw errorObj;
+    }
+};
+
+const getMembersByIds = async function (memberIds) {
+    const existingMembers = await Member.find({
+        client_member_id: { $in: memberIds },
+    });
+    return existingMembers;
+};
+
+const bulkUpdateOrders = async (writeOperations) => {
+    try {
+        const result = await Member.bulkWrite(writeOperations);
+        return result.modifiedCount;
+    } catch (err) {
+        throw new Error(err.responseJSON.error);
     }
 };
 
@@ -170,4 +182,16 @@ const matchMember = async (query) => {
     return await Member.countDocuments(query);
 };
 
-export { Member, createMember, updateMember, updateOrder, delOrder, checkMemberId, selectCity, matchMember, delMember };
+export {
+    Member,
+    createMember,
+    updateMember,
+    updateOrder,
+    delOrder,
+    selectCity,
+    matchMember,
+    delMember,
+    insertManyMembers,
+    getMembersByIds,
+    bulkUpdateOrders,
+};
