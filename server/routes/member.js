@@ -14,7 +14,7 @@ import {
 } from "../controller/member.js";
 import { upload } from "../../util/util.js";
 import { isAuthorized, jwtauth } from "../middleware/auth.js";
-import { validateSchema, memberSchema, orderSchema } from "../middleware/validator.js";
+import { validateSchema, validateFileSchema, memberSchema, orderSchema } from "../middleware/validator.js";
 import { checkKey } from "../middleware/key.js";
 
 router.use(express.json());
@@ -30,8 +30,12 @@ router
     .post(checkKey, wrapAsync(validateSchema(orderSchema)), wrapAsync(updateOrderDetail))
     .put(checkKey, wrapAsync(validateSchema(orderSchema)), wrapAsync(deleteOrder));
 
-router.route("/members/csv").post(jwtauth, upload.single("memberCsv"), wrapAsync(uploadMemberCsv));
-router.route("/members/order/csv").post(jwtauth, upload.single("orderCsv"), wrapAsync(uploadOrderCsv));
+router
+    .route("/members/csv")
+    .post(jwtauth, upload.single("memberCsv"), wrapAsync(validateFileSchema(memberSchema)), wrapAsync(uploadMemberCsv));
+router
+    .route("/members/order/csv")
+    .post(jwtauth, upload.single("orderCsv"), wrapAsync(validateFileSchema(orderSchema)), wrapAsync(uploadOrderCsv));
 
 router.route("/keys").post(jwtauth, isAuthorized, wrapAsync(getKey)).get(wrapAsync(getAllKey));
 
