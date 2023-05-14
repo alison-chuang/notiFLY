@@ -20,7 +20,6 @@ const dropArea = $("#member-drag-area");
 const dragText = dropArea.find("header");
 const fileInput = $("#member-upload");
 
-// 當使用 input 按鈕選擇檔案時讀取檔案名稱、顯示檔案名稱，並檢查檔案類型
 fileInput.on("change", () => {
     console.log(fileInput);
     const file = fileInput.prop("files")[0];
@@ -33,7 +32,7 @@ fileInput.on("change", () => {
     } else {
         Toast.fire({
             icon: "warning",
-            title: `Notice!`,
+            title: "Notice!",
             text: "This file type is not allowed. Only CSV file is allowed.",
         });
         fileInput.val("");
@@ -57,7 +56,7 @@ fileInputOrder.on("change", () => {
     } else {
         Toast.fire({
             icon: "warning",
-            title: `Notice!`,
+            title: "Notice!",
             text: "This file type is not allowed. Only CSV file is allowed.",
         });
         fileInputOrder.val("");
@@ -99,8 +98,8 @@ $(document).ready(function () {
                 dragText.text(originalText);
                 Toast.fire({
                     icon: "success",
-                    title: `Success!`,
-                    text: `Member created`,
+                    title: "Success!",
+                    text: "Member created",
                 });
             },
             error: function (e) {
@@ -110,18 +109,18 @@ $(document).ready(function () {
                 try {
                     Swal.fire({
                         icon: "warning",
-                        title: `Notice!`,
+                        title: "Notice!",
                         html: `
                         <p>Total attempts ${e.responseJSON.data.total}, Inserted successfully ${e.responseJSON.data.inserted}.</p>
-                        <p>There might be some duplicate members.</p>`,
+                        <p>There are duplicate members.</p>`,
                         showConfirmButton: true,
                         confirmButtonColor: "#F27475",
                     });
                 } catch {
                     Swal.fire({
                         icon: "error",
-                        title: `Error!`,
-                        text: `Insert Failed. Please check the data format in the csv file.`,
+                        title: "Error!",
+                        text: "Insert Failed. Please check the data format in the csv file.",
                         showConfirmButton: true,
                         confirmButtonColor: "#F27475",
                     });
@@ -136,7 +135,6 @@ $(document).ready(function () {
     });
 });
 
-// post order form to server
 $(document).ready(function () {
     $("#orderUpload").click(async function (e) {
         e.preventDefault();
@@ -168,8 +166,8 @@ $(document).ready(function () {
                 dragTextOrder.text(originalTextOrder);
                 Toast.fire({
                     icon: "success",
-                    title: `Success!`,
-                    text: `Order updated`,
+                    title: "Success!",
+                    text: `${response.data} orders updated`,
                 });
             },
 
@@ -177,19 +175,19 @@ $(document).ready(function () {
                 console.log({ error });
                 fileInputOrder.val("");
                 dragTextOrder.text(originalTextOrder);
-                if (error.responseJSON.error) {
+                if (error.responseJSON.data) {
                     Swal.fire({
                         icon: "error",
-                        title: `Error!`,
-                        text: error.responseJSON.error,
+                        title: "Error!",
+                        text: error.responseJSON.data,
                         showConfirmButton: true,
                         confirmButtonColor: "#F27475",
                     });
                 } else {
                     Swal.fire({
                         icon: "error",
-                        title: `Error!`,
-                        text: `Insert Failed. Please check the data format in the csv file.`,
+                        title: "Error!",
+                        text: "Insert Failed. Please check the data format in the csv file.",
                         showConfirmButton: true,
                         confirmButtonColor: "#F27475",
                     });
