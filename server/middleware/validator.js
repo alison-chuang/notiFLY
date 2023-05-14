@@ -1,6 +1,8 @@
+import csv from "csvtojson";
 import Ajv, { ValidationError } from "ajv";
 const ajv = new Ajv();
 
+// request boby
 const validateSchema = (schema) => {
     return async (req, res, next) => {
         schema.$async = true;
@@ -10,6 +12,45 @@ const validateSchema = (schema) => {
             console.log("validator passed.");
             next();
         } catch (err) {
+            if (err instanceof ValidationError) {
+                console.error(err.message);
+                return res.status(400).json({ data: err.errors });
+            }
+            throw err;
+        }
+    };
+};
+
+// request csv file
+const validateFileSchema = (schema) => {
+    return async (req, res, next) => {
+        if (!req.file) {
+            return res.status(400).json({ error: "Please select CSV file to upload!" });
+        }
+
+        const jsonObjs = await csv().fromFile(req.file.path);
+
+        schema.$async = true;
+        const validate = await ajv.compile(schema);
+        try {
+            const numberSet = new Set(["amount"]);
+            for (let obj of jsonObjs) {
+                for (let key of Object.keys(obj)) {
+                    if (key.startsWith("birthday_") || numberSet.has(key)) {
+                        obj[key] = Number(obj[key]);
+                    }
+                }
+
+                if ("products" in obj) {
+                    obj.products = obj.products.split(",");
+                }
+                await validate(obj);
+            }
+            console.log("validator passed.");
+            req.body.jsonObjs = jsonObjs;
+            next();
+        } catch (err) {
+            console.log("err", err);
             if (err instanceof ValidationError) {
                 console.error(err.message);
                 return res.status(400).json({ data: err.errors });
@@ -93,7 +134,6 @@ const memberSchema = {
         },
         city: { type: "string" },
     },
-    required: ["email", "client_member_id"],
 };
 
 const orderSchema = {
@@ -106,4 +146,4 @@ const orderSchema = {
     },
 };
 
-export { validateSchema, campaignSchema, idSchema, userSchema, memberSchema, orderSchema };
+export { validateSchema, validateFileSchema, campaignSchema, idSchema, userSchema, memberSchema, orderSchema };
