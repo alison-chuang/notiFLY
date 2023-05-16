@@ -46,6 +46,7 @@ const selectAllKey = async () => {
 };
 
 const isKey = async (apiKey) => {
+    console.log({ apiKey });
     return await Key.findOne({ key: apiKey });
 };
 

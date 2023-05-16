@@ -2,6 +2,7 @@ import { isKey } from "../model/key.js";
 
 const checkKey = async (req, res, next) => {
     const apiKey = req.headers["x-api-key"];
+    console.log(apiKey);
     if (!apiKey) {
         return res.status(401).json({ error: "API key not found" });
     }
