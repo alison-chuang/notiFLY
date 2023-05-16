@@ -187,8 +187,8 @@ $(".save").on("click", function () {
     if (!segmentName) {
         Toast.fire({
             icon: "error",
-            title: `Error!`,
-            text: `Name field is required`,
+            title: "Error!",
+            text: "Name field is required",
         });
         return;
     }
@@ -212,16 +212,16 @@ $(".save").on("click", function () {
                 console.log("SUCCESS : ", data);
                 Toast.fire({
                     icon: "success",
-                    title: `Success!`,
-                    text: `Segment created`,
+                    title: "Success!",
+                    text: "Segment created",
                 });
             },
             error: function (e) {
                 console.error("ERROR : ", e);
                 Toast.fire({
                     icon: "error",
-                    title: `Error!`,
-                    text: `Please contact admin.`,
+                    title: "Error!",
+                    text: "Please contact admin.",
                 });
             },
         });
@@ -263,8 +263,8 @@ $(".parse-mongo-check").on("click", function () {
                 Toast.close();
                 Toast.fire({
                     icon: "error",
-                    title: `Error!`,
-                    text: `Please contact admin.`,
+                    title: "Error!",
+                    text: "Please contact admin.",
                 });
             },
         });
