@@ -1,0 +1,8 @@
+{
+    "type": "module",
+    "dependencies": {
+        "axios": "^1.4.0",
+        "jsonwebtoken": "^9.0.0",
+        "web-push": "^3.6.1"
+    }
+}

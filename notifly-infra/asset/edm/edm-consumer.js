@@ -1,6 +1,7 @@
 import { SESClient, SendEmailCommand } from "@aws-sdk/client-ses";
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import axios from "axios";
+import jwt from "jsonwebtoken";
 const ses = new SESClient({ region: process.env.REGION });
 const s3 = new S3Client({ region: process.env.REGION });
 
@@ -62,7 +63,10 @@ async function goUpdateDb(id, job_id, succeedCount, failCount) {
     };
 
     const config = {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: signJwt({ provider: "lambda" }),
+        },
     };
 
     try {
@@ -83,4 +87,13 @@ async function getEmailList(bucket, s3fileName) {
     const response = await s3.send(command);
     const str = await response.Body.transformToString();
     return JSON.parse(str);
+}
+
+const jwtSecret = process.env.jwtSecret;
+function signJwt(payload) {
+    const token = jwt.sign(payload, jwtSecret, {
+        algorithm: "HS256",
+        expiresIn: "120s",
+    });
+    return token;
 }
