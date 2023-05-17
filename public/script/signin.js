@@ -1,3 +1,5 @@
+console.log = () => {};
+
 const checktoken = localStorage.getItem("jwtToken");
 if (checktoken) {
     window.location.replace("/document.html");

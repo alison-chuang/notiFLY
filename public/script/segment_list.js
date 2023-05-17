@@ -1,3 +1,5 @@
+console.log = () => {};
+
 // init table
 
 $(document).ready(function () {

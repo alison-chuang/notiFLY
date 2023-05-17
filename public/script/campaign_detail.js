@@ -1,3 +1,5 @@
+console.log = () => {};
+
 async function getDetail(id) {
     await $.get({
         url: `/api/1.0/campaigns/${id}`,
@@ -178,8 +180,8 @@ $(document).ready(function () {
                 console.log(formData);
                 Toast.fire({
                     icon: "success",
-                    title: `Success!`,
-                    text: `Campaign updated`,
+                    title: "Success!",
+                    text: "Campaign updated",
                 });
 
                 $("#update-btn").prop("disabled", false);
@@ -187,7 +189,7 @@ $(document).ready(function () {
             error: function (e) {
                 Swal.fire({
                     icon: "error",
-                    title: `Error!`,
+                    title: "Error!",
                     text: `Campaign is not updated.  ${e.responseJSON.data}`,
                     confirmButtonColor: "#F27475",
                     allowOutsideClick: false,

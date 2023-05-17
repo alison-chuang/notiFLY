@@ -1,3 +1,5 @@
+console.log = () => {};
+
 import { renderQueryBuilder } from "./segment.js";
 const token = localStorage.getItem("jwtToken");
 
@@ -29,8 +31,8 @@ async function getDetail(id) {
         error: function (e) {
             Swal.fire({
                 icon: "error",
-                title: `Error!`,
-                text: `Requested segment is not exist`,
+                title: "Error!",
+                text: "Requested segment is not exist",
             });
             window.location.href = "/segment_list.html";
             console.error("ERROR:", e);
@@ -60,8 +62,8 @@ $("#update-btn").on("click", function () {
     if (!segmentName) {
         Toast.fire({
             icon: "error",
-            title: `Error!`,
-            text: `Name field is required`,
+            title: "Error!",
+            text: "Name field is required",
         });
         return;
     }
@@ -87,7 +89,7 @@ $("#update-btn").on("click", function () {
                 console.log("SUCCESS : ", data);
                 Toast.fire({
                     icon: "success",
-                    title: `Success!`,
+                    title: "Success!",
                     text: `${segmentName} updated.`,
                 });
             },
@@ -95,8 +97,8 @@ $("#update-btn").on("click", function () {
                 console.error("ERROR : ", e);
                 Toast.fire({
                     icon: "error",
-                    title: `Error!`,
-                    text: `Please contact admin.`,
+                    title: "Error!",
+                    text: "Please contact admin.",
                 });
             },
         });

@@ -1,3 +1,5 @@
+console.log = () => {};
+
 const token = localStorage.getItem("jwtToken");
 
 // init table

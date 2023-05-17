@@ -1,3 +1,5 @@
+console.log = () => {};
+
 //no jwt,alert, redirect to signin.html
 //with jwt, show name in header
 const jwtToken = localStorage.getItem("jwtToken");
