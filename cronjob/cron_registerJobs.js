@@ -1,6 +1,6 @@
 import cron from "node-cron";
-import "./util/database_connection.js";
-import { Campaign } from "./server/model/campaign.js";
+import "../util/database_connection.js";
+import { Campaign } from "../server/model/campaign.js";
 import { REGISTERED, RUNNING, REGISTER_RANGE } from "./cron_constant.js";
 
 const MIN = 1000 * 60;

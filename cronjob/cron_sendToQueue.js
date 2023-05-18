@@ -1,12 +1,12 @@
 import dotenv from "dotenv";
 dotenv.config();
 import cron from "node-cron";
-import "./util/database_connection.js";
-import { Campaign } from "./server/model/campaign.js";
-import { Member } from "./server/model/member.js";
-import { sendToS3 } from "./util/upload.js";
+import "../util/database_connection.js";
+import { Campaign } from "../server/model/campaign.js";
+import { Member } from "../server/model/member.js";
+import { sendToS3 } from "../util/upload.js";
 import { REGISTERED, PROCESSING, FAILED, FINISHED, BATCH_SIZE, SENDER_RANGE } from "./cron_constant.js";
-import * as q from "./util/queue.js";
+import * as q from "../util/queue.js";
 
 const MIN = 1000 * 60;
 const HOUR = 60 * MIN;
