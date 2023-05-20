@@ -42,10 +42,15 @@
 ## Main Feature
 
 -   Powerful Segment Filter
+
     ![segment](./doc/segment.gif)
+
 -   AI Magic Copy Generator
+
     ![copy](./doc/copy.gif)
+
 -   Flexible Schedule for Delivery Time
+
     You can set up periodic notifications repeatedly sent at your designated frequency
 
 ## Demo - operation flow
