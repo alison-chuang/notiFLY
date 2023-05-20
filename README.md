@@ -1,5 +1,7 @@
 # notiFLY
 
+![stauts: active](https://img.shields.io/badge/status-active-green)
+
 **The easy-setup notification management service for the company marketing department.** Website URL: https://gotolive.online
 
 -   Built eDM and web push notification service through AWS SES and web push API
@@ -10,6 +12,8 @@
 -   Empowered marketers with OpenAI-powered copy generator to enhance productivity
 -   Implemented RBAC authorization, assigning permissions to users based on their role to ensure secure access control
 
+---
+
 ## Table of Content
 
 -   [Demo Account](#demo-account)
@@ -18,7 +22,6 @@
 -   [Quick system set up](#quick-system-set-up)
 -   [Technologies](#technologies)
 -   [Architecture](#architecture)
--   [MongoDB Collection Schema](#mongodb-collection-schema)
 -   [Contact](#contact)
 
 ## Demo Account
@@ -122,9 +125,23 @@ we provide :
 
 ![Architecture](./doc/architecture.png)
 
--   S3:
+-   Store delivery list on S3
+    -   To prevent exceeding the capacity limit of the queue.
+    -   To serve as a record for auditing
+-   Lambda as the worker to call notification services
 
-## MongoDB Collection Schema
+    -   How to prevent a 15-minute timeout when Lambda has not finished sending messages?
+    -   Based on testing, Lambda sent out 4,500 emails within 10 minutes. Therefore, before the Sender sends delivery list to the queue, it will be divided into batches of 5,000 recipients per batch.
+    -   Test Record
+
+        |         | send 10 emails with for-loop |
+        | ------- | ---------------------------- |
+        | 1st     | 1737.02 ms                   |
+        | 2nd     | 1.655s                       |
+        | 3rd     | 956.673ms                    |
+        | 4th     | 1.300s                       |
+        | 5th     | 1.152s                       |
+        | average | 1.356s                       |
 
 ## Contact
 
