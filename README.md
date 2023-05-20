@@ -1,6 +1,6 @@
 # notiFLY
 
-**The easy-setup notification management service for the company marketing department, providing eDM and web push notification settings with audience filtering and flexible delivery options.**
+**The easy-setup notification management service for the company marketing department.** Website URL: https://gotolive.online
 
 -   Built eDM and web push notification service through AWS SES and web push API
 -   Automated scheduled delivery through cron jobs, ensuring timely and regular notifications
@@ -10,7 +10,16 @@
 -   Empowered marketers with OpenAI-powered copy generator to enhance productivity
 -   Implemented RBAC authorization, assigning permissions to users based on their role to ensure secure access control
 
-Website URL: https://gotolive.online
+## Table of Content
+
+-   [Demo Account](#demo-account)
+-   [Main Feature](#main-feature)
+-   [Demo - operation flow](#demo---operation-flow)
+-   [Quick system set up](#quick-system-set-up)
+-   [Technologies](#technologies)
+-   [Architecture](#architecture)
+-   [MongoDB Collection Schema](#mongodb-collection-schema)
+-   [Contact](#contact)
 
 ## Demo Account
 
@@ -63,7 +72,8 @@ Go to notiFLY (Website URL: https://gotolive.online)
 
 ## Quick system set up
 
-To speed up the onboarding process for companies adopting notiFLY services, we provide :
+To speed up the onboarding process for companies adopting notiFLY,
+we provide :
 
 -   Cloud Deployment: **AWS CDK** is used to accelearte setting up cloud infrastructure and enable version control of infra.
 -   Data Exchange: [**NPM package**](https://www.npmjs.com/package/notifly-data-wizard) is provided to update company's member data to notiFLY.
@@ -71,12 +81,12 @@ To speed up the onboarding process for companies adopting notiFLY services, we p
 
 ## Technologies
 
-### Backend
+#### Backend
 
 -   Node.js
 -   RESTful API
 
-### Frontend
+#### Frontend
 
 -   jQuery
 -   AJAX
@@ -84,11 +94,11 @@ To speed up the onboarding process for companies adopting notiFLY services, we p
 -   CSS
 -   Bootstrap
 
-### Database
+#### Database
 
 -   MongoDB Atlas
 
-### Cloud Service
+#### Cloud Service
 
 -   AWS CDK
 -   AWS Lambda
@@ -98,11 +108,11 @@ To speed up the onboarding process for companies adopting notiFLY services, we p
 -   AWS EC2
 -   AWS ELB
 
-### Framework
+#### Framework
 
 -   MVC
 
-### Networking
+#### Networking
 
 -   HTTPS
 -   SSL
@@ -111,6 +121,8 @@ To speed up the onboarding process for companies adopting notiFLY services, we p
 ## Architecture
 
 ![Architecture](./doc/architecture.png)
+
+-   S3:
 
 ## MongoDB Collection Schema
 
