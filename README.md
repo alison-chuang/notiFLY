@@ -22,6 +22,7 @@
 -   [Quick system set up](#quick-system-set-up)
 -   [Technologies](#technologies)
 -   [Architecture](#architecture)
+-   [MongoDB Data Schema](#mongodb-data-schema)
 -   [Contact](#contact)
 
 ## Demo Account
@@ -148,6 +149,13 @@ we provide :
         | 5th     | 1.152s                       |
         | average | 1.356s                       |
 
+## MongoDB Data Schema
+
+![schema](./doc/schema.png)
+
 ## Contact
 
-Min-ju (Alison) Chuang @ alison.mjchuang@gmail.com
+Min-ju (Alison) Chuang
+
+-   e-mail: alison.mjchuang@gmail.com
+-   Linkedin: https://linkedin.com/in/alison-chuang/
